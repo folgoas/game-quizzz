@@ -1,667 +1,7236 @@
 // ==================== QUESTION BANK PART 2 ====================
+// Family-friendly quiz questions (ages 7-77)
 // Categories: Sciences & Nature, Histoire & Géographie, Jeux Vidéo
-// 600 questions total: 450 MCQ + 150 Cash
+// Each category: 150 MCQ + 50 Cash = 200 questions
+// Total: 600 questions
 
 import type { MCQQuestion, CashAnswerQuestion } from './game-types';
 
-// ==================== SCIENCES & NATURE - MCQ (150) ====================
-
-const sciencesMCQ: MCQQuestion[] = [
-  // Sciences & Nature - Easy (50)
-  { id: 'sn1', text: "Combien de pattes possède une araignée ?", answers: ["6", "8", "10", "12"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn2', text: "Quel est le plus grand organe du corps humain ?", answers: ["Le foie", "Le cerveau", "La peau", "Les poumons"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn3', text: "Quel gaz les plantes absorbent-elles pour la photosynthèse ?", answers: ["Oxygène", "Azote", "Dioxyde de carbone", "Hydrogène"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn4', text: "Quel animal est le plus rapide du monde ?", answers: ["Le lion", "Le guépard", "Le cheval", "L'aigle"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn5', text: "De quoi est composée principalement l'eau (H₂O) ?", answers: ["Hydrogène et oxygène", "Azote et oxygène", "Carbone et hydrogène", "Hélium et oxygène"], correct: 0, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn6', text: "Combien de planètes compte notre système solaire ?", answers: ["7", "8", "9", "10"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn7', text: "Quel est le plus grand océan du monde ?", answers: ["Atlantique", "Indien", "Arctique", "Pacifique"], correct: 3, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn8', text: "Quel métal est liquide à température ambiante ?", answers: ["Plomb", "Fer", "Mercure", "Aluminium"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn9', text: "Combien d'os possède le corps humain adulte ?", answers: ["106", "206", "306", "406"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn10', text: "Quel animal est surnommé le roi de la forêt ?", answers: ["Le tigre", "L'ours", "Le lion", "Le loup"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn11', text: "Quelle planète est la plus proche du Soleil ?", answers: ["Vénus", "Mercure", "Mars", "Terre"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn12', text: "De combien de dents un adulte est-il généralement doté ?", answers: ["28", "30", "32", "34"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn13', text: "Quel est le plus grand mammifère du monde ?", answers: ["L'éléphant d'Afrique", "La baleine bleue", "Le rhinocéros", "La girafe"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn14', text: "Quelle est la formule chimique du sel de table ?", answers: ["NaO", "NaCl", "KCl", "CaCl"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn15', text: "Quel insecte produit le miel ?", answers: ["La guêpe", "Le bourdon", "L'abeille", "Le moucheron"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn16', text: "Combien de couleurs comporte l'arc-en-ciel ?", answers: ["5", "6", "7", "8"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn17', text: "Quel est le symbole chimique de l'or ?", answers: ["Or", "Au", "Ag", "Fe"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn18', text: "Quel animal change de couleur pour se camoufler ?", answers: ["Le caméléon", "Le lézard", "La grenouille", "Le serpent"], correct: 0, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn19', text: "Quelle est la température d'ébullition de l'eau à pression normale ?", answers: ["90°C", "100°C", "110°C", "120°C"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn20', text: "Quel organe pompe le sang dans le corps humain ?", answers: ["Le cerveau", "Les poumons", "Le cœur", "Le foie"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn21', text: "Combien de continents y a-t-il sur Terre ?", answers: ["5", "6", "7", "8"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn22', text: "Quel est le plus gros oiseau du monde ?", answers: ["L'aigle royal", "L'autruche", "Le condor", "Le pélican"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn23', text: "Quel phénomène naturel est causé par la gravité ?", answers: ["Le vent", "La pluie", "Les marées", "Les volcans"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn24', text: "Quel scientifique a formulé la théorie de la relativité ?", answers: ["Isaac Newton", "Albert Einstein", "Niels Bohr", "Stephen Hawking"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn25', text: "Quel est le symbole chimique du fer ?", answers: ["Ir", "Fe", "Fr", "Fi"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn26', text: "Combien de pattes a un insecte ?", answers: ["4", "6", "8", "10"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn27', text: "Quelle partie de la plante assure la photosynthèse ?", answers: ["Les racines", "La tige", "Les feuilles", "Les fleurs"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn28', text: "Quel animal est un invertébré ?", answers: ["Le chat", "Le dauphin", "L'escargot", "La poule"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn29', text: "Quelle est la planète rouge du système solaire ?", answers: ["Vénus", "Jupiter", "Mars", "Saturne"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn30', text: "Combien de sens principaux possède l'être humain ?", answers: ["3", "4", "5", "6"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn31', text: "Quel animal est un amphibien ?", answers: ["Le crocodile", "La tortue", "La grenouille", "Le lézard"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn32', text: "Quelle est la plus grande étoile de notre système solaire ?", answers: ["La Terre", "Jupiter", "Le Soleil", "Sirius"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn33', text: "Quel type d'animal est la baleine ?", answers: ["Un poisson", "Un reptile", "Un mammifère", "Un amphibien"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn34', text: "Quel est le gaz principal de l'atmosphère terrestre ?", answers: ["Oxygène", "Dioxyde de carbone", "Azote", "Argon"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn35', text: "Combien de côtés possède un hexagone ?", answers: ["5", "6", "7", "8"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn36', text: "Quel oiseau est incapable de voler ?", answers: ["Le perroquet", "La chouette", "Le pingouin", "Le pigeon"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn37', text: "Quelle est la plus petite planète du système solaire ?", answers: ["Mars", "Vénus", "Mercure", "Pluton"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn38', text: "Quel animal hiberne en hiver ?", answers: ["Le renard", "L'ours", "Le cerf", "Le lapin"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn39', text: "Qu'est-ce qu'un herbivore ?", answers: ["Un animal qui mange de la viande", "Un animal qui mange des plantes", "Un animal qui mange tout", "Un animal qui ne mange pas"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn40', text: "Combien y a-t-il de secondes dans une minute ?", answers: ["30", "60", "90", "100"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn41', text: "Quel est le plus grand désert du monde ?", answers: ["Le Sahara", "Le Gobi", "L'Antarctique", "Le Kalahari"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn42', text: "Quelle est la vitesse de la lumière (en km/s) ?", answers: ["Environ 100 000", "Environ 200 000", "Environ 300 000", "Environ 500 000"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn43', text: "Quel scientifique a découvert la pénicilline ?", answers: ["Louis Pasteur", "Marie Curie", "Alexander Fleming", "Robert Koch"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn44', text: "Quel animal possède une trompe ?", answers: ["Le rhinocéros", "L'éléphant", "Le hippopotame", "Le phacochère"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn45', text: "Quelle est la matière la plus dure naturelle ?", answers: ["Le quartz", "Le diamant", "Le rubis", "L'émeraude"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn46', text: "Combien de mois dure la gestation humaine ?", answers: ["7", "8", "9", "10"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn47', text: "Quel organe permet de respirer ?", answers: ["Le cœur", "Le foie", "Les poumons", "L'estomac"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn48', text: "Quelle est la lune de la Terre appelée ?", answers: ["Luna", "Phobos", "La Lune", "Europe"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn49', text: "Quel est le plus long fleuve de France ?", answers: ["La Seine", "La Loire", "Le Rhône", "La Garonne"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn50', text: "Quel type de roche est le granit ?", answers: ["Sédimentaire", "Métamorphique", "Magmatique", "Volcanique"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-
-  // Sciences & Nature - Medium (50)
-  { id: 'sn51', text: "Quel élément chimique a pour symbole 'K' ?", answers: ["Krypton", "Potassium", "Kryptonite", "Calcium"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn52', text: "Combien de chromosomes possède l'être humain ?", answers: ["23", "44", "46", "48"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn53', text: "Quel est le nom du processus par lequel les cellules se divisent ?", answers: ["Osmose", "Mitose", "Photosynthèse", "Respiration"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn54', text: "Quelle unité mesure la force ?", answers: ["Joule", "Watt", "Newton", "Pascal"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn55', text: "Quel est le point d'ébullition de l'azote liquide ?", answers: ["-100°C", "-196°C", "-273°C", "-50°C"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn56', text: "Quel est le plus grand satellite naturel du système solaire ?", answers: ["Titan", "Ganymède", "La Lune", "Europe"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn57', text: "Quelle molécule porte le code génétique ?", answers: ["ARN", "ADN", "ATP", "ADP"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn58', text: "Quelle est la loi de Newton sur l'action et la réaction ?", answers: ["La première", "La deuxième", "La troisième", "La quatrième"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn59', text: "Quel type de rayonnement est utilisé dans les radiographies ?", answers: ["Infrarouge", "Ultraviolet", "Rayons X", "Rayons gamma"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn60', text: "Quel minéral est le principal constituant de la croûte terrestre ?", answers: ["Quartz", "Feldspath", "Mica", "Calcite"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn61', text: "Combien d'espèces d'abeilles existe-t-il environ ?", answers: ["Environ 1 000", "Environ 5 000", "Environ 20 000", "Environ 100 000"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn62', text: "Quel est le pH d'une solution neutre ?", answers: ["0", "5", "7", "14"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn63', text: "Quel phénomène explique pourquoi le ciel est bleu ?", answers: ["La réfraction", "La diffusion Rayleigh", "L'absorption", "La réflexion"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn64', text: "Quel est le plus grand muscle du corps humain ?", answers: ["Le cœur", "Le fessier", "Le quadriceps", "Le biceps"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn65', text: "Quelle est la vitesse approximative de rotation de la Terre à l'équateur ?", answers: ["500 km/h", "1 000 km/h", "1 670 km/h", "3 000 km/h"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn66', text: "Quel est le nom du vaisseau spatial de la NASA qui a atterri sur Mars en 2021 ?", answers: ["Curiosity", "Opportunity", "Perseverance", "Spirit"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn67', text: "Quel scientifique a proposé le modèle de l'atome avec un noyau ?", answers: ["Dalton", "Thomson", "Rutherford", "Bohr"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn68', text: "Quelle est la roche mère de l'argile ?", answers: ["Le calcaire", "Le granite", "Le basalte", "Le grès"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn69', text: "Combien de milliards d'années a le Soleil environ ?", answers: ["2,5", "4,6", "6,5", "8,2"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn70', text: "Quel animal possède le plus grand cerveau ?", answers: ["L'éléphant", "La baleine bleue", "Le cachalot", "Le dauphin"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn71', text: "Quel acide est présent dans l'estomac humain ?", answers: ["Acide sulfurique", "Acide chlorhydrique", "Acide nitrique", "Acide acétique"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn72', text: "Quelle est la distance moyenne Terre-Soleil en km ?", answers: ["50 millions", "100 millions", "150 millions", "200 millions"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn73', text: "Quel est le nom du satellite de Pluton ?", answers: ["Titan", "Charon", "Europe", "Io"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn74', text: "Quel phénomène produit un tremblement de terre ?", answers: ["L'érosion", "Le mouvement des plaques tectoniques", "Les marées", "Les éruptions solaires"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn75', text: "Quel élément chimique est le plus abondant dans l'univers ?", answers: ["Hélium", "Oxygène", "Carbone", "Hydrogène"], correct: 3, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn76', text: "Quel oiseau peut voler en marche arrière ?", answers: ["L'aigle", "Le colibri", "La hirondelle", "Le moineau"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn77', text: "Combien de paires de chromosomes sexuels possède l'être humain ?", answers: ["22", "23", "24", "46"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn78', text: "Quel scientifique est connu pour ses travaux sur l'évolution ?", answers: ["Mendel", "Lamarck", "Darwin", "Wallace"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn79', text: "Quelle est la température du zéro absolu en Celsius ?", answers: ["-173°C", "-273°C", "-373°C", "-100°C"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn80', text: "Quel est le plus long os du corps humain ?", answers: ["Le tibia", "Le fémur", "L'humérus", "Le péroné"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn81', text: "Quel animal possède le plus long cou ?", answers: ["L'autruche", "L'éléphant", "La girafe", "Le cygne"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn82', text: "Quelle est la vitesse du son dans l'air (en m/s) ?", answers: ["240", "340", "440", "540"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn83', text: "Quel est le composant principal de l'air que nous respirons ?", answers: ["Oxygène (21%)", "Azote (78%)", "CO₂ (1%)", "Argon (10%)"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn84', text: "Quel est le processus par lequel une chenille devient papillon ?", answers: ["L'ovogenèse", "La métamorphose", "La mue", "L'hibernation"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn85', text: "Quelle planète possède le plus grand nombre de lunes connues ?", answers: ["Jupiter", "Saturne", "Uranus", "Neptune"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn86', text: "Quel est le nom du chat génétiquement modifié qui brille dans le noir ?", answers: ["GlowCat", "Mr. Green Genes", "FireFeline", "BioCat"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn87', text: "Quelle est la masse de la Terre en kg ?", answers: ["5,9 × 10²⁴", "6,0 × 10²⁴", "5,0 × 10²⁴", "7,0 × 10²⁴"], correct: 0, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn88', text: "Quel type de cellule est responsable de la coagulation du sang ?", answers: ["Globules rouges", "Globules blancs", "Plaquettes", "Plasma"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn89', text: "Quel est l'effet de serre principal ?", answers: ["Refroidir la Terre", "Réchauffer la Terre", "Assécher la Terre", "Humidifier la Terre"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn90', text: "Combien d'os possède un bébé à la naissance ?", answers: ["206", "270", "300", "350"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn91', text: "Quel phénomène se produit quand la lune passe entre la Terre et le Soleil ?", answers: ["Éclipse lunaire", "Éclipse solaire", "Marée haute", "Aurore boréale"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn92', text: "Quel est le symbole chimique de l'argent ?", answers: ["Ar", "Ag", "Al", "Au"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn93', text: "Quel est le plus petit os du corps humain ?", answers: ["Le marteau", "L'étrier", "L'enclume", "Le rocher"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn94', text: "Quelle est la couche de l'atmosphère où se trouve la couche d'ozone ?", answers: ["Troposphère", "Stratosphère", "Mésosphère", "Thermosphère"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn95', text: "Quel est le nom de la force qui s'oppose au mouvement ?", answers: ["La gravité", "L'inertie", "La friction", "La tension"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn96', text: "Quel animal peut régénérer ses membres ?", answers: ["Le lézard", "L'axolotl", "La grenouille", "Le ver de terre"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn97', text: "Combien de temps met la lumière du Soleil pour atteindre la Terre ?", answers: ["1 minute", "8 minutes", "30 minutes", "1 heure"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn98', text: "Quel est le nom du teinture historique extraite de la cochenille ?", answers: ["Indigo", "Safran", "Carmine", "Pourpre"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn99', text: "Quel est le flux magnétique mesuré en ?", answers: ["Tesla", "Weber", "Henry", "Coulomb"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn100', text: "Quel scientifique a découvert la radioactivité ?", answers: ["Pierre Curie", "Marie Curie", "Henri Becquerel", "Röntgen"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-
-  // Sciences & Nature - Hard (50)
-  { id: 'sn101', text: "Quelle particule subatomique a été découverte au CERN en 2012 ?", answers: ["Le neutrino", "Le boson de Higgs", "Le graviton", "Le quark top"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn102', text: "Quel est le nom du plus grand volcan du système solaire ?", answers: ["L'Etna", "Le mont Olympe", "Le Vésuve", "Le Kilauea"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn103', text: "Combien de temps met la lumière de l'étoile la plus proche (Proxima Centauri) pour nous atteindre ?", answers: ["1 an", "4,2 ans", "8,6 ans", "42 ans"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn104', text: "Quel est le principe d'incertitude de Heisenberg ?", answers: ["On ne peut pas mesurer l'énergie", "On ne peut pas connaître simultanément position et vitesse", "La lumière est une onde", "Les atomes sont stables"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn105', text: "Quel est le nom de la zone de l'océan où la photosynthèse est encore possible ?", answers: ["Zone bathyale", "Zone pélagique", "Zone euphotique", "Zone abyssale"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn106', text: "Quelle est la constante de Planck (environ) ?", answers: ["6,62 × 10⁻³⁴ J·s", "3 × 10⁸ m/s", "9,81 m/s²", "1,6 × 10⁻¹⁹ C"], correct: 0, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn107', text: "Quel est le nombre d'Avogadro (environ) ?", answers: ["3,14 × 10²³", "6,02 × 10²³", "6,02 × 10²⁴", "1,38 × 10²³"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn108', text: "Quel est le nom du plus grand réservoir d'eau douce du monde ?", answers: ["Le lac Baïkal", "Le lac Supérieur", "La mer Caspienne", "Le lac Tanganyika"], correct: 0, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn109', text: "Quelle est l'unité de mesure de l'inductance ?", answers: ["Ohm", "Farad", "Henry", "Tesla"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn110', text: "Quel enzyme décompose l'amidon en maltose ?", answers: ["Pepsine", "Lipase", "Amylase", "Trypsine"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn111', text: "Quel est le nom du fossile de transition entre dinosaures et oiseaux ?", answers: ["Lucy", "Archaeopteryx", "Tiktaalik", "Ida"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn112', text: "Quelle est la cause principale de la tectonique des plaques ?", answers: ["La gravité", "La convection du manteau terrestre", "Les marées", "Les météorites"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn113', text: "Quel est le nom du trou noir supermassif au centre de la Voie lactée ?", answers: ["Cygnus X-1", "Sagittarius A*", "M87*", "V404 Cygni"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn114', text: "Combien de paires de bases constituent le génome humain ?", answers: ["Environ 1 milliard", "Environ 3 milliards", "Environ 10 milliards", "Environ 100 milliards"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn115', text: "Quel est le nom de la maladie de Creutzfeldt-Jakob ?", answers: ["Une maladie auto-immune", "Une maladie à prions", "Une maladie virale", "Une maladie bactérienne"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn116', text: "Quel est l'effet tunnel en mécanique quantique ?", answers: ["Un objet traverse un obstacle solide", "Une particule passe à travers une barrière d'énergie", "Un atome perd un électron", "La lumière est absorbée"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn117', text: "Quel gaz est le principal contributeur à l'effet de serre sur Terre ?", answers: ["CO₂", "Méthane", "Vapeur d'eau", "Protoxyde d'azote"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn118', text: "Quel est le nom du phénomène où un neutron se transforme en proton ?", answers: ["Fusion", "Fission", "Désintégration bêta", "Désintégration alpha"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn119', text: "Quelle est la particule médiateuse de la force électromagnétique ?", answers: ["Le gluon", "Le photon", "Le boson W", "Le graviton"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn120', text: "Quel est le nom de la théorie unifiant la mécanique quantique et la relativité ?", answers: ["Théorie du tout", "Gravité quantique à boucles", "Théorie des cordes", "Toutes les réponses sont correctes"], correct: 3, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn121', text: "Quel est l'animal le plus ancien encore vivant (espèce) ?", answers: ["La tortue géante", "Le crocodile", "Le coelacanthe", "Le horseshoe crab"], correct: 3, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn122', text: "Quelle est la pression atmosphérique au niveau de la mer ?", answers: ["1 000 hPa", "1 013 hPa", "1 100 hPa", "990 hPa"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn123', text: "Quel est le nom du satellite de Jupiter découvert par Galilée ?", answers: ["Titan", "Ganymède", "Europe", "Io"], correct: 3, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn124', text: "Quel type de rayonnement cosmique est le plus énergétique ?", answers: ["Rayons alpha", "Rayons bêta", "Rayons gamma", "Rayons X"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn125', text: "Quelle est la principale source d'énergie du Soleil ?", answers: ["Fission nucléaire", "Combustion", "Fusion nucléaire", "Énergie chimique"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn126', text: "Quel est le nom du premier organisme génétiquement modifié ?", answers: ["Dolly", "Oncomouse", "E. coli O157", "Flavr Savr"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn127', text: "Combien de types de quarks existent ?", answers: ["3", "4", "6", "8"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn128', text: "Quel est le nom de la membrane qui entoure le cerveau ?", answers: ["Le péricarde", "La dure-mère", "Le méninge", "Les méninges"], correct: 3, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn129', text: "Quelle est la vitesse de fuite de la Terre (pour échapper à sa gravité) ?", answers: ["7,9 km/s", "11,2 km/s", "15 km/s", "25 km/s"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn130', text: "Quel est le nom du courant océanique qui réchauffe l'Europe de l'Ouest ?", answers: ["Courant de Humboldt", "Gulf Stream", "Courant du Kuroshio", "Courant circumpolaire"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn131', text: "Quel est le phénomène quantique où deux particules restent liées ?", answers: ["Superposition", "Intrication quantique", "Décohérence", "Tunnel quantique"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn132', text: "Quelle est la densité moyenne de la Terre (g/cm³) ?", answers: ["2,7", "4,5", "5,5", "7,8"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn133', text: "Quel est le plus grand biome terrestre ?", answers: ["La forêt tropicale", "La taïga", "La savane", "Le désert"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn134', text: "Quelle est la loi de Hooke ?", answers: ["F = ma", "F = kx", "E = mc²", "PV = nRT"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn135', text: "Quel est le nom du premier bipède découvert (Lucy) ?", answers: ["Homo sapiens", "Homo erectus", "Australopithecus afarensis", "Homo habilis"], correct: 2, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn136', text: "Quel est le plus ancien fossile connu de la vie multicellulaire ?", answers: ["Dickinsonia", "Stromatolite", "Ediacara", "Trilobite"], correct: 0, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn137', text: "Combien de neutrons possède le carbone 14 ?", answers: ["6", "8", "10", "12"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn138', text: "Quelle est la cause du syndrome de Down ?", answers: ["Mutation génétique", "Trisomie 21", "Anomalie du chromosome X", "Déficience en vitamine D"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn139', text: "Quel est le nom de la mission Apollo qui a marché sur la Lune ?", answers: ["Apollo 10", "Apollo 11", "Apollo 13", "Apollo 17"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn140', text: "Quelle est la relation entre masse et énergie ?", answers: ["E = mc", "E = mc²", "E = mc³", "E = mv²"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn141', text: "Quel est le nom du plus grand cratère d'impact sur Terre ?", answers: ["Chicxulub", "Vredefort", "Sudbury", "Manicouagan"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn142', text: "Quel phénomène est responsable des aurores boréales ?", answers: ["La réflexion solaire", "Le vent solaire", "Les météores", "La foudre"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn143', text: "Quel est le nom du traitement médical utilisant des radiations ?", answers: ["Chimiothérapie", "Radiothérapie", "Immunothérapie", "Génothérapie"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn144', text: "Quelle est la composition chimique du diamant ?", answers: ["Carbone pur", "Silice", "Alumine", "Fer pur"], correct: 0, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn145', text: "Quel est le nom de la frontière d'un trou noir ?", answers: ["L'horizon des événements", "La singularité", "L'ergosphère", "La photosphère"], correct: 0, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn146', text: "Quel est le rôle de la myéline ?", answers: ["Produire des hormones", "Isoler les fibres nerveuses", "Digérer les graisses", "Transporter l'oxygène"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn147', text: "Quel est le nom de la sonde qui a quitté le système solaire ?", answers: ["Pioneer 10", "Voyager 1", "New Horizons", "Cassini"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn148', text: "Quelle est la force faible responsable de la désintégration radioactive ?", answers: ["Force nucléaire forte", "Force faible", "Force électromagnétique", "Gravité"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn149', text: "Quel est le nom de l'arbre le plus vieux du monde ?", answers: ["Le général Sherman", "Methuselah", "Sarv-e Abarqu", "Old Tjikko"], correct: 3, category: "Sciences & Nature", type: "multiple-choice" as const },
-  { id: 'sn150', text: "Quel est le processus de formation des étoiles appelé ?", answers: ["Supernova", "Effondrement gravitationnel", "Nébuleuse", "Big Bang"], correct: 1, category: "Sciences & Nature", type: "multiple-choice" as const },
-];
-
-// ==================== SCIENCES & NATURE - CASH (50) ====================
-
-const sciencesCash: CashAnswerQuestion[] = [
-  { id: 'casn1', text: "Quel est le nom du plus grand os du corps humain ?", acceptedAnswers: ["le fémur", "fémur"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn2', text: "Quel gaz respirons-nous principalement ?", acceptedAnswers: ["oxygène", "l'oxygène"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn3', text: "Combien de pattes a une araignée ?", acceptedAnswers: ["8", "huit"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn4', text: "Quel est le symbole chimique de l'eau ?", acceptedAnswers: ["H2O"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn5', text: "Comment s'appelle le processus par lequel les plantes produisent de l'oxygène ?", acceptedAnswers: ["photosynthèse", "la photosynthèse"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn6', text: "Quel animal est le plus rapide du monde ?", acceptedAnswers: ["le guépard", "guépard"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn7', text: "Quelle planète est la plus proche du Soleil ?", acceptedAnswers: ["mercure", "Mercure"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn8', text: "Combien de planètes compte le système solaire ?", acceptedAnswers: ["8", "huit"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn9', text: "Quel scientifique a formulé la théorie de la relativité ?", acceptedAnswers: ["Einstein", "Albert Einstein"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn10', text: "Quel est le plus grand mammifère marin ?", acceptedAnswers: ["baleine bleue", "la baleine bleue"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn11', text: "De combien d'os est composé le corps humain adulte ?", acceptedAnswers: ["206"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn12', text: "Quel est le point de congélation de l'eau en degrés Celsius ?", acceptedAnswers: ["0", "0°C", "zéro"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn13', text: "Quel est le nom du satellite naturel de la Terre ?", acceptedAnswers: ["la Lune", "Lune"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn14', text: "Quel est le nom de la force qui attire les objets vers le sol ?", acceptedAnswers: ["gravité", "la gravité", "attraction terrestre"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn15', text: "Combien de couleurs y a-t-il dans un arc-en-ciel ?", acceptedAnswers: ["7", "sept"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn16', text: "Quel organe humain est responsable de filtrer le sang ?", acceptedAnswers: ["les reins", "rein", "le rein"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn17', text: "Quelle est la planète la plus grande du système solaire ?", acceptedAnswers: ["Jupiter"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn18', text: "Quel métal est liquide à température ambiante ?", acceptedAnswers: ["mercure", "le mercure"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn19', text: "Comment s'appelle le plus grand océan du monde ?", acceptedAnswers: ["Pacifique", "océan Pacifique", "l'océan Pacifique"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn20', text: "Quel est le nom de la molécule de l'hérédité ?", acceptedAnswers: ["ADN"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn21', text: "Quel est le numéro atomique du carbone ?", acceptedAnswers: ["6"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn22', text: "Quel phénomène se produit quand deux plaques tectoniques se rencontrent ?", acceptedAnswers: ["tremblement de terre", "séisme", "un séisme", "un tremblement de terre"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn23', text: "Comment s'appelle la particule subatomique sans charge électrique ?", acceptedAnswers: ["neutron", "le neutron"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn24', text: "Quel est le nom de la maladie causée par un déficit d'insuline ?", acceptedAnswers: ["diabète", "le diabète", "diabète sucré"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn25', text: "Quelle est la température du corps humain en bonne santé (en °C) ?", acceptedAnswers: ["37", "37°C", "37,0", "37,0°C"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn26', text: "Comment s'appelle le plus long fleuve du monde ?", acceptedAnswers: ["Nil", "le Nil", "fleuve Nil"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn27', text: "Quel est le nom du plus grand volcan d'Europe ?", acceptedAnswers: ["Etna", "l'Etna", "mont Etna", "Etna (Etna)"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn28', text: "Quelle est la formule chimique du dioxyde de carbone ?", acceptedAnswers: ["CO2"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn29', text: "Quel est le nom du premier homme sur la Lune ?", acceptedAnswers: ["Neil Armstrong", "Armstrong"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn30', text: "Combien de chromosomes possèdent les chimpanzés ?", acceptedAnswers: ["48"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn31', text: "Quel animal est un marsupial ?", acceptedAnswers: ["kangourou", "le kangourou", "koala"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn32', text: "Quel est le nom du phénomène où les glaciers reculent ?", acceptedAnswers: ["fonte des glaciers", "recul des glaciers", "réchauffement climatique"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn33', text: "Quelle est la vitesse de la lumière en km/s ?", acceptedAnswers: ["300000", "299792", "300 000", "299 792"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn34', text: "Quel est le nom de la sonde européenne qui a atterri sur une comète ?", acceptedAnswers: ["Philae", "Rosetta"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn35', text: "Quel scientifique a découvert les rayons X ?", acceptedAnswers: ["Röntgen", "Wilhelm Röntgen", "Roentgen"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn36', text: "Comment s'appelle le plus grand désert chaud du monde ?", acceptedAnswers: ["Sahara", "le Sahara"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn37', text: "Quelle est la roche la plus dure à l'état naturel ?", acceptedAnswers: ["diamant", "le diamant"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn38', text: "Quel est le nom du plus petit oiseau du monde ?", acceptedAnswers: ["colibri", "le colibri", "colibri-abeille"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn39', text: "Combien de phases compte la lune ?", acceptedAnswers: ["4", "quatre", "8", "huit"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn40', text: "Quel est le nom du courant marin qui refroidit le Pacifique (El Niño/La Niña) ?", acceptedAnswers: ["Humboldt", "courant de Humboldt", "le Humboldt"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn41', text: "Quelle est la plus grande planète naine du système solaire ?", acceptedAnswers: ["Pluton", "Éris"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn42', text: "Quel est le nom du modèle standard de la physique des particules ?", acceptedAnswers: ["modèle standard", "le modèle standard"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn43', text: "Quel scientifique a proposé la classification binomiale des espèces ?", acceptedAnswers: ["Linné", "Carl Linné", "Linnaeus", "Carl von Linné"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn44', text: "Quel est le nom de la zone maritime la plus profonde du monde ?", acceptedAnswers: ["fosse des Mariannes", "la fosse des Mariannes", "Challenger Deep", " fosse Challenger"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn45', text: "Quel est le nom de la bactérie qui cause la tuberculose ?", acceptedAnswers: ["Mycobacterium tuberculosis", "bacille de Koch", "BK"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn46', text: "Quel est le nom de la constellation en forme de grande ourse ?", acceptedAnswers: ["Grande Ourse", "la Grande Ourse", "Ursa Major"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn47', text: "Quelle est la formule de la loi de la gravitation universelle de Newton ?", acceptedAnswers: ["F = GMm/r²", "F=Gmm/r²", "F=GMm/r2", "G=6,67×10⁻¹¹"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn48', text: "Quel est le nom du gaz responsable de l'odeur des œufs pourris ?", acceptedAnswers: ["sulfure d'hydrogène", "H2S"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn49', text: "Combien de temps met la Terre pour faire un tour autour du Soleil ?", acceptedAnswers: ["365 jours", "365,25 jours", "un an", "1 an"], category: "Sciences & Nature", type: "cash-answer" as const },
-  { id: 'casn50', text: "Quel est le nom du plus grand parc marin de France ?", acceptedAnswers: ["Parc naturel marin de la Martinique", "Parc naturel marin du golfe du Lion", "Parc naturel marin de Corse"], category: "Sciences & Nature", type: "cash-answer" as const },
-];
-
-
-// ==================== HISTOIRE & GÉOGRAPHIE - MCQ (150) ====================
-
-const histoireMCQ: MCQQuestion[] = [
-  // Histoire & Géographie - Easy (50)
-  { id: 'hg1', text: "En quelle année la Révolution française a-t-elle commencé ?", answers: ["1776", "1789", "1792", "1804"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg2', text: "Quel est le plus long fleuve du monde ?", answers: ["L'Amazone", "Le Nil", "Le Mississippi", "Le Yangtsé"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg3', text: "Qui a découvert l'Amérique en 1492 ?", answers: ["Vasco de Gama", "Christophe Colomb", "Magellan", "Marco Polo"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg4', text: "Quelle est la capitale de l'Australie ?", answers: ["Sydney", "Melbourne", "Canberra", "Brisbane"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg5', text: "En quelle année a eu lieu la Seconde Guerre mondiale ?", answers: ["1914-1918", "1935-1940", "1939-1945", "1945-1950"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg6', text: "Quel est le plus grand pays du monde par superficie ?", answers: ["Canada", "Chine", "États-Unis", "Russie"], correct: 3, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg7', text: "Qui fut le premier empereur de France ?", answers: ["Louis XVI", "Napoléon Bonaparte", "Charlemagne", "Clovis"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg8', text: "Quelle est la capitale du Japon ?", answers: ["Kyoto", "Osaka", "Tokyo", "Hiroshima"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg9', text: "Quel monument est le symbole de Paris ?", answers: ["Le Louvre", "Notre-Dame", "La tour Eiffel", "L'Arc de Triomphe"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg10', text: "En quelle année le mur de Berlin est-il tombé ?", answers: ["1987", "1988", "1989", "1991"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg11', text: "Quel pays a la forme d'une botte ?", answers: ["Espagne", "Grèce", "Italie", "Portugal"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg12', text: "Qui a peint la Joconde ?", answers: ["Michel-Ange", "Raphaël", "Léonard de Vinci", "Botticelli"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg13', text: "Quel est le plus petit pays du monde ?", answers: ["Monaco", "Vatican", "Saint-Marin", "Le Liechtenstein"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg14', text: "En quelle année la Première Guerre mondiale a-t-elle débuté ?", answers: ["1912", "1914", "1916", "1918"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg15', text: "Quel est le continent le plus peuplé ?", answers: ["Afrique", "Europe", "Asie", "Amérique"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg16', text: "Qui a été le roi de France guillotiné en 1793 ?", answers: ["Louis XIV", "Louis XV", "Louis XVI", "Napoléon"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg17', text: "Quelle est la capitale de l'Égypte ?", answers: ["Le Caire", "Alexandrie", "Luxor", "Gizeh"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg18', text: "Quel océan sépare l'Europe de l'Amérique ?", answers: ["Océan Indien", "Océan Pacifique", "Océan Arctique", "Océan Atlantique"], correct: 3, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg19', text: "Quel est le plus haut sommet du monde ?", answers: ["Mont Blanc", "K2", "Mont Everest", "Kilimandjaro"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg20', text: "En quelle année l'homme a-t-il marché sur la Lune ?", answers: ["1965", "1967", "1969", "1971"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg21', text: "Quel pays est surnommé le pays du soleil levant ?", answers: ["Chine", "Corée", "Japon", "Thaïlande"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg22', text: "Quelle est la capitale du Canada ?", answers: ["Toronto", "Vancouver", "Montréal", "Ottawa"], correct: 3, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg23', text: "Qui a construit la Grande Muraille de Chine ?", answers: ["Gengis Khan", "Qin Shi Huang", "Kublai Khan", "Mao Zedong"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg24', text: "Quel est le plus grand désert du monde ?", answers: ["Le Sahara", "L'Antarctique", "Le Gobi", "Le Kalahari"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg25', text: "En quelle année la Déclaration des droits de l'homme a-t-elle été signée ?", answers: ["1776", "1789", "1791", "1793"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg26', text: "Quelle est la capitale du Brésil ?", answers: ["Rio de Janeiro", "São Paulo", "Brasilia", "Salvador"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg27', text: "Quel peuple a construit les pyramides de Gizeh ?", answers: ["Les Romains", "Les Grecs", "Les Égyptiens", "Les Perses"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg28', text: "Quelle est la plus grande île du monde ?", answers: ["Madagascar", "Groenland", "Bornéo", "Nouvelle-Guinée"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg29', text: "En quelle année la France a-t-elle obtenu la Coupe du Monde de football ?", answers: ["1994", "1998", "2002", "2006"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg30', text: "Quel pays est l'Elbe ?", answers: ["France", "Allemagne", "Pologne", "Tchéquie"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg31', text: "Qui a été le premier président des États-Unis ?", answers: ["Thomas Jefferson", "John Adams", "George Washington", "Abraham Lincoln"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg32', text: "Quelle est la capitale de l'Inde ?", answers: ["Mumbai", "New Delhi", "Kolkata", "Chennai"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg33', text: "Quel empire a été dirigé par Jules César ?", answers: ["Empire grec", "Empire romain", "Empire perse", "Empire ottoman"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg34', text: "Quel est le plus long fleuve de France ?", answers: ["La Seine", "La Loire", "Le Rhône", "La Garonne"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg35', text: "En quelle année Napoléon a-t-il perdu à Waterloo ?", answers: ["1804", "1812", "1815", "1821"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg36', text: "Quelle montagne sépare la France de l'Espagne ?", answers: ["Les Alpes", "Les Pyrénées", "Le Massif central", "Le Jura"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg37', text: "Quel pays est surnommé le pays du matin calme ?", answers: ["Japon", "Corée du Sud", "Vietnam", "Thaïlande"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg38', text: "Quel est le plus grand lac du monde ?", answers: ["Lac Supérieur", "Mer Caspienne", "Lac Victoria", "Lac Baïkal"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg39', text: "En quelle année a eu lieu la prise de la Bastille ?", answers: ["1776", "1789", "1792", "1804"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg40', text: "Quelle est la monnaie du Japon ?", answers: ["Yuan", "Won", "Yen", "Ringgit"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg41', text: "Qui a été le dernier roi de France ?", answers: ["Louis XVI", "Louis XVIII", "Charles X", "Louis-Philippe Ier"], correct: 3, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg42', text: "Quel pays est traversé par l'Amazone ?", answers: ["Colombie", "Pérou", "Brésil", "Venezuela"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg43', text: "Quel est le plus vieux musée du monde ?", answers: ["Le Louvre", "Le British Museum", "Le musée du Capitole", "Les Offices"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg44', text: "En quelle année l'Allemagne a-t-elle été réunifiée ?", answers: ["1987", "1988", "1989", "1990"], correct: 3, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg45', text: "Quelle est la capitale de l'Argentine ?", answers: ["Buenos Aires", "Santiago", "Montevideo", "Lima"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg46', text: "Quel pays a colonisé l'Algérie pendant 132 ans ?", answers: ["Angleterre", "Espagne", "France", "Italie"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg47', text: "Quelle est la capitale de la Turquie ?", answers: ["Istanbul", "Ankara", "Izmir", "Antalya"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg48', text: "Qui a inventé l'imprimerie ?", answers: ["Gutenberg", "Edison", "Da Vinci", "Galilée"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg49', text: "Quel pays possède le plus de frontières terrestres ?", answers: ["Russie", "Chine", "Brésil", "France"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg50', text: "Quelle est la mer entre l'Europe et l'Afrique ?", answers: ["Mer Noire", "Mer Rouge", "Mer Méditerranée", "Mer Caspienne"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-
-  // Histoire & Géographie - Medium (50)
-  { id: 'hg51', text: "En quelle année a été fondée la République romaine ?", answers: ["-753", "-509", "-27", "-44"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg52', text: "Quel traité a mis fin à la Première Guerre mondiale ?", answers: ["Traité de Paris", "Traité de Versailles", "Traité de Westphalie", "Traité de Tordesillas"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg53', text: "Quel empereur a fait construire le Colisée de Rome ?", answers: ["Auguste", "Néron", "Vespasien", "Trajan"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg54', text: "Quel pays a le plus de fuseaux horaires ?", answers: ["Russie", "États-Unis", "France", "Chine"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg55', text: "En quelle année a eu lieu la bataille d'Azincourt ?", answers: ["1337", "1415", "1453", "1515"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg56', text: "Quel fleuve traverse Paris ?", answers: ["La Loire", "La Seine", "La Marne", "L'Oise"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg57', text: "Qui a été le dernier pharaon d'Égypte ?", answers: ["Ramsès II", "Toutankhamon", "Cléopâtre VII", "Néfertiti"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg58', text: "Quel est le pays le plus densément peuplé du monde ?", answers: ["Bangladesh", "Monaco", "Singapour", "Maldives"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg59', text: "En quelle année a eu lieu la Révolution industrielle en Angleterre ?", answers: ["Milieu du XVIIIe siècle", "Fin du XVIIIe siècle", "Milieu du XIXe siècle", "Début du XXe siècle"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg60', text: "Quel roi de France a été surnommé le Roi-Soleil ?", answers: ["François Ier", "Henri IV", "Louis XIV", "Louis XVI"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg61', text: "Quel pays est le plus grand exportateur de café ?", answers: ["Colombie", "Brésil", "Vietnam", "Éthiopie"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg62', text: "En quelle année Charlemagne a-t-il été couronné empereur ?", answers: ["800", "814", "843", "962"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg63', text: "Quelle est la mer intérieure la plus grande du monde ?", answers: ["Mer Caspienne", "Mer d'Aral", "Mer Noire", "Lac Supérieur"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg64', text: "Qui a dirigé la campagne d'Égypte en 1798 ?", answers: ["Louis XVI", "Napoléon Bonaparte", "Leclerc", "Dumouriez"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg65', text: "Quel pays d'Amérique du Sud n'a pas d'accès à la mer ?", answers: ["Paraguay", "Bolivie", "Les deux", "Aucun des deux"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg66', text: "En quelle année a eu lieu la bataille de Marathon ?", answers: ["-490", "-432", "-334", "-264"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg67', text: "Quel est le point le plus bas de la surface terrestre ?", answers: ["Grand Canyon", "Mer Morte", "Vallée du Rift", "Fosse des Mariannes"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg68', text: "Qui a été le premier ministre de l'URSS ?", answers: ["Staline", "Lénine", "Trotsky", "Khroutchev"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg69', text: "Quel est le plus petit pays d'Afrique ?", answers: ["Djibouti", "Gambie", "Comores", "Seychelles"], correct: 3, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg70', text: "En quelle année les femmes ont-elles obtenu le droit de vote en France ?", answers: ["1918", "1936", "1944", "1946"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg71', text: "Quel philosophe grec a été le maître d'Alexandre le Grand ?", answers: ["Socrate", "Platon", "Aristote", "Épicure"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg72', text: "Quel pays a remporté le plus de guerres dans l'histoire ?", answers: ["Royaume-Uni", "France", "États-Unis", "Russie"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg73', text: "En quelle année a eu lieu la guerre de Cent Ans ?", answers: ["1337-1453", "1453-1553", "1200-1300", "1500-1600"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg74', text: "Quel est le pays d'origine des Aztèques ?", answers: ["Pérou", "Mexique", "Colombie", "Guatemala"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg75', text: "Quelle dynastie a construit la Cité Interdite de Pékin ?", answers: ["Dynastie Han", "Dynastie Tang", "Dynastie Ming", "Dynastie Qing"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg76', text: "Quel pays a le plus de sites UNESCO ?", answers: ["Chine", "Italie", "Espagne", "France"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg77', text: "En quelle année a eu lieu la chute de Constantinople ?", answers: ["1204", "1389", "1453", "1492"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg78', text: "Quel est le fleuve le plus long d'Europe ?", answers: ["Le Danube", "La Volga", "Le Rhin", "Le Dniepr"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg79', text: "Qui a découvert le tombeau de Toutankhamon ?", answers: ["Jean-François Champollion", "Howard Carter", "Lord Carnarvon", "Pierre Montet"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg80', text: "Quelle est la capitale de la Mongolie ?", answers: ["Oulan-Bator", "Astana", "Bichkek", "Douchanbé"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg81', text: "En quelle année a eu lieu la bataille de Stalingrad ?", answers: ["1941", "1942", "1943", "1944"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg82', text: "Quel est le seul pays à avoir dépassé le milliard d'habitants ?", answers: ["Chine", "Inde", "Les deux", "États-Unis"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg83', text: "Quelle révolution a eu lieu en 1917 ?", answers: ["Révolution américaine", "Révolution française", "Révolution russe", "Révolution chinoise"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg84', text: "Quel est le plus grand lac d'Afrique ?", answers: ["Lac Tanganyika", "Lac Victoria", "Lac Malawi", "Lac Turkana"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg85', text: "Qui a écrit « Les Misérables » ?", answers: ["Émile Zola", "Victor Hugo", "Gustave Flaubert", "Honoré de Balzac"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg86', text: "En quelle année l'indépendance des États-Unis a-t-elle été déclarée ?", answers: ["1774", "1776", "1783", "1789"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg87', text: "Quel est le plus petit océan du monde ?", answers: ["Océan Indien", "Océan Arctique", "Océan Atlantique Sud", "Océan Austral"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg88', text: "Quel pharaon a fait construire le temple d'Abou Simbel ?", answers: ["Ramsès II", "Toutankhamon", "Akhenaton", "Séthi Ier"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg89', text: "En quelle année la Révolution culturelle a-t-elle commencé en Chine ?", answers: ["1958", "1966", "1976", "1978"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg90', text: "Quelle est la capitale du Maroc ?", answers: ["Casablanca", "Marrakech", "Rabat", "Fès"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg91', text: "Quel général a mené la retraite de Russie ?", answers: ["Wellington", "Blücher", "Napoléon", "Koutouzov"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg92', text: "Quel pays d'Asie n'a jamais été colonisé ?", answers: ["Vietnam", "Thaïlande", "Indonésie", "Malaisie"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg93', text: "En quelle année a eu lieu le débarquement en Normandie ?", answers: ["1942", "1943", "1944", "1945"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg94', text: "Quelle est la langue officielle du Brésil ?", answers: ["Espagnol", "Portugais", "Français", "Anglais"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg95', text: "Qui a fondé l'Empire mongol ?", answers: ["Kublai Khan", "Attila", "Gengis Khan", "Tamerlan"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg96', text: "Quel pays possède la plus grande réserve de pétrole ?", answers: ["États-Unis", "Arabie Saoudite", "Venezuela", "Russie"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg97', text: "En quelle année Jeanne d'Arc a-t-elle été brûlée vive ?", answers: ["1429", "1430", "1431", "1435"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg98', text: "Quel est le fleuve qui traverse le Grand Canyon ?", answers: ["Rio Grande", "Mississippi", "Colorado", "Missouri"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg99', text: "Qui a été le premier président de la Ve République ?", answers: ["De Gaulle", "Pompidou", "Mitterrand", "Giscard d'Estaing"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg100', text: "Quel pays d'Europe a la plus faible densité de population ?", answers: ["Norvège", "Suède", "Finlande", "Islande"], correct: 3, category: "Histoire & Géographie", type: "multiple-choice" as const },
-
-  // Histoire & Géographie - Hard (50)
-  { id: 'hg101', text: "En quelle année a eu lieu la bataille de Poitiers (Charles Martel) ?", answers: ["711", "732", "751", "774"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg102', text: "Quel traité a divisé l'Empire romain en deux ?", answers: ["Traité de Verdun", "Traité de Nicomédie", "Édit de Milan", "L'édit de Théodose"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg103', text: "Quel est le nom du dernier tsar de Russie ?", answers: ["Nicolas Ier", "Alexandre III", "Nicolas II", "Paul Ier"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg104', text: "En quelle année la peste noire a-t-elle atteint l'Europe ?", answers: ["1247", "1347", "1447", "1547"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg105', text: "Quel est le point culminant de l'Afrique ?", answers: ["Mont Kenya", "Kilimandjaro", "Mont Cameroun", "Rwenzori"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg106', text: "Qui a été assassiné aux ides de mars ?", answers: ["Auguste", "César", "Pompée", "Brutus"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg107', text: "Quel pays possède la frontière la plus longue avec la France ?", answers: ["Belgique", "Espagne", "Brésil", "Allemagne"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg108', text: "En quelle année l'Espagne a-t-elle rejoint l'OTAN ?", answers: ["1975", "1978", "1982", "1986"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg109', text: "Quel est le pays le plus pauvre du monde (PIB par habitant) ?", answers: ["Burundi", "Soudan du Sud", "Malawi", "Niger"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg110', text: "En quelle année a eu lieu la conférence de Yalta ?", answers: ["1943", "1944", "1945", "1946"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg111', text: "Quel est le plus ancien traité de paix encore en vigueur ?", answers: ["Traité de Westphalie", "Traité de Paris", "Traité de Tordesillas", "Traité d'Alcáçovas"], correct: 3, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg112', text: "Qui a été le premier gouverneur général de l'Inde française ?", answers: ["Dupleix", "La Bourdonnais", "Bussy", "Lally-Tollendal"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg113', text: "Quel est le seul pays au monde dont le nom commence par 'O' ?", answers: ["Oman", "Ouganda", "Les deux", "Ouzbékistan"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg114', text: "En quelle année a été signé le traité de Rome ?", answers: ["1951", "1957", "1963", "1973"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg115', text: "Quel pays d'Afrique n'a jamais été colonisé par les Européens ?", answers: ["Éthiopie", "Soudan", "Somalie", "Kenya"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg116', text: "En quelle année a eu lieu la guerre de Crimée ?", answers: ["1812", "1830", "1853", "1877"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg117', text: "Quel est le pays avec le plus grand PIB par habitant ?", answers: ["Luxembourg", "Suisse", "Qatar", "Singapour"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg118', text: "Qui a été le dernier shogun du Japon ?", answers: ["Ieyasu", "Yoshinobu", "Iemochi", "Tsunayoshi"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg119', text: "En quelle année la Chine a-t-elle rejoint l'OMC ?", answers: ["1997", "1999", "2001", "2003"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg120', text: "Quel empire a duré le plus longtemps ?", answers: ["Empire romain", "Empire byzantin", "Empire ottoman", "Empire romain d'Orient"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg121', text: "Quel est le pays le plus plat du monde ?", answers: ["Danemark", "Pays-Bas", "Maldives", "Bahreïn"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg122', text: "En quelle année a eu lieu la bataille de Lépante ?", answers: ["1453", "1492", "1571", "1588"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg123', text: "Qui a fondé la dynastie des Ptolémées en Égypte ?", answers: ["Marc Antoine", "Ptolémée Ier", "Alexandre le Grand", "Cléopâtre Ière"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg124', text: "Quel pays possède la plus grande forêt tropicale après le Brésil ?", answers: ["Indonésie", "Congo", "Colombie", "Pérou"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg125', text: "En quelle année la Révolution haïtienne a-t-elle abouti ?", answers: ["1791", "1798", "1804", "1815"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg126', text: "Quel est le pays qui possède la plus grande ligne de chemin de fer du monde ?", answers: ["États-Unis", "Russie", "Chine", "Inde"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg127', text: "En quelle année a eu lieu le massacre de la Saint-Barthélemy ?", answers: ["1559", "1572", "1589", "1598"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg128', text: "Quel est le seul pays au monde à avoir deux drapeaux officiels ?", answers: ["Suisse", "Haiti", "Canada", "Espagne"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg129', text: "En quelle année le canal de Suez a-t-il été inauguré ?", answers: ["1859", "1869", "1879", "1889"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg130', text: "Qui a dirigé l'URSS pendant la Seconde Guerre mondiale ?", answers: ["Lénine", "Staline", "Trotsky", "Khroutchev"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg131', text: "Quel est le nom de la civilisation précolombienne du Pérou ?", answers: ["Aztèque", "Maya", "Inca", "Olmèque"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg132', text: "En quelle année a été créée l'Organisation des Nations Unies ?", answers: ["1942", "1944", "1945", "1946"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg133', text: "Quel pays est traversé par l'équateur ET le tropique du Capricorne ?", answers: ["Brésil", "Indonésie", "RDC", "Kenya"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg134', text: "En quelle année Napoléon a-t-il vendu la Louisiane aux États-Unis ?", answers: ["1800", "1803", "1806", "1810"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg135', text: "Quel est le nom du pacte signé entre l'Allemagne et l'URSS en 1939 ?", answers: ["Pacte de Varsovie", "Pacte germano-soviétique", "Pacte de Munich", "Pacte de steel"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg136', text: "Quel pays a la plus grande côte au monde ?", answers: ["Australie", "Indonésie", "Canada", "Russie"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg137', text: "En quelle année a eu lieu la guerre de Sécession américaine ?", answers: ["1850-1855", "1861-1865", "1870-1875", "1812-1815"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg138', text: "Qui a déchiffré les hiéroglyphes égyptiens ?", answers: ["Flinders Petrie", "Champollion", "Thomas Young", "Howard Carter"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg139', text: "Quel pays d'Europe compte le plus de châteaux ?", answers: ["France", "Allemagne", "Espagne", "Pologne"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg140', text: "En quelle année la guerre du Vietnam s'est-elle terminée ?", answers: ["1973", "1975", "1977", "1979"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg141', text: "Quel pays a inventé la poudre à canon ?", answers: ["Japon", "Corée", "Chine", "Inde"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg142', text: "Quelle est la plus petite république du monde ?", answers: ["Monaco", "Saint-Marin", "Nauru", "Malte"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg143', text: "En quelle année a eu lieu le printemps arabe ?", answers: ["2009", "2010", "2011", "2012"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg144', text: "Quel est le pays d'Afrique le plus étendu ?", answers: ["Algérie", "RDC", "Soudan", "Libye"], correct: 0, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg145', text: "Qui a été le chancelier d'Allemagne pendant la réunification ?", answers: ["Willy Brandt", "Helmut Kohl", "Gerhard Schröder", "Angela Merkel"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg146', text: "En quelle année a eu lieu la révolte des Boxers ?", answers: ["1840", "1899", "1900", "1911"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg147', text: "Quel pays possède le plus de volcans actifs ?", answers: ["Japon", "Islande", "Indonésie", "États-Unis"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg148', text: "En quelle année a eu lieu la bataille de Trafalgar ?", answers: ["1800", "1805", "1810", "1815"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg149', text: "Quel est le pays qui a aboli l'esclavage en premier ?", answers: ["France", "Angleterre", "Haïti", "Danemark"], correct: 2, category: "Histoire & Géographie", type: "multiple-choice" as const },
-  { id: 'hg150', text: "En quelle année a été signé le traité de Westphalie ?", answers: ["1618", "1648", "1660", "1689"], correct: 1, category: "Histoire & Géographie", type: "multiple-choice" as const },
-];
-
-// ==================== HISTOIRE & GÉOGRAPHIE - CASH (50) ====================
-
-const histoireCash: CashAnswerQuestion[] = [
-  { id: 'cahg1', text: "En quelle année a commencé la Révolution française ?", acceptedAnswers: ["1789"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg2', text: "Quel est le plus long fleuve de France ?", acceptedAnswers: ["la Loire", "Loire"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg3', text: "Quelle est la capitale de l'Australie ?", acceptedAnswers: ["Canberra"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg4', text: "Qui a été le premier empereur de France ?", acceptedAnswers: ["Napoléon", "Napoléon Bonaparte", "Bonaparte"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg5', text: "En quelle année le mur de Berlin est-il tombé ?", acceptedAnswers: ["1989"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg6', text: "Quel pays a la forme d'une botte ?", acceptedAnswers: ["l'Italie", "Italie"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg7', text: "Quelle est la capitale du Japon ?", acceptedAnswers: ["Tokyo"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg8', text: "Qui a découvert l'Amérique en 1492 ?", acceptedAnswers: ["Christophe Colomb", "Colomb"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg9', text: "Quel est le plus grand pays du monde ?", acceptedAnswers: ["la Russie", "Russie"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg10', text: "En quelle année l'homme a-t-il marché sur la Lune ?", acceptedAnswers: ["1969"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg11', text: "Quelle est la capitale du Canada ?", acceptedAnswers: ["Ottawa"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg12', text: "Quel roi de France a été surnommé le Roi-Soleil ?", acceptedAnswers: ["Louis XIV", "Louis 14"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg13', text: "Quel est le plus haut sommet du monde ?", acceptedAnswers: ["mont Everest", "l'Everest", "Everest"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg14', text: "Quelle est la capitale du Brésil ?", acceptedAnswers: ["Brasilia", "Brasília"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg15', text: "Qui a été le premier président des États-Unis ?", acceptedAnswers: ["George Washington", "Washington"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg16', text: "Quelle est la mer entre l'Europe et l'Afrique ?", acceptedAnswers: ["mer Méditerranée", "Méditerranée", "la Méditerranée"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg17', text: "Quel est le plus petit pays du monde ?", acceptedAnswers: ["le Vatican", "Vatican", "Cité du Vatican"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg18', text: "Qui a peint la Joconde ?", acceptedAnswers: ["Léonard de Vinci", "Leonard de Vinci", "Da Vinci"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg19', text: "Quelle est la capitale de l'Égypte ?", acceptedAnswers: ["Le Caire", "le Caire", "Caire"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg20', text: "En quelle année a eu lieu la Seconde Guerre mondiale ?", acceptedAnswers: ["1939-1945"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg21', text: "Quel monument est le symbole de Paris ?", acceptedAnswers: ["la tour Eiffel", "tour Eiffel", "Eiffel"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg22', text: "Quelle est la capitale de la Turquie ?", acceptedAnswers: ["Ankara"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg23', text: "En quelle année la Première Guerre mondiale a-t-elle débuté ?", acceptedAnswers: ["1914"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg24', text: "Qui a inventé l'imprimerie ?", acceptedAnswers: ["Gutenberg", "Johannes Gutenberg"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg25', text: "Quel est le plus long fleuve du monde ?", acceptedAnswers: ["le Nil", "Nil"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg26', text: "Quelle est la capitale de l'Inde ?", acceptedAnswers: ["New Delhi", "Nouvelle Delhi"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg27', text: "En quelle année la France a-t-elle obtenu sa première Coupe du Monde ?", acceptedAnswers: ["1998"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg28', text: "Quel peuple a construit les pyramides de Gizeh ?", acceptedAnswers: ["les Égyptiens", "Égyptiens", "Égypte ancienne"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg29', text: "Quelle est la capitale du Maroc ?", acceptedAnswers: ["Rabat"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg30', text: "En quelle année la chute de Constantinople a-t-elle eu lieu ?", acceptedAnswers: ["1453"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg31', text: "Qui a fondé l'Empire mongol ?", acceptedAnswers: ["Gengis Khan", "Gengis"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg32', text: "Quel est le continent le plus peuplé ?", acceptedAnswers: ["l'Asie", "Asie"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg33', text: "En quelle année a eu lieu la bataille de Waterloo ?", acceptedAnswers: ["1815"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg34', text: "Quelle est la capitale de l'Argentine ?", acceptedAnswers: ["Buenos Aires"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg35', text: "Qui a déchiffré les hiéroglyphes égyptiens ?", acceptedAnswers: ["Champollion", "Jean-François Champollion"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg36', text: "Quel pays d'Asie n'a jamais été colonisé ?", acceptedAnswers: ["la Thaïlande", "Thaïlande", "Siam"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg37', text: "En quelle année les femmes ont-elles obtenu le droit de vote en France ?", acceptedAnswers: ["1944"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg38', text: "Quelle est la capitale de la Mongolie ?", acceptedAnswers: ["Oulan-Bator", "Ulaanbaatar"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg39', text: "Qui a été le dernier tsar de Russie ?", acceptedAnswers: ["Nicolas II", "Nicholas II", "Nicolas 2"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg40', text: "Quel pays possède la plus grande réserve de pétrole prouvée ?", acceptedAnswers: ["le Venezuela", "Venezuela"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg41', text: "En quelle année a eu lieu la bataille de Stalingrad ?", acceptedAnswers: ["1942", "1942-1943"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg42', text: "Qui a été le premier président de la Ve République ?", acceptedAnswers: ["de Gaulle", "Charles de Gaulle", "Gaulle"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg43', text: "Quel est le point le plus bas de la surface terrestre ?", acceptedAnswers: ["la mer Morte", "mer Morte"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg44', text: "Quelle est la plus grande île du monde ?", acceptedAnswers: ["le Groenland", "Groenland", "Greenland"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg45', text: "En quelle année a eu lieu le débarquement en Normandie ?", acceptedAnswers: ["1944", "6 juin 1944"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg46', text: "Quel est le pays d'Afrique le plus étendu ?", acceptedAnswers: ["l'Algérie", "Algérie"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg47', text: "Qui a fondé la dynastie Ming en Chine ?", acceptedAnswers: ["Zhu Yuanzhang", "Hongwu"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg48', text: "En quelle année a été fondée l'Organisation des Nations Unies ?", acceptedAnswers: ["1945"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg49', text: "Quel pays a aboli l'esclavage en premier ?", acceptedAnswers: ["Haïti", "Saint-Domingue"], category: "Histoire & Géographie", type: "cash-answer" as const },
-  { id: 'cahg50', text: "En quelle année a eu lieu le traité de Westphalie ?", acceptedAnswers: ["1648"], category: "Histoire & Géographie", type: "cash-answer" as const },
-];
-
-
-// ==================== JEUX VIDÉO - MCQ (150) ====================
-
-const jeuxVideoMCQ: MCQQuestion[] = [
-  // Jeux Vidéo - Easy (50)
-  { id: 'jv1', text: "Quel est le personnage principal de Super Mario Bros ?", answers: ["Luigi", "Mario", "Toad", "Peach"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv2', text: "De quelle entreprise vient le jeu Minecraft ?", answers: ["Electronic Arts", "Mojang", "Ubisoft", "Activision"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv3', text: "Comment s'appelle le héros de la série The Legend of Zelda ?", answers: ["Zelda", "Link", "Ganon", "Epona"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv4', text: "Quel est le nom de la console de Nintendo sortie en 2017 ?", answers: ["Wii U", "Nintendo 3DS", "Nintendo Switch", "GameCube"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv5', text: "Dans quel jeu trouve-t-on le personnage de Pikachu ?", answers: ["Digimon", "Pokémon", "Monster Hunter", "Yo-kai Watch"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv6', text: "Quel jeu met en scène un plombier moustachu ?", answers: ["Sonic", "Mario", "Crash Bandicoot", "Rayman"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv7', text: "Qui est le créateur de la série Final Fantasy ?", answers: ["Shigeru Miyamoto", "Hironobu Sakaguchi", "Yuji Naka", "Ken Kutaragi"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv8', text: "Dans quel jeu contrôle-t-on Master Chief ?", answers: ["Destiny", "Halo", "Call of Duty", "Doom"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv9', text: "Quel est le rival de Sonic ?", answers: ["Knuckles", "Shadow", "Tails", "Dr. Eggman"], correct: 3, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv10', text: "Quel jeu a popularisé le battle royale en 2017 ?", answers: ["Apex Legends", "Fortnite", "PUBG", "Call of Duty: Warzone"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv11', text: "Comment s'appelle la princesse que Mario doit sauver ?", answers: ["Daisy", "Rosalina", "Peach", "Toadette"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv12', text: "Quel est le premier jeu de la saga Assassin's Creed ?", answers: ["Assassin's Creed II", "Assassin's Creed", "Assassin's Creed Brotherhood", "Assassin's Creed Origins"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv13', text: "Dans quel jeu trouve-t-on la ville de Vice City ?", answers: ["GTA III", "GTA: Vice City", "GTA: San Andreas", "GTA V"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv14', text: "Quel Pokémon est le numéro 25 du Pokédex ?", answers: ["Évoli", "Pikachu", "Carapuce", "Bulbizarre"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv15', text: "Comment s'appelle le frère de Mario ?", answers: ["Wario", "Luigi", "Toad", "Yoshi"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv16', text: "Quel jeu de course met en scène des karts ?", answers: ["Forza", "Gran Turismo", "Mario Kart", "Need for Speed"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv17', text: "Qui est l'ennemi principal dans la série Resident Evil ?", answers: ["Dr. Eggman", "Albert Wesker", "Sephiroth", "Ganondorf"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv18', text: "Quel jeu a été créé par Markus Persson ?", answers: ["Terraria", "Minecraft", "Roblox", "Stardew Valley"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv19', text: "Dans quel jeu incarnons-nous Geralt de Riv ?", answers: ["Skyrim", "The Witcher", "Dark Souls", "Dragon Age"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv20', text: "Quel est le personnage bleu le plus rapide du jeu vidéo ?", answers: ["Megaman", "Sonic", "Rayman", "Flash"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv21', text: "Quel studio développe les jeux God of War ?", answers: ["Naughty Dog", "Santa Monica Studio", "Insomniac Games", "Sucker Punch"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv22', text: "Dans Pokémon, quel est le type faible contre l'eau ?", answers: ["Plante", "Eau", "Feu", "Électrik"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv23', text: "Quelle console a été créée par Sony ?", answers: ["Xbox", "PlayStation", "GameCube", "Dreamcast"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv24', text: "Quel est le but du jeu Tetris ?", answers: ["Tirer sur des ennemis", "Compléter des lignes", "Construire des blocs", "Résoudre un puzzle"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv25', text: "Comment s'appelle le dinosaure vert de Mario ?", answers: ["Bowser", "Wario", "Yoshi", "Toad"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv26', text: "Quel jeu a été vendu à plus de 200 millions d'exemplaires ?", answers: ["GTA V", "Tetris", "Minecraft", "Wii Sports"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv27', text: "Dans quel jeu trouve-t-on le personnage de Kratos ?", answers: ["God of War", "Devil May Cry", "Bayonetta", "Dante's Inferno"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv28', text: "Quel est le nom de l'éditeur de FIFA ?", answers: ["Konami", "2K Games", "EA Sports", "Ubisoft"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv29', text: "Dans quel jeu des creepers attaquent-ils le joueur ?", answers: ["Terraria", "Minecraft", "Roblox", "Don't Starve"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv30', text: "Quelle console portable de Nintendo a été lancée en 2004 ?", answers: ["Game Boy Advance", "Nintendo DS", "PSP", "Nintendo 3DS"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv31', text: "Quel jeu met en scène des Angry Birds ?", answers: ["Angry Birds", "Bad Piggies", "Plants vs Zombies", "Fruit Ninja"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv32', text: "Qui est le créateur de Mario ?", answers: ["Gunpei Yokoi", "Shigeru Miyamoto", "Satoru Iwata", "Hiroshi Yamauchi"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv33', text: "Dans quel jeu incarne-t-on un héros nommé Arthur Morgan ?", answers: ["GTA V", "Red Dead Redemption 2", "Days Gone", "The Last of Us"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv34', text: "Quelle franchise met en scène des monstres de poche ?", answers: ["Digimon", "Pokémon", "Yo-kai Watch", "Monster Rancher"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv35', text: "Quel est le nom du vaisseau de Samus Aran ?", answers: ["Normandy", "Millennium Falcon", "Gunship", "Starship"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv36', text: "Dans quel jeu trouve-t-on le personnage de Lara Croft ?", answers: ["Uncharted", "Tomb Raider", "Horizon", "Assassin's Creed"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv37', text: "Quel jeu de tir est connu pour ses Zombies ?", answers: ["Halo", "Call of Duty", "Battlefield", "Counter-Strike"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv38', text: "Quel est le premier jeu Pokémon sorti ?", answers: ["Pokémon Rouge et Bleu", "Pokémon Or et Argent", "Pokémon Rubis et Saphir", "Pokémon Diamant et Perle"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv39', text: "Quelle est la mascotte de Sega ?", answers: ["Mario", "Sonic", "Crash Bandicoot", "Megaman"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv40', text: "Quel jeu a pour thème la survie contre des raids de villageois ?", answers: ["Rust", "Valheim", "Ark", "Conan Exiles"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv41', text: "Dans quel jeu trouve-t-on le roi Bowser ?", answers: ["Donkey Kong", "Super Mario", "Yoshi", "Wario Land"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv42', text: "Quel jeu met en scène des « escouades » de soldats ?", answers: ["Counter-Strike", "Overwatch", "Rainbow Six Siege", "Valorant"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv43', text: "Qui est le développeur de Dark Souls ?", answers: ["Naughty Dog", "FromSoftware", "Square Enix", "Capcom"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv44', text: "Quel jeu de gestion simule la vie quotidienne ?", answers: ["Cities: Skylines", "The Sims", "Stardew Valley", "Animal Crossing"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv45', text: "Dans quel jeu dirige-t-on une guilde de héros ?", answers: ["Darkest Dungeon", "Genshin Impact", "Final Fantasy", "Dragon Quest"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv46', text: "Quelle console de Microsoft a précédé la Xbox One ?", answers: ["Xbox", "Xbox 360", "Xbox Series X", "Xbox One S"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv47', text: "Quel est le nom du chien de Duck Hunt ?", answers: ["Rex", "Snoopy", "Il n'a pas de nom", "Cujo"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv48', text: "Dans quel jeu des créatures appelées Endermen apparaissent-elles ?", answers: ["Terraria", "Starbound", "Minecraft", "No Man's Sky"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv49', text: "Quel jeu de Bastien a été acclamé en 2016 ?", answers: ["Inside", "Limbo", "Hollow Knight", "Ori and the Blind Forest"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv50', text: "Quel studio a développé Uncharted ?", answers: ["Naughty Dog", "Insomniac Games", "Sucker Punch", "Guerilla Games"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-
-  // Jeux Vidéo - Medium (50)
-  { id: 'jv51', text: "En quelle année est sorti le premier jeu Tomb Raider ?", answers: ["1994", "1996", "1998", "2000"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv52', text: "Quel est le nom du protagoniste de Half-Life ?", answers: ["Freeman", "Gordon Freeman", "Shepard", "Marcus Fenix"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv53', text: "Dans Final Fantasy VII, qui est le principal antagoniste ?", answers: ["Kefka", "Sephiroth", "Ultimecia", "Sin"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv54', text: "Quel jeu a été créé par Blizzard en 2004 ?", answers: ["Diablo II", "StarCraft", "World of Warcraft", "Overwatch"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv55', text: "Quelle est la première console de jeu vidéo de salon ?", answers: ["Atari 2600", "Magnavox Odyssey", "Pong", "ColecoVision"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv56', text: "Dans quel jeu trouve-t-on la ville de Columbia ?", answers: ["Bioshock Infinite", "Bioshock", "Bioshock 2", "Prey"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv57', text: "Quel est le nom du créateur de League of Legends ?", answers: ["Gabe Newell", "Marc Merrill", "Todd Howard", "Hideo Kojima"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv58', text: "Dans Dark Souls, quel est le premier boss ?", answers: ["Gwyn", "Asylum Demon", "Ornstein", "Sif"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv59', text: "Quel jeu a reçu le titre de Game of the Year en 2019 ?", answers: ["Sekiro", "Death Stranding", "The Outer Worlds", "Disco Elysium"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv60', text: "En quelle année est sorti le PlayStation 1 ?", answers: ["1992", "1994", "1995", "1996"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv61', text: "Quel personnage de Street Fighter est un artiste martial brésilien ?", answers: ["Ryu", "Ken", "Blanka", "Guile"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv62', text: "Dans Mass Effect, comment s'appelle le vaisseau du Commandant Shepard ?", answers: ["Tempest", "Normandy", "Endeavour", "Citadel"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv63', text: "Quel est le nom du dragon dans Skyrim ?", answers: ["Smaug", "Alduin", "Paarthurnax", "Odahviing"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv64', text: "Dans The Last of Us, comment s'appelle la petite fille ?", answers: ["Ellie", "Sarah", "Riley", "Tess"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv65', text: "Quel studio a créé le jeu Hades ?", answers: ["Supergiant Games", "Team Cherry", "Red Hook Studios", "Motion Twin"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv66', text: "En quelle année est sorti le premier Super Mario Bros ?", answers: ["1983", "1985", "1987", "1990"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv67', text: "Dans Metal Gear Solid, qui est le protagoniste ?", answers: ["Raiden", "Big Boss", "Solid Snake", "Venom Snake"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv68', text: "Quel est le nom du personnage principal de Bioshock ?", answers: ["Jack", "Booker", "Andrew", "Atlas"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv69', text: "Quelle franchise de jeu se déroule dans les landes de Lordran ?", answers: ["Elden Ring", "Dark Souls", "Demon's Souls", "Bloodborne"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv70', text: "Qui est le créateur de la série Metal Gear ?", answers: ["Yu Suzuki", "Hideo Kojima", "Shinji Mikami", "Hideki Kamiya"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv71', text: "Dans Overwatch, quel personnage est un médecin suisse ?", answers: ["Mercy", "Ana", "Moira", "Brigitte"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv72', text: "Quel est le nom du monde dans Bloodborne ?", answers: ["Yharnam", "Lothric", "Lordran", "Boletaria"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv73', text: "En quelle année est sorti The Witcher 3: Wild Hunt ?", answers: ["2013", "2014", "2015", "2016"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv74', text: "Dans Portal, comment s'appelle l'IA antagoniste ?", answers: ["Cortana", "GLaDOS", "SHODAN", "EDI"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv75', text: "Quel jeu de puzzle a été créé par Alexey Pajitnov ?", answers: ["Tetris", "Columns", "Puyo Puyo", "Dr. Mario"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv76', text: "Dans Stardew Valley, comment s'appelle le rival du grand-père ?", answers: ["Morris", "Joja", "Krobus", "Pierre"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv77', text: "Quel studio a développé le jeu Hollow Knight ?", answers: ["Team Cherry", "Playdead", "Supergiant", "Hello Games"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv78', text: "Dans Devil May Cry, quel est le nom du demi-démon protagoniste ?", answers: ["Vergil", "Nero", "Dante", "Sparda"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv79', text: "En quelle année est sorti le jeu Pong ?", answers: ["1968", "1972", "1975", "1978"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv80', text: "Quel est le nom du protagoniste de Cyberpunk 2077 ?", answers: ["Johnny Silverhand", "V", "Judy", "Panam"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv81', text: "Dans la saga Mario, comment s'appelle l'ennemi bombe ?", answers: ["Goomba", "Koopa", "Bob-omb", "Chain Chomp"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv82', text: "Quel jeu a popularisé le genre MOBA ?", answers: ["Dota 2", "League of Legends", "Heroes of the Storm", "Smite"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv83', text: "Dans Pokémon, quel est le type de Pikachu ?", answers: ["Feu", "Eau", "Électrik", "Plante"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv84', text: "Quel est le nom de la ville dans Persona 5 ?", answers: ["Inaba", "Tokyo", "Iwatodai", "Yasoinaba"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv85', text: "En quelle année est sorti le jeu Fortnite ?", answers: ["2015", "2016", "2017", "2018"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv86', text: "Quel jeu a été développé par FromSoftware en 2022 ?", answers: ["Bloodborne 2", "Elden Ring", "Dark Souls 4", "Sekiro 2"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv87', text: "Dans Undertale, le joueur peut-il terminer le jeu sans tuer personne ?", answers: ["Non", "Oui", "Seulement en mode facile", "Seulement au premier run"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv88', text: "Quelle entreprise possède les droits de Crash Bandicoot aujourd'hui ?", answers: ["Sony", "Activision", "Nintendo", "Ubisoft"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv89', text: "Dans Animal Crossing, comment s'appelle le renard marchand ?", answers: ["Tom Nook", "K.K. Slider", "Redd", "Celeste"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv90', text: "Quel est le nom du studio derrière GTA V ?", answers: ["Ubisoft Montreal", "Rockstar North", "Bethesda", "EA DICE"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv91', text: "Dans Hollow Knight, comment s'appelle le protagoniste ?", answers: ["Le Roi Pale", "Le Vagabond", "Le Chevalier", "Grimm"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv92', text: "En quelle année est sorti le jeu Doom original ?", answers: ["1990", "1993", "1995", "1997"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv93', text: "Quel est le nom du chien dans Fable ?", answers: ["Dogmeat", "Pal", "Rex", "Il n'y a pas de chien"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv94', text: "Dans Genshin Impact, dans quel monde le jeu se déroule-t-il ?", answers: ["Eorzea", "Teyvat", "Azeroth", "Tyria"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv95', text: "Qui est le directeur créatif de la série Zelda ?", answers: ["Shigeru Miyamoto", "Eiji Aonuma", "Yuji Naka", "Yoshiaki Koizumi"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv96', text: "Quel jeu a introduit le système de « confessionnal » desvotes ?", answers: ["Among Us", "Town of Salem", "Werewolf Online", "Project Winter"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv97', text: "Dans la série Resident Evil, quel est le nom de la ville zombie ?", answers: ["Raccoon City", "Silent Hill", "Arcadia Bay", "Heaven's Gate"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv98', text: "Quelle est la première console à utiliser des CD-ROM ?", answers: ["PlayStation", "Sega CD", "PC Engine", "Philips CD-i"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv99', text: "Dans Fire Emblem, quel mécanisme rend les personnages morts définitivement ?", answers: ["Les armes brisées", "Le mode classique (permadeath)", "Les pièges", "Le malus de fatigue"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv100', text: "Quel studio japonais est célèbre pour ses RPG ?", answers: ["Square Enix", "FromSoftware", "Bandai Namco", "Capcom"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-
-  // Jeux Vidéo - Hard (50)
-  { id: 'jv101', text: "Quel est le premier jeu de la série Megami Tensei ?", answers: ["Megami Tensei", "Shin Megami Tensei", "Digital Devil Story", "Persona"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv102', text: "En quelle année est sorti Shenmue sur Dreamcast ?", answers: ["1997", "1999", "2001", "2003"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv103', text: "Quel développeur a créé le jeu Braid ?", answers: ["Jonathan Blow", "Ed McMillen", "Phil Fish", "Markus Persson"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv104', text: "Dans la saga Suikoden, combien de « 108 étoiles » faut-il recruter ?", answers: ["108", "77", "50", "200"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv105', text: "Quel est le nom du créateur de la série Ys ?", answers: ["Hironobu Sakaguchi", "Masaya Hashimoto", "Ken Sugimori", "Tomoyuki Shimamura"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv106', text: "Dans Ico, quel est le nom de la jeune fille que le héros aide ?", answers: ["Yorda", "Athena", "Mono", "Kairi"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv107', text: "Quel jeu de 1998 est considéré comme le pire jeu de tous les temps ?", answers: ["ET", "Superman 64", "Bubsy 3D", "Big Rigs"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv108', text: "Dans Planescape: Torment, comment s'appelle le protagoniste ?", answers: ["Nameless One", "The Wanderer", "Morte", "Dak'kon"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv109', text: "Quel studio a développé le jeu Outer Wilds ?", answers: ["Mobius Digital", "Annapurna Interactive", "Giant Sparrow", "Blue Planet Software"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv110', text: "En quelle année est sorti le jeu Chrono Trigger ?", answers: ["1992", "1993", "1995", "1997"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv111', text: "Dans S.T.A.L.K.E.R., comment s'appelle la zone d'exclusion ?", answers: ["Zone 51", "Zone d'Alienation", "La Zone", "Zone rouge"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv112', text: "Quel jeu a été créé par Yoko Taro ?", answers: ["Bayonetta", "Nier: Automata", "Metal Gear Rising", "DmC"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv113', text: "Dans la série Persona, comment s'appelle le premier Persona ?", answers: ["Orpheus", "Izanagi", "Arsène", "Joker"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv114', text: "Quel jeu de 2000 a popularisé les MMO sur PC ?", answers: ["Ultima Online", "EverQuest", "World of Warcraft", "RuneScape"], correct: 3, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv115', text: "Dans Xenogears, quel est le nom du mech principal ?", answers: ["Weltall", "Vierge", "Brigandier", "Andvari"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv116', text: "En quelle année est sorti le premier jeu de la série Civilization ?", answers: ["1989", "1991", "1993", "1996"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv117', text: "Quel est le nom du compositeur de la musique de Undertale ?", answers: ["Nobuo Uematsu", "Toby Fox", "Yoko Shimomura", "Koji Kondo"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv118', text: "Dans la série King's Quest, quel est le nom du roi ?", answers: ["Graham", "Edward", "Alexander", "Rosella"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv119', text: "Quel jeu de 1981 a été le premier à inclure un cutscene ?", answers: ["Pac-Man", "Donkey Kong", "Space Invaders", "Asteroids"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv120', text: "Dans System Shock 2, quel est le nom de l'IA malveillante ?", answers: ["GLaDOS", "SHODAN", "XERXES", "Durandal"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv121', text: "Quel studio a créé la série Total War ?", answers: ["Paradox Interactive", "Creative Assembly", "Firaxis", "Relic Entertainment"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv122', text: "Dans Vagrant Story, comment s'appelle le protagoniste ?", answers: ["Ashley Riot", "Sydney Losstarot", "Merlose", "Rosenberg"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv123', text: "En quelle année est sorti le premier jeu de la série Fallout ?", answers: ["1994", "1997", "1998", "2000"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv124', text: "Quel est le nom du vaisseau dans FTL: Faster Than Light ?", answers: ["Kestrel", "Normandy", "Tempest", "Endeavour"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv125', text: "Dans la série Disgaea, quel est le nom du protagoniste du premier jeu ?", answers: ["Valvatorez", "Laharl", "Adell", "Killia"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv126', text: "Quel jeu de 2004 est considéré comme un chef-d'œuvre des MMO ?", answers: ["EverQuest", "World of Warcraft", "Guild Wars", "Final Fantasy XI"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv127', text: "Dans Ghost Trick: Phantom Detective, qui est le protagoniste ?", answers: ["Sissel", "Jowd", "Cabanela", "Yomiel"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv128', text: "Quelle console a été vendue avec le jeu Wii Sports ?", answers: ["GameCube", "Wii", "Wii U", "Nintendo Switch"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv129', text: "Dans Cave Story, comment s'appelle le protagoniste ?", answers: ["Quote", "Curly", "Balrog", "Misery"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv130', text: "Quel auteur de science-fiction a inspiré la série Deus Ex ?", answers: ["Philip K. Dick", "Isaac Asimov", "William Gibson", "Neal Stephenson"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv131', text: "Dans la série Trails (Kiseki), quel est le premier jeu ?", answers: ["Trails in the Sky", "Trails of Cold Steel", "Trails from Zero", "Trails to Azure"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv132', text: "Quel jeu de 2012 a été financé via Kickstarter ?", answers: ["Undertale", "Pillars of Eternity", "Broken Age", "Shovel Knight"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv133', text: "Dans Okami, le protagoniste est un loup sous quelle forme ?", answers: ["Amaterasu", "Susanoo", "Tsukuyomi", "Inari"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv134', text: "En quelle année est sorti le jeu Spec Ops: The Line ?", answers: ["2009", "2010", "2012", "2014"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv135', text: "Dans la série StarCraft, quelle race est la plus technologique ?", answers: ["Terrans", "Zergs", "Protoss", "Xel'naga"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv136', text: "Quel est le nom du chef-d'œuvre d'Inti Creates ?", answers: ["Blaster Master Zero", "Azure Striker Gunvolt", "Mega Man Zero", "Shantae"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv137', text: "Dans Return of the Obra Dinn, combien de passagers faut-il identifier ?", answers: ["30", "40", "50", "60"], correct: 3, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv138', text: "Quel jeu de 2007 a été classé comme un « walking simulator » ?", answers: ["Dear Esther", "Gone Home", "The Stanley Parable", "Firewatch"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv139', text: "Dans la série Yakuza, comment s'appelle le protagoniste principal ?", answers: ["Kiryu Kazuma", "Majima Goro", "Akiyama Shun", "Ichiban Kasuga"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv140', text: "En quelle année est sorti le premier jeu de la série Monster Hunter ?", answers: ["2002", "2004", "2006", "2008"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv141', text: "Quel studio a créé le jeu Katana ZERO ?", answers: ["Devolver Digital", "Askiisoft", "Dangen Entertainment", "Wings"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv142', text: "Dans Nier: Automata, que signifie 2B ?", answers: ["YoRHa No. 2 Type B", "YorHa Battloid", "YoRHa Battle Bot", "YoRHa B-unit"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv143', text: "Quel jeu de 1996 est considéré comme le premier survival horror ?", answers: ["Resident Evil", "Alone in the Dark", "Silent Hill", "Clock Tower"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv144', text: "Dans Celeste, comment s'appelle le protagoniste ?", answers: ["Madeline", "Theo", "Granny", "Badeline"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv145', text: "Quel est le nom du designer de la série Civilisation ?", answers: ["Peter Molyneux", "Sid Meier", "Will Wright", "Shigeru Miyamoto"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv146', text: "Dans Papers, Please, dans quel pays se déroule le jeu ?", answers: ["Kolechia", "Arstotzka", "Obristan", "Republia"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv147', text: "Quel jeu de 2010 a été créé par Supergiant Games ?", answers: ["Transistor", "Hades", "Bastion", "Pyre"], correct: 2, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv148', text: "Dans la série Valkyria Chronicles, quel conflit est le cadre ?", answers: ["Première Guerre mondiale", "Seconde Guerre européenne fictive", "Guerre de Sécession", "Guerre froide"], correct: 1, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv149', text: "Quel jeu a été développé par Cave en 2001 ?", answers: ["DoDonPachi", "Mushihimesama", "Eschatos", "Ikaruga"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-  { id: 'jv150', text: "Dans La-Mulana, quel type de jeu est-ce ?", answers: ["Metroidvania", "Roguelike", "JRPG", "FPS"], correct: 0, category: "Jeux Vidéo", type: "multiple-choice" as const },
-];
-
-// ==================== JEUX VIDÉO - CASH (50) ====================
-
-const jeuxVideoCash: CashAnswerQuestion[] = [
-  { id: 'cajv1', text: "Comment s'appelle le personnage principal de Minecraft ?", acceptedAnswers: ["Steve", "Alex"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv2', text: "De quelle entreprise vient le jeu Pokémon ?", acceptedAnswers: ["Nintendo", "Game Freak", "The Pokémon Company"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv3', text: "Quel est le nom de la console de Sony ?", acceptedAnswers: ["PlayStation", "PS"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv4', text: "Comment s'appelle le rival de Mario ?", acceptedAnswers: ["Bowser", "le Roi Koopa", "Koopa"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv5', text: "Quel studio a créé le jeu Fortnite ?", acceptedAnswers: ["Epic Games"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv6', text: "Dans quel jeu incarne-t-on Link ?", acceptedAnswers: ["The Legend of Zelda", "Zelda"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv7', text: "Comment s'appelle la mascotte de Sega ?", acceptedAnswers: ["Sonic", "Sonic le hérisson"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv8', text: "Qui est le créateur de Mario ?", acceptedAnswers: ["Shigeru Miyamoto", "Miyamoto"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv9', text: "Quel est le nom de la console hybride de Nintendo sortie en 2017 ?", acceptedAnswers: ["Nintendo Switch", "Switch", "la Switch"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv10', text: "Dans quel jeu contrôle-t-on le personnage de Kratos ?", acceptedAnswers: ["God of War"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv11', text: "Comment s'appelle le frère de Mario ?", acceptedAnswers: ["Luigi"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv12', text: "Quel jeu a été créé par Markus Persson ?", acceptedAnswers: ["Minecraft"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv13', text: "Quelle entreprise développe les jeux FIFA (EA Sports FC) ?", acceptedAnswers: ["Electronic Arts", "EA", "EA Sports"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv14', text: "Dans The Last of Us, comment s'appelle la petite fille ?", acceptedAnswers: ["Ellie"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv15', text: "Quel est le nom du dinosaure vert de Mario ?", acceptedAnswers: ["Yoshi"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv16', text: "Qui est le créateur de la série Metal Gear ?", acceptedAnswers: ["Hideo Kojima", "Kojima"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv17', text: "En quelle année est sorti le premier Super Mario Bros ?", acceptedAnswers: ["1985"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv18', text: "Quel est le nom de la princesse de Mario ?", acceptedAnswers: ["Peach", "Princesse Peach", "la princesse Peach"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv19', text: "Quel studio a développé The Witcher 3 ?", acceptedAnswers: ["CD Projekt Red", "CD Projekt", "CDPR"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv20', text: "Dans Pokémon, quel est le type de Pikachu ?", acceptedAnswers: ["électrik", "Électrik", "foudre"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv21', text: "Quel jeu met en scène des Endermen ?", acceptedAnswers: ["Minecraft"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv22', text: "Dans quel jeu incarne-t-on Geralt de Riv ?", acceptedAnswers: ["The Witcher", "The Witcher 3", "Witcher"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv23', text: "Quel est le nom de l'éditeur de GTA V ?", acceptedAnswers: ["Rockstar Games", "Rockstar", "Rockstar North"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv24', text: "Comment s'appelle l'IA dans le jeu Portal ?", acceptedAnswers: ["GLaDOS", "GLaDOS"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv25', text: "Quel est le nom du protagoniste de Half-Life ?", acceptedAnswers: ["Gordon Freeman", "Freeman"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv26', text: "Dans Dark Souls, comment s'appelle le premier boss ?", acceptedAnswers: ["Asylum Demon", "le démon de l'asile", "Demon Asylum"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv27', text: "En quelle année est sorti le PlayStation 1 ?", acceptedAnswers: ["1994"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv28', text: "Quel studio a créé le jeu Hades ?", acceptedAnswers: ["Supergiant Games", "Supergiant"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv29', text: "Dans Final Fantasy VII, qui est le méchant ?", acceptedAnswers: ["Sephiroth"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv30', text: "Quel jeu a été créé par Blizzard en 2004 ?", acceptedAnswers: ["World of Warcraft", "WoW"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv31', text: "Dans Skyrim, comment s'appelle le dragon principal ?", acceptedAnswers: ["Alduin"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv32', text: "Quel studio a développé Uncharted ?", acceptedAnswers: ["Naughty Dog"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv33', text: "En quelle année est sorti le jeu Pong ?", acceptedAnswers: ["1972"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv34', text: "Quel est le nom du protagoniste de Cyberpunk 2077 ?", acceptedAnswers: ["V"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv35', text: "Qui est le créateur d'Undertale ?", acceptedAnswers: ["Toby Fox"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv36', text: "Dans Mass Effect, comment s'appelle le vaisseau ?", acceptedAnswers: ["Normandy", "Normandy SR-1", "le Normandy"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv37', text: "Quel studio a développé Elden Ring ?", acceptedAnswers: ["FromSoftware", "From Software"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv38', text: "Dans Devil May Cry, comment s'appelle le protagoniste ?", acceptedAnswers: ["Dante"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv39', text: "Quel jeu a popularisé le genre MOBA ?", acceptedAnswers: ["Dota", "Dota 2", "Defense of the Ancients"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv40', text: "En quelle année est sorti le premier Tomb Raider ?", acceptedAnswers: ["1996"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv41', text: "Comment s'appelle le compositeur de la musique d'Undertale ?", acceptedAnswers: ["Toby Fox"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv42', text: "Dans Papers, Please, dans quel pays se déroule le jeu ?", acceptedAnswers: ["Arstotzka"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv43', text: "Quel studio a créé le jeu Hollow Knight ?", acceptedAnswers: ["Team Cherry"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv44', text: "Dans la série Yakuza, comment s'appelle le protagoniste ?", acceptedAnswers: ["Kiryu Kazuma", "Kazuma Kiryu", "Kiryu"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv45', text: "En quelle année est sorti le premier jeu de la série Fallout ?", acceptedAnswers: ["1997"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv46', text: "Quel jeu de 1996 est considéré comme le premier survival horror ?", acceptedAnswers: ["Resident Evil", "Biohazard"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv47', text: "Dans Celeste, comment s'appelle le protagoniste ?", acceptedAnswers: ["Madeline"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv48', text: "Quel est le nom du designer de la série Civilization ?", acceptedAnswers: ["Sid Meier"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv49', text: "En quelle année est sorti Chrono Trigger ?", acceptedAnswers: ["1995"], category: "Jeux Vidéo", type: "cash-answer" as const },
-  { id: 'cajv50', text: "Dans Nier: Automata, que signifie 2B ?", acceptedAnswers: ["YoRHa No. 2 Type B", "YorHa No.2 Type B", "YoRHa Number 2 Type B"], category: "Jeux Vidéo", type: "cash-answer" as const },
-];
-
-// ==================== EXPORTS ====================
-
 export const ALL_MCQ_QUESTIONS_PART2: MCQQuestion[] = [
-  ...sciencesMCQ,
-  ...histoireMCQ,
-  ...jeuxVideoMCQ,
+  {
+    "id": "sn1",
+    "text": "Combien de pattes a un chat ?",
+    "answers": [
+      "2",
+      "3",
+      "4",
+      "6"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn2",
+    "text": "Quel est le plus grand organe du corps ?",
+    "answers": [
+      "Le foie",
+      "Le cerveau",
+      "La peau",
+      "Les poumons"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn3",
+    "text": "Quel gaz les plantes absorbent-elles ?",
+    "answers": [
+      "Oxygène",
+      "Azote",
+      "Dioxyde de carbone",
+      "Hydrogène"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn4",
+    "text": "Quel animal est le plus rapide ?",
+    "answers": [
+      "Le lion",
+      "Le guépard",
+      "Le cheval",
+      "L'aigle"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn5",
+    "text": "De quoi est faite l'eau ?",
+    "answers": [
+      "Hydrogène et oxygène",
+      "Azote et oxygène",
+      "Carbone et hydrogène",
+      "Hélium et oxygène"
+    ],
+    "correct": 0,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn6",
+    "text": "Combien de planètes dans le système solaire ?",
+    "answers": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn7",
+    "text": "Quel est le plus grand océan ?",
+    "answers": [
+      "Atlantique",
+      "Indien",
+      "Arctique",
+      "Pacifique"
+    ],
+    "correct": 3,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn8",
+    "text": "Quel métal est liquide à température ambiante ?",
+    "answers": [
+      "Plomb",
+      "Fer",
+      "Mercure",
+      "Aluminium"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn9",
+    "text": "Combien d'os dans le corps humain ?",
+    "answers": [
+      "106",
+      "206",
+      "306",
+      "406"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn10",
+    "text": "Quel animal est le roi de la forêt ?",
+    "answers": [
+      "Le tigre",
+      "L'ours",
+      "Le lion",
+      "Le loup"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn11",
+    "text": "Quelle planète est la plus proche du Soleil ?",
+    "answers": [
+      "Vénus",
+      "Mercure",
+      "Mars",
+      "La Terre"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn12",
+    "text": "Combien de dents a un adulte ?",
+    "answers": [
+      "28",
+      "30",
+      "32",
+      "34"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn13",
+    "text": "Quel est le plus grand mammifère ?",
+    "answers": [
+      "L'éléphant",
+      "La baleine bleue",
+      "Le rhinocéros",
+      "La girafe"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn14",
+    "text": "Quelle est la formule du sel ?",
+    "answers": [
+      "NaO",
+      "NaCl",
+      "KCl",
+      "CaCl"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn15",
+    "text": "Quel insecte produit du miel ?",
+    "answers": [
+      "La guêpe",
+      "Le bourdon",
+      "L'abeille",
+      "Le moucheron"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn16",
+    "text": "Combien de couleurs dans un arc-en-ciel ?",
+    "answers": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn17",
+    "text": "Quel est le symbole de l'or ?",
+    "answers": [
+      "Or",
+      "Au",
+      "Ag",
+      "Fe"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn18",
+    "text": "Quel animal change de couleur ?",
+    "answers": [
+      "Le lézard",
+      "Le caméléon",
+      "La grenouille",
+      "Le serpent"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn19",
+    "text": "Quelle est la température d'ébullition de l'eau ?",
+    "answers": [
+      "90°C",
+      "100°C",
+      "110°C",
+      "120°C"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn20",
+    "text": "Quel organe pompe le sang ?",
+    "answers": [
+      "Le cerveau",
+      "Les poumons",
+      "Le cœur",
+      "Le foie"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn21",
+    "text": "Combien de continents y a-t-il ?",
+    "answers": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn22",
+    "text": "Quel est le plus gros oiseau ?",
+    "answers": [
+      "L'aigle",
+      "L'autruche",
+      "Le condor",
+      "Le pélican"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn23",
+    "text": "Quel phénomène est causé par la gravité ?",
+    "answers": [
+      "Le vent",
+      "La pluie",
+      "Les marées",
+      "Les volcans"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn24",
+    "text": "Quel scientifique a formulé la relativité ?",
+    "answers": [
+      "Newton",
+      "Einstein",
+      "Bohr",
+      "Hawking"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn25",
+    "text": "Quel est le symbole du fer ?",
+    "answers": [
+      "Ir",
+      "Fe",
+      "Fr",
+      "Fi"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn26",
+    "text": "Combien de pattes a un insecte ?",
+    "answers": [
+      "4",
+      "6",
+      "8",
+      "10"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn27",
+    "text": "Quelle partie de la plante fait la photosynthèse ?",
+    "answers": [
+      "Les racines",
+      "La tige",
+      "Les feuilles",
+      "Les fleurs"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn28",
+    "text": "Quel animal est un invertébré ?",
+    "answers": [
+      "Le chat",
+      "Le dauphin",
+      "L'escargot",
+      "La poule"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn29",
+    "text": "Quelle est la planète rouge ?",
+    "answers": [
+      "Vénus",
+      "Jupiter",
+      "Mars",
+      "Saturne"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn30",
+    "text": "Combien de sens a l'être humain ?",
+    "answers": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn31",
+    "text": "Quel animal est un amphibien ?",
+    "answers": [
+      "Le crocodile",
+      "La tortue",
+      "La grenouille",
+      "Le lézard"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn32",
+    "text": "Quelle est la plus grande étoile de notre système ?",
+    "answers": [
+      "La Terre",
+      "Jupiter",
+      "Le Soleil",
+      "Sirius"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn33",
+    "text": "Quel type d'animal est la baleine ?",
+    "answers": [
+      "Un poisson",
+      "Un reptile",
+      "Un mammifère",
+      "Un amphibien"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn34",
+    "text": "Quel est le gaz principal de l'air ?",
+    "answers": [
+      "Oxygène",
+      "Dioxyde de carbone",
+      "Azote",
+      "Argon"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn35",
+    "text": "Combien de côtés a un hexagone ?",
+    "answers": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn36",
+    "text": "Quel oiseau est incapable de voler ?",
+    "answers": [
+      "Le perroquet",
+      "La chouette",
+      "Le pingouin",
+      "Le pigeon"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn37",
+    "text": "Quelle est la plus petite planète ?",
+    "answers": [
+      "Mars",
+      "Vénus",
+      "Mercure",
+      "Pluton"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn38",
+    "text": "Quel animal hiberne en hiver ?",
+    "answers": [
+      "Le renard",
+      "L'ours",
+      "Le cerf",
+      "Le lapin"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn39",
+    "text": "Qu'est-ce qu'un herbivore ?",
+    "answers": [
+      "Mange de la viande",
+      "Mange des plantes",
+      "Mange tout",
+      "Ne mange pas"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn40",
+    "text": "Combien y a-t-il de secondes dans une minute ?",
+    "answers": [
+      "30",
+      "60",
+      "90",
+      "100"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn41",
+    "text": "Quel animal vit le plus longtemps ?",
+    "answers": [
+      "L'éléphant",
+      "La tortue",
+      "Le perroquet",
+      "La baleine"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn42",
+    "text": "De quelle couleur est le sang humain ?",
+    "answers": [
+      "Bleu",
+      "Vert",
+      "Rouge",
+      "Jaune"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn43",
+    "text": "Quel animal vole avec ses ailes ?",
+    "answers": [
+      "Le poisson",
+      "Le serpent",
+      "L'oiseau",
+      "Le chat"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn44",
+    "text": "Combien y a-t-il de jours dans une année ?",
+    "answers": [
+      "355",
+      "365",
+      "375",
+      "385"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn45",
+    "text": "Quel est l'effet d'un aimant ?",
+    "answers": [
+      "Attire le plastique",
+      "Attire le métal",
+      "Attire le bois",
+      "Attire le verre"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn46",
+    "text": "Comment s'appelle le bébé d'une vache ?",
+    "answers": [
+      "Un veau",
+      "Un chevreau",
+      "Un agneau",
+      "Un poulain"
+    ],
+    "correct": 0,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn47",
+    "text": "Quelle planète a des anneaux ?",
+    "answers": [
+      "Mars",
+      "Vénus",
+      "Saturne",
+      "Mercure"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn48",
+    "text": "Combien de pattes a une pieuvre ?",
+    "answers": [
+      "4",
+      "6",
+      "8",
+      "10"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn49",
+    "text": "Quel est le plus gros arbre du monde ?",
+    "answers": [
+      "Le chêne",
+      "Le sapin",
+      "Le séquoia",
+      "Le baobab"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn50",
+    "text": "De quelle couleur est une carotte ?",
+    "answers": [
+      "Rouge",
+      "Jaune",
+      "Orange",
+      "Violette"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn51",
+    "text": "Quel animal est carnivore ?",
+    "answers": [
+      "La vache",
+      "Le lapin",
+      "Le lion",
+      "Le cheval"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn52",
+    "text": "Quelle est la température du corps humain ?",
+    "answers": [
+      "35°C",
+      "37°C",
+      "39°C",
+      "41°C"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn53",
+    "text": "Quel gaz expire-t-on ?",
+    "answers": [
+      "Oxygène",
+      "Dioxyde de carbone",
+      "Azote",
+      "Hélium"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn54",
+    "text": "Comment s'appelle le petit du chien ?",
+    "answers": [
+      "Un chaton",
+      "Un veau",
+      "Un chiot",
+      "Un lapereau"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn55",
+    "text": "Quel animal pond des œufs ?",
+    "answers": [
+      "Le chien",
+      "La poule",
+      "Le chat",
+      "Le lapin"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn56",
+    "text": "Quelle planète est la plus grande ?",
+    "answers": [
+      "Mars",
+      "Jupiter",
+      "Saturne",
+      "Neptune"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn57",
+    "text": "Combien de pattes a un crabe ?",
+    "answers": [
+      "6",
+      "8",
+      "10",
+      "12"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn58",
+    "text": "Quel animal vit dans l'eau et a des écailles ?",
+    "answers": [
+      "Le chien",
+      "Le chat",
+      "Le poisson",
+      "L'oiseau"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn59",
+    "text": "Qu'est-ce qu'un carnivore ?",
+    "answers": [
+      "Mange des plantes",
+      "Mange de la viande",
+      "Mange tout",
+      "Mange du poisson"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn60",
+    "text": "Comment s'appelle le bébé du chat ?",
+    "answers": [
+      "Un chiot",
+      "Un chaton",
+      "Un chevreau",
+      "Un veau"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn61",
+    "text": "Quelle est la saison où les feuilles tombent ?",
+    "answers": [
+      "L'hiver",
+      "Le printemps",
+      "L'été",
+      "L'automne"
+    ],
+    "correct": 3,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn62",
+    "text": "Combien de pattes a un mille-pattes ?",
+    "answers": [
+      "10",
+      "50",
+      "100",
+      "Beaucoup"
+    ],
+    "correct": 3,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn63",
+    "text": "Quel animal a des cornes ?",
+    "answers": [
+      "Le chat",
+      "Le chien",
+      "La vache",
+      "Le lapin"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn64",
+    "text": "De quoi les nuages sont-ils faits ?",
+    "answers": [
+      "De coton",
+      "De vapeur d'eau",
+      "De fumée",
+      "De sable"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn65",
+    "text": "Quel animal vit dans l'eau et a des nageoires ?",
+    "answers": [
+      "Le cheval",
+      "Le chien",
+      "Le poisson",
+      "La poule"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn66",
+    "text": "Combien d'yeux a une araignée ?",
+    "answers": [
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "correct": 3,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn67",
+    "text": "Quelle est la différence entre un lézard et un serpent ?",
+    "answers": [
+      "La taille",
+      "Les pattes",
+      "La couleur",
+      "Le régime alimentaire"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn68",
+    "text": "Combien de dents a un enfant ?",
+    "answers": [
+      "16",
+      "20",
+      "24",
+      "32"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn69",
+    "text": "Quel animal a une carapace ?",
+    "answers": [
+      "Le chien",
+      "Le chat",
+      "La tortue",
+      "Le lapin"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn70",
+    "text": "Comment s'appelle la science des animaux ?",
+    "answers": [
+      "La botanique",
+      "La zoologie",
+      "La géologie",
+      "L'astronomie"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn71",
+    "text": "Quel gaz est nécessaire pour respirer ?",
+    "answers": [
+      "Dioxyde de carbone",
+      "Azote",
+      "Oxygène",
+      "Hélium"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn72",
+    "text": "Combien d'os a un bébé ?",
+    "answers": [
+      "106",
+      "206",
+      "300",
+      "406"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn73",
+    "text": "Quel animal vit dans la mer et a 8 bras ?",
+    "answers": [
+      "L'étoile de mer",
+      "Le crabe",
+      "La pieuvre",
+      "Le calamar"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn74",
+    "text": "Qu'est-ce qu'un prédateur ?",
+    "answers": [
+      "Un animal qui mange des plantes",
+      "Un animal qui chasse d'autres animaux",
+      "Un animal qui ne mange pas",
+      "Un insecte"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn75",
+    "text": "Combien de pattes a un ver de terre ?",
+    "answers": [
+      "0",
+      "2",
+      "4",
+      "Beaucoup"
+    ],
+    "correct": 0,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn76",
+    "text": "Quel animal est le plus gros félin ?",
+    "answers": [
+      "Le guépard",
+      "Le lion",
+      "Le tigre",
+      "Le léopard"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn77",
+    "text": "Combien de mois dure une grossesse humaine ?",
+    "answers": [
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "correct": 3,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn78",
+    "text": "Quel animal vole la nuit et dort le jour ?",
+    "answers": [
+      "L'aigle",
+      "La chouette",
+      "Le moineau",
+      "Le pigeon"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn79",
+    "text": "Quelle est la saison des fleurs ?",
+    "answers": [
+      "L'hiver",
+      "L'automne",
+      "Le printemps",
+      "L'été"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn80",
+    "text": "Combien d'oreilles a un humain ?",
+    "answers": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn81",
+    "text": "Quel animal vit dans le désert et stocke de l'eau ?",
+    "answers": [
+      "Le chameau",
+      "Le lion",
+      "Le pingouin",
+      "La grenouille"
+    ],
+    "correct": 0,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn82",
+    "text": "Quelle est la vitesse de la lumière ?",
+    "answers": [
+      "100 000 km/s",
+      "200 000 km/s",
+      "300 000 km/s",
+      "500 000 km/s"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn83",
+    "text": "Combien d'os dans un pied humain ?",
+    "answers": [
+      "10",
+      "15",
+      "26",
+      "36"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn84",
+    "text": "Quel animal pond les plus gros œufs ?",
+    "answers": [
+      "La poule",
+      "L'autruche",
+      "La tortue",
+      "Le crocodile"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn85",
+    "text": "Quelle est la différence entre un caillou et un minéral ?",
+    "answers": [
+      "La taille",
+      "La couleur",
+      "La composition chimique",
+      "La forme"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn86",
+    "text": "Combien de minutes dans une heure ?",
+    "answers": [
+      "30",
+      "45",
+      "60",
+      "90"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn87",
+    "text": "Quel animal est un rongeur ?",
+    "answers": [
+      "Le chat",
+      "Le chien",
+      "La souris",
+      "Le cheval"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn88",
+    "text": "De quelle couleur est une fraise mûre ?",
+    "answers": [
+      "Bleue",
+      "Jaune",
+      "Rouge",
+      "Verte"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn89",
+    "text": "Combien de phases a la Lune ?",
+    "answers": [
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn90",
+    "text": "Quel est l'opposé du chaud ?",
+    "answers": [
+      "Tiède",
+      "Froid",
+      "Chaud",
+      "Frais"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn91",
+    "text": "Comment s'appelle le petit du lapin ?",
+    "answers": [
+      "Un chaton",
+      "Un chiot",
+      "Un lapereau",
+      "Un veau"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn92",
+    "text": "Quelle planète est appelée planète bleue ?",
+    "answers": [
+      "Mars",
+      "Vénus",
+      "La Terre",
+      "Jupiter"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn93",
+    "text": "Combien de pattes a un escargot ?",
+    "answers": [
+      "0",
+      "1",
+      "2",
+      "4"
+    ],
+    "correct": 0,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn94",
+    "text": "Quel animal a des plumes ?",
+    "answers": [
+      "Le chat",
+      "Le chien",
+      "L'oiseau",
+      "Le poisson"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn95",
+    "text": "Qu'est-ce qu'un écosystème ?",
+    "answers": [
+      "Un animal",
+      "Un milieu naturel",
+      "Une plante",
+      "Un minéral"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn96",
+    "text": "Combien d'heures y a-t-il dans une journée ?",
+    "answers": [
+      "12",
+      "20",
+      "24",
+      "36"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn97",
+    "text": "Quel animal vit en groupe appelé \"troupeau\" ?",
+    "answers": [
+      "Le chat",
+      "Le chien",
+      "Le mouton",
+      "Le lapin"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn98",
+    "text": "De quelle couleur est le Soleil vu de l'espace ?",
+    "answers": [
+      "Jaune",
+      "Orange",
+      "Blanc",
+      "Rouge"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn99",
+    "text": "Combien de pattes a une mouche ?",
+    "answers": [
+      "4",
+      "6",
+      "8",
+      "10"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn100",
+    "text": "Qu'est-ce que la gravité ?",
+    "answers": [
+      "Une force qui attire",
+      "Une force qui repousse",
+      "Un gaz",
+      "Un liquide"
+    ],
+    "correct": 0,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn101",
+    "text": "Quel est le plus gros animal marin ?",
+    "answers": [
+      "Le requin",
+      "La baleine bleue",
+      "Le calamar géant",
+      "L'orque"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn102",
+    "text": "Combien d'années dure un siècle ?",
+    "answers": [
+      "50",
+      "100",
+      "200",
+      "500"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn103",
+    "text": "Quel animal a un long cou ?",
+    "answers": [
+      "L'éléphant",
+      "Le lion",
+      "La girafe",
+      "Le zèbre"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn104",
+    "text": "Qu'est-ce qu'un reptile ?",
+    "answers": [
+      "Un poisson",
+      "Un animal à sang froid et écailles",
+      "Un oiseau",
+      "Un insecte"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn105",
+    "text": "Combien d'os dans une main ?",
+    "answers": [
+      "14",
+      "20",
+      "27",
+      "36"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn106",
+    "text": "Quel animal est le plus rapide sur terre ?",
+    "answers": [
+      "Le lion",
+      "Le guépard",
+      "Le cheval",
+      "Le chien"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn107",
+    "text": "Quelle est la saison la plus chaude ?",
+    "answers": [
+      "Le printemps",
+      "L'été",
+      "L'automne",
+      "L'hiver"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn108",
+    "text": "Combien de jours dure un mois ?",
+    "answers": [
+      "20",
+      "25",
+      "28 à 31",
+      "35"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn109",
+    "text": "Quel animal vit dans la jungle ?",
+    "answers": [
+      "Le pingouin",
+      "Le phoque",
+      "Le singe",
+      "L'ours polaire"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn110",
+    "text": "Comment s'appelle le bébé de l'éléphant ?",
+    "answers": [
+      "Un veau",
+      "Un éléphanteau",
+      "Un petit éléphant",
+      "Un poulain"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn111",
+    "text": "Quelle est la différence entre un fruit et un légume ?",
+    "answers": [
+      "La taille",
+      "La couleur",
+      "Le goût sucré",
+      "La forme"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn112",
+    "text": "Combien d'os dans une jambe ?",
+    "answers": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn113",
+    "text": "Quel animal a des nageoires ?",
+    "answers": [
+      "Le chien",
+      "Le chat",
+      "Le poisson",
+      "Le cheval"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn114",
+    "text": "Qu'est-ce qu'un volcan ?",
+    "answers": [
+      "Une montagne qui crache du feu",
+      "Un arbre",
+      "Un animal",
+      "Un fleuve"
+    ],
+    "correct": 0,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn115",
+    "text": "Combien de doigts a un singe ?",
+    "answers": [
+      "4",
+      "5",
+      "6",
+      "8"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn116",
+    "text": "Quel animal est le plus lourd ?",
+    "answers": [
+      "L'éléphant",
+      "La baleine",
+      "Le rhinocéros",
+      "L'hippopotame"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn117",
+    "text": "Qu'est-ce que l'électricité ?",
+    "answers": [
+      "Un liquide",
+      "Un gaz",
+      "Une forme d'énergie",
+      "Un solide"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn118",
+    "text": "Combien de jours y a-t-il dans une semaine ?",
+    "answers": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn119",
+    "text": "Quel animal est domestique ?",
+    "answers": [
+      "Le loup",
+      "Le tigre",
+      "Le chat",
+      "Le requin"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn120",
+    "text": "Qu'est-ce que la photosynthèse ?",
+    "answers": [
+      "Les plantes mangent",
+      "Les plantes créent de l'oxygène grâce au soleil",
+      "Les plantes dorment",
+      "Les plantes pleurent"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn121",
+    "text": "Combien de pattes a une fourmi ?",
+    "answers": [
+      "4",
+      "6",
+      "8",
+      "10"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn122",
+    "text": "Quelle est la saison la plus froide ?",
+    "answers": [
+      "L'été",
+      "Le printemps",
+      "L'automne",
+      "L'hiver"
+    ],
+    "correct": 3,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn123",
+    "text": "Quel animal a des ailes ?",
+    "answers": [
+      "Le poisson",
+      "La grenouille",
+      "L'oiseau",
+      "Le serpent"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn124",
+    "text": "Combien d'années dure une décennie ?",
+    "answers": [
+      "5",
+      "10",
+      "20",
+      "50"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn125",
+    "text": "Quel animal vit dans l'Arctique ?",
+    "answers": [
+      "Le lion",
+      "Le serpent",
+      "L'ours polaire",
+      "Le crocodile"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn126",
+    "text": "Qu'est-ce que la gravité ?",
+    "answers": [
+      "Ce qui nous maintient sur Terre",
+      "Ce qui nous fait voler",
+      "Un gaz",
+      "Un liquide"
+    ],
+    "correct": 0,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn127",
+    "text": "Combien de pattes a un papillon ?",
+    "answers": [
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn128",
+    "text": "Quel animal est nocturne ?",
+    "answers": [
+      "La poule",
+      "La chouette",
+      "Le canard",
+      "Le mouton"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn129",
+    "text": "Quelle est la différence entre un lac et une mer ?",
+    "answers": [
+      "La taille",
+      "Le sel",
+      "La profondeur",
+      "La température"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn130",
+    "text": "Combien d'os dans un crâne ?",
+    "answers": [
+      "10",
+      "15",
+      "22",
+      "30"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn131",
+    "text": "Quel animal a des bosses ?",
+    "answers": [
+      "Le chien",
+      "Le chameau",
+      "Le chat",
+      "Le lapin"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn132",
+    "text": "Combien de yeux a un chat ?",
+    "answers": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn133",
+    "text": "Qu'est-ce qu'un fossile ?",
+    "answers": [
+      "Un animal vivant",
+      "Un reste d'animal vieux",
+      "Un minéral",
+      "Une plante"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn134",
+    "text": "Combien d'années y a-t-il dans un millénaire ?",
+    "answers": [
+      "100",
+      "500",
+      "1000",
+      "2000"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn135",
+    "text": "Quel animal a des défenses ?",
+    "answers": [
+      "Le chat",
+      "L'éléphant",
+      "Le chien",
+      "La poule"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn136",
+    "text": "Qu'est-ce que l'eau ?",
+    "answers": [
+      "Un solide",
+      "Un gaz",
+      "Un liquide",
+      "Un plasma"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn137",
+    "text": "Combien de pattes a une abeille ?",
+    "answers": [
+      "4",
+      "6",
+      "8",
+      "10"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn138",
+    "text": "Quel animal peut voler ?",
+    "answers": [
+      "Le pingouin",
+      "Le crocodile",
+      "La chauve-souris",
+      "La tortue"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn139",
+    "text": "Combien de couleurs dans un arc-en-ciel ?",
+    "answers": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn140",
+    "text": "Quel animal vit dans l'eau douce ?",
+    "answers": [
+      "Le requin",
+      "La truite",
+      "Le dauphin",
+      "La morue"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn141",
+    "text": "Combien d'années peut vivre un chien ?",
+    "answers": [
+      "5",
+      "10",
+      "15",
+      "25"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn142",
+    "text": "Quel animal est un prédateur marin ?",
+    "answers": [
+      "Le chat",
+      "Le chien",
+      "Le requin",
+      "La vache"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn143",
+    "text": "Qu'est-ce que la météorologie ?",
+    "answers": [
+      "L'étude des étoiles",
+      "L'étude de la météo",
+      "L'étude des roches",
+      "L'étude des animaux"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn144",
+    "text": "Combien de pattes a un scorpion ?",
+    "answers": [
+      "4",
+      "6",
+      "8",
+      "10"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn145",
+    "text": "Quel est l'animal national de l'Australie ?",
+    "answers": [
+      "Le lion",
+      "Le kangourou",
+      "L'éléphant",
+      "Le panda"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn146",
+    "text": "Qu'est-ce qu'un mammifère ?",
+    "answers": [
+      "Un animal qui pond",
+      "Un animal qui allaite ses petits",
+      "Un insecte",
+      "Un poisson"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn147",
+    "text": "Combien d'années peut vivre un chat ?",
+    "answers": [
+      "5",
+      "10",
+      "15-20",
+      "30"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn148",
+    "text": "Quel animal vit dans les arbres ?",
+    "answers": [
+      "Le poisson",
+      "Le singe",
+      "Le phoque",
+      "Le crocodile"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn149",
+    "text": "Combien d'heures dort un enfant par nuit ?",
+    "answers": [
+      "4",
+      "6",
+      "8-10",
+      "14"
+    ],
+    "correct": 2,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "sn150",
+    "text": "Quelle est la différence entre un lac et un fleuve ?",
+    "answers": [
+      "Un lac bouge, un fleuve stagne",
+      "Un lac est immobile, un fleuve coule",
+      "Leur taille",
+      "Leur profondeur"
+    ],
+    "correct": 1,
+    "category": "Sciences & Nature",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg1",
+    "text": "Quel est le plus grand animal terrestre ?",
+    "answers": [
+      "Le lion",
+      "La girafe",
+      "L'éléphant",
+      "La baleine"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg2",
+    "text": "Quel monument est à Paris ?",
+    "answers": [
+      "La Tour de Pise",
+      "La Tour Eiffel",
+      "Le Colisée",
+      "Big Ben"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg3",
+    "text": "Quel pays est en forme de botte ?",
+    "answers": [
+      "La Grèce",
+      "L'Espagne",
+      "L'Italie",
+      "Le Portugal"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg4",
+    "text": "Comment s'appelle le plus long fleuve du monde ?",
+    "answers": [
+      "Le Mississippi",
+      "Le Yangtsé",
+      "Le Nil",
+      "L'Amazone"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg5",
+    "text": "Dans quel pays trouve-t-on les pyramides ?",
+    "answers": [
+      "Italie",
+      "Grèce",
+      "Égypte",
+      "Mexique"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg6",
+    "text": "Combien de continents y a-t-il ?",
+    "answers": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg7",
+    "text": "Quel est le plus petit pays du monde ?",
+    "answers": [
+      "Monaco",
+      "Le Vatican",
+      "Saint-Marin",
+      "Malte"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg8",
+    "text": "Combien de jours dure un mois ?",
+    "answers": [
+      "20",
+      "25",
+      "28 à 31",
+      "35"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg9",
+    "text": "Quelle est la capitale de la France ?",
+    "answers": [
+      "Lyon",
+      "Marseille",
+      "Paris",
+      "Toulouse"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg10",
+    "text": "Quel est le plus haut volcan d'Europe ?",
+    "answers": [
+      "L'Etna",
+      "Le Vésuve",
+      "Le Stromboli",
+      "Le Teide"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg11",
+    "text": "Quel pays a la plus grande population ?",
+    "answers": [
+      "Inde",
+      "Chine",
+      "États-Unis",
+      "Indonésie"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg12",
+    "text": "Combien d'océans y a-t-il ?",
+    "answers": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg13",
+    "text": "Quelle est la capitale de l'Angleterre ?",
+    "answers": [
+      "Manchester",
+      "Birmingham",
+      "Londres",
+      "Liverpool"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg14",
+    "text": "Quel pays est connu pour la pizza ?",
+    "answers": [
+      "France",
+      "Espagne",
+      "Italie",
+      "Allemagne"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg15",
+    "text": "Combien de pays en Europe ?",
+    "answers": [
+      "25",
+      "35",
+      "44",
+      "50"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg16",
+    "text": "Quel pays est le plus grand du monde ?",
+    "answers": [
+      "Chine",
+      "Canada",
+      "Russie",
+      "États-Unis"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg17",
+    "text": "Quel est le plus long fleuve de France ?",
+    "answers": [
+      "La Seine",
+      "Le Rhône",
+      "La Loire",
+      "La Garonne"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg18",
+    "text": "Quelle est la capitale de l'Espagne ?",
+    "answers": [
+      "Barcelone",
+      "Séville",
+      "Madrid",
+      "Valence"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg19",
+    "text": "Combien de pyramides y a-t-il à Gizeh ?",
+    "answers": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg20",
+    "text": "Quel est le plus haut sommet du monde ?",
+    "answers": [
+      "Le Mont Blanc",
+      "Le K2",
+      "L'Everest",
+      "Le Kilimandjaro"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg21",
+    "text": "Quel pays est le pays du soleil levant ?",
+    "answers": [
+      "La Chine",
+      "La Corée",
+      "Le Japon",
+      "La Thaïlande"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg22",
+    "text": "Quelle est la capitale de l'Allemagne ?",
+    "answers": [
+      "Munich",
+      "Berlin",
+      "Hambourg",
+      "Francfort"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg23",
+    "text": "Combien de jours dans une année bissextile ?",
+    "answers": [
+      "364",
+      "365",
+      "366",
+      "367"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg24",
+    "text": "Quel pays a gagné le plus de Coupes du Monde ?",
+    "answers": [
+      "Allemagne",
+      "Brésil",
+      "Italie",
+      "Argentine"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg25",
+    "text": "Quelle est la capitale de l'Italie ?",
+    "answers": [
+      "Milan",
+      "Rome",
+      "Naples",
+      "Venise"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg26",
+    "text": "Combien d'étoiles dans le drapeau américain ?",
+    "answers": [
+      "25",
+      "30",
+      "50",
+      "55"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg27",
+    "text": "Quel pays est le plus grand d'Afrique ?",
+    "answers": [
+      "Nigeria",
+      "Afrique du Sud",
+      "Algérie",
+      "Soudan"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg28",
+    "text": "Quelle est la capitale du Japon ?",
+    "answers": [
+      "Osaka",
+      "Kyoto",
+      "Tokyo",
+      "Hiroshima"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg29",
+    "text": "Combien de pays en Amérique du Sud ?",
+    "answers": [
+      "8",
+      "10",
+      "12",
+      "14"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg30",
+    "text": "Quelle est la capitale du Brésil ?",
+    "answers": [
+      "São Paulo",
+      "Rio de Janeiro",
+      "Brasilia",
+      "Salvador"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg31",
+    "text": "Quel pays est divisé en deux par le canal de Suez ?",
+    "answers": [
+      "Turquie",
+      "Égypte",
+      "Israël",
+      "Iran"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg32",
+    "text": "Combien de régions en France métropolitaine ?",
+    "answers": [
+      "10",
+      "13",
+      "15",
+      "18"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg33",
+    "text": "Quelle est la capitale de la Chine ?",
+    "answers": [
+      "Shanghai",
+      "Pékin",
+      "Hong Kong",
+      "Canton"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg34",
+    "text": "Quel pays est le plus visité au monde ?",
+    "answers": [
+      "États-Unis",
+      "France",
+      "Espagne",
+      "Chine"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg35",
+    "text": "Combien de montagnes dans les Alpes ?",
+    "answers": [
+      "Des centaines",
+      "50",
+      "10",
+      "3"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg36",
+    "text": "Quelle est la capitale de l'Australie ?",
+    "answers": [
+      "Sydney",
+      "Melbourne",
+      "Canberra",
+      "Brisbane"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg37",
+    "text": "Quel pays est le plus long du monde ?",
+    "answers": [
+      "Russie",
+      "Canada",
+      "Chine",
+      "États-Unis"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg38",
+    "text": "Combien de pays en Asie ?",
+    "answers": [
+      "20",
+      "30",
+      "40",
+      "48"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg39",
+    "text": "Quelle est la capitale du Canada ?",
+    "answers": [
+      "Toronto",
+      "Vancouver",
+      "Montréal",
+      "Ottawa"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg40",
+    "text": "Quel pays est le plus grand producteur de café ?",
+    "answers": [
+      "Brésil",
+      "Colombie",
+      "Vietnam",
+      "Éthiopie"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg41",
+    "text": "Combien de sommets de plus de 8000m ?",
+    "answers": [
+      "5",
+      "8",
+      "14",
+      "20"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg42",
+    "text": "Quelle est la capitale de la Russie ?",
+    "answers": [
+      "Saint-Pétersbourg",
+      "Moscou",
+      "Novossibirsk",
+      "Kazan"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg43",
+    "text": "Quel est le plus grand désert du monde ?",
+    "answers": [
+      "Le Sahara",
+      "Le Gobi",
+      "L'Antarctique",
+      "Le Kalahari"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg44",
+    "text": "Combien d'habitants en France (environ) ?",
+    "answers": [
+      "40 millions",
+      "50 millions",
+      "67 millions",
+      "80 millions"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg45",
+    "text": "Quelle est la capitale de l'Inde ?",
+    "answers": [
+      "Mumbai",
+      "New Delhi",
+      "Kolkata",
+      "Chennai"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg46",
+    "text": "Quel pays est le plus petit d'Europe ?",
+    "answers": [
+      "Monaco",
+      "Le Vatican",
+      "Saint-Marin",
+      "Malte"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg47",
+    "text": "Combien de mers bordent la France ?",
+    "answers": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg48",
+    "text": "Quelle est la capitale des États-Unis ?",
+    "answers": [
+      "New York",
+      "Los Angeles",
+      "Chicago",
+      "Washington"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg49",
+    "text": "Quel pays a la forme d'un hexagone ?",
+    "answers": [
+      "Italie",
+      "Espagne",
+      "France",
+      "Allemagne"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg50",
+    "text": "Combien d'années a duré la Première Guerre mondiale ?",
+    "answers": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg51",
+    "text": "Quel est le plus grand océan ?",
+    "answers": [
+      "Atlantique",
+      "Indien",
+      "Pacifique",
+      "Arctique"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg52",
+    "text": "Combien de départements en France ?",
+    "answers": [
+      "86",
+      "94",
+      "96",
+      "101"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg53",
+    "text": "Quelle est la capitale de la Belgique ?",
+    "answers": [
+      "Anvers",
+      "Bruges",
+      "Bruxelles",
+      "Liège"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg54",
+    "text": "Quel pays est surnommé le pays du matin calme ?",
+    "answers": [
+      "Japon",
+      "Chine",
+      "Corée du Sud",
+      "Vietnam"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg55",
+    "text": "Combien de montagnes dans les Pyrénées ?",
+    "answers": [
+      "Des dizaines",
+      "5",
+      "3",
+      "1"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg56",
+    "text": "Quelle est la capitale de l'Irlande ?",
+    "answers": [
+      "Belfast",
+      "Dublin",
+      "Cork",
+      "Galway"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg57",
+    "text": "Quel est le plus grand pays d'Europe ?",
+    "answers": [
+      "France",
+      "Ukraine",
+      "Suède",
+      "Espagne"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg58",
+    "text": "Combien d'années a duré la Seconde Guerre mondiale ?",
+    "answers": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg59",
+    "text": "Quelle est la capitale du Maroc ?",
+    "answers": [
+      "Casablanca",
+      "Fès",
+      "Rabat",
+      "Marrakech"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg60",
+    "text": "Quel pays est le plus grand d'Amérique du Sud ?",
+    "answers": [
+      "Argentine",
+      "Brésil",
+      "Colombie",
+      "Pérou"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg61",
+    "text": "Combien de pays dans l'Union européenne ?",
+    "answers": [
+      "20",
+      "23",
+      "27",
+      "30"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg62",
+    "text": "Quelle est la capitale de la Suisse ?",
+    "answers": [
+      "Zurich",
+      "Genève",
+      "Berne",
+      "Bâle"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg63",
+    "text": "Quel est le plus haut volcan du monde ?",
+    "answers": [
+      "L'Etna",
+      "Le Vésuve",
+      "Le Chimborazo",
+      "L'Ojos del Salado"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg64",
+    "text": "Combien d'habitants sur Terre (environ) ?",
+    "answers": [
+      "4 milliards",
+      "5 milliards",
+      "8 milliards",
+      "10 milliards"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg65",
+    "text": "Quelle est la capitale de la Grèce ?",
+    "answers": [
+      "Sparte",
+      "Athènes",
+      "Thessalonique",
+      "Patras"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg66",
+    "text": "Quel pays est traversé par l'équateur ?",
+    "answers": [
+      "France",
+      "Brésil",
+      "Chine",
+      "Australie"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg67",
+    "text": "Combien de régions en France outre-mer ?",
+    "answers": [
+      "3",
+      "5",
+      "7",
+      "10"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg68",
+    "text": "Quelle est la capitale de l'Égypte ?",
+    "answers": [
+      "Le Caire",
+      "Alexandrie",
+      "Louxor",
+      "Gizeh"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg69",
+    "text": "Quel pays est connu pour les tulipes ?",
+    "answers": [
+      "France",
+      "Espagne",
+      "Pays-Bas",
+      "Allemagne"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg70",
+    "text": "Combien de fuseaux horaires en Russie ?",
+    "answers": [
+      "3",
+      "5",
+      "7",
+      "11"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg71",
+    "text": "Quelle est la capitale de la Suède ?",
+    "answers": [
+      "Oslo",
+      "Stockholm",
+      "Copenhague",
+      "Helsinki"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg72",
+    "text": "Quel est le plus long fleuve d'Europe ?",
+    "answers": [
+      "La Seine",
+      "Le Danube",
+      "Le Rhin",
+      "La Volga"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg73",
+    "text": "Combien d'habitants a Paris (environ) ?",
+    "answers": [
+      "1 million",
+      "2 millions",
+      "5 millions",
+      "10 millions"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg74",
+    "text": "Quelle est la capitale du Portugal ?",
+    "answers": [
+      "Porto",
+      "Lisbonne",
+      "Faro",
+      "Coimbra"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg75",
+    "text": "Quel pays a le plus de côtes en Europe ?",
+    "answers": [
+      "France",
+      "Espagne",
+      "Grèce",
+      "Italie"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg76",
+    "text": "Combien de pays en Afrique ?",
+    "answers": [
+      "34",
+      "40",
+      "48",
+      "54"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg77",
+    "text": "Quelle est la capitale de la Turquie ?",
+    "answers": [
+      "Istanbul",
+      "Ankara",
+      "Izmir",
+      "Antalya"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg78",
+    "text": "Quel pays est la porte de l'Europe ?",
+    "answers": [
+      "France",
+      "Allemagne",
+      "Turquie",
+      "Italie"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg79",
+    "text": "Combien de montagnes dans le Massif central ?",
+    "answers": [
+      "Des dizaines",
+      "5",
+      "2",
+      "0"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg80",
+    "text": "Quelle est la capitale de la Pologne ?",
+    "answers": [
+      "Krakovie",
+      "Gdańsk",
+      "Varsovie",
+      "Wrocław"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg81",
+    "text": "Quel pays est le plus riche d'Europe ?",
+    "answers": [
+      "France",
+      "Allemagne",
+      "Luxembourg",
+      "Suisse"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg82",
+    "text": "Combien de pays hispanophones ?",
+    "answers": [
+      "10",
+      "15",
+      "20",
+      "25"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg83",
+    "text": "Quelle est la capitale de la Norvège ?",
+    "answers": [
+      "Stockholm",
+      "Oslo",
+      "Helsinki",
+      "Copenhague"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg84",
+    "text": "Quel pays a inventé les Jeux Olympiques ?",
+    "answers": [
+      "Rome",
+      "Égypte",
+      "Grèce",
+      "France"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg85",
+    "text": "Combien de sommets dans les Vosges ?",
+    "answers": [
+      "1",
+      "3",
+      "10",
+      "Des dizaines"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg86",
+    "text": "Quelle est la capitale du Mexique ?",
+    "answers": [
+      "Guadalajara",
+      "Monterrey",
+      "Mexico",
+      "Puebla"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg87",
+    "text": "Quel pays est le plus grand d'Afrique ?",
+    "answers": [
+      "Algérie",
+      "Congo",
+      "Soudan",
+      "Tanzanie"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg88",
+    "text": "Combien de pays arabes ?",
+    "answers": [
+      "10",
+      "15",
+      "20",
+      "22"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg89",
+    "text": "Quelle est la capitale de la Croatie ?",
+    "answers": [
+      "Zagreb",
+      "Split",
+      "Dubrovnik",
+      "Rijeka"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg90",
+    "text": "Quel est le plus vieux monument de Paris ?",
+    "answers": [
+      "Notre-Dame",
+      "Le Panthéon",
+      "Les Arènes de Lutèce",
+      "Sainte-Chapelle"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg91",
+    "text": "Combien d'années a duré l'Empire romain ?",
+    "answers": [
+      "200",
+      "500",
+      "1000",
+      "1500"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg92",
+    "text": "Quelle est la capitale de la Tunisie ?",
+    "answers": [
+      "Sfax",
+      "Sousse",
+      "Tunis",
+      "Kairouan"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg93",
+    "text": "Quel pays est surnommé \"l'Oncle Sam\" ?",
+    "answers": [
+      "France",
+      "Angleterre",
+      "États-Unis",
+      "Chine"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg94",
+    "text": "Combien de montagnes dans la Cordillère des Andes ?",
+    "answers": [
+      "Des milliers",
+      "10",
+      "5",
+      "3"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg95",
+    "text": "Quelle est la capitale de l'Argentine ?",
+    "answers": [
+      "Santiago",
+      "Buenos Aires",
+      "Lima",
+      "Montevideo"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg96",
+    "text": "Quel pays a le plus d'îles ?",
+    "answers": [
+      "Indonésie",
+      "Philippines",
+      "Suède",
+      "Canada"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg97",
+    "text": "Combien d'années a duré la guerre de 100 ans ?",
+    "answers": [
+      "50",
+      "100",
+      "116",
+      "150"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg98",
+    "text": "Quelle est la capitale du Pérou ?",
+    "answers": [
+      "La Paz",
+      "Lima",
+      "Bogota",
+      "Quito"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg99",
+    "text": "Quel pays a découvert l'Amérique ?",
+    "answers": [
+      "France",
+      "Angleterre",
+      "Espagne",
+      "Portugal"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg100",
+    "text": "Combien d'habitants a Londres (environ) ?",
+    "answers": [
+      "5 millions",
+      "7 millions",
+      "9 millions",
+      "12 millions"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg101",
+    "text": "Quelle est la capitale de la Serbie ?",
+    "answers": [
+      "Sarajevo",
+      "Zagreb",
+      "Belgrade",
+      "Skopje"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg102",
+    "text": "Quel pays est le plus grand producteur de chocolat ?",
+    "answers": [
+      "Suisse",
+      "Belgique",
+      "France",
+      "Côte d'Ivoire"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg103",
+    "text": "Combien d'années a duré la guerre froide ?",
+    "answers": [
+      "20",
+      "30",
+      "40",
+      "50"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg104",
+    "text": "Quelle est la capitale du Chili ?",
+    "answers": [
+      "Buenos Aires",
+      "Santiago",
+      "Lima",
+      "Bogota"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg105",
+    "text": "Quel pays a le plus grand musée du monde ?",
+    "answers": [
+      "France",
+      "Angleterre",
+      "États-Unis",
+      "Chine"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg106",
+    "text": "Combien de cathédrales gothiques en France ?",
+    "answers": [
+      "10",
+      "20",
+      "50",
+      "Plus de 80"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg107",
+    "text": "Quelle est la capitale de la Colombie ?",
+    "answers": [
+      "Bogota",
+      "Lima",
+      "Caracas",
+      "Quito"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg108",
+    "text": "Quel pays a la plus grande forêt ?",
+    "answers": [
+      "Canada",
+      "Russie",
+      "Brésil",
+      "Congo"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg109",
+    "text": "Combien d'années a duré la Révolution française ?",
+    "answers": [
+      "5",
+      "10",
+      "15",
+      "20"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg110",
+    "text": "Quelle est la capitale de l'Autriche ?",
+    "answers": [
+      "Munich",
+      "Vienne",
+      "Zurich",
+      "Salzbourg"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg111",
+    "text": "Quel pays est le plus pauvre d'Europe ?",
+    "answers": [
+      "Albanie",
+      "Moldavie",
+      "Ukraine",
+      "Bulgarie"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg112",
+    "text": "Combien de langues officielles en Suisse ?",
+    "answers": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg113",
+    "text": "Quelle est la capitale de la Hongrie ?",
+    "answers": [
+      "Budapest",
+      "Prague",
+      "Vienne",
+      "Bratislava"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg114",
+    "text": "Quel pays a le plus long littoral ?",
+    "answers": [
+      "Australie",
+      "Indonésie",
+      "Canada",
+      "Russie"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg115",
+    "text": "Combien d'habitants a New York (environ) ?",
+    "answers": [
+      "5 millions",
+      "7 millions",
+      "8,5 millions",
+      "10 millions"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg116",
+    "text": "Quelle est la capitale de la Finlande ?",
+    "answers": [
+      "Stockholm",
+      "Oslo",
+      "Helsinki",
+      "Tallinn"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg117",
+    "text": "Quel pays est le plus sec du monde ?",
+    "answers": [
+      "Égypte",
+      "Sahara",
+      "Chili",
+      "Arabie Saoudite"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg118",
+    "text": "Combien de langues parlées dans le monde ?",
+    "answers": [
+      "1000",
+      "3000",
+      "5000",
+      "7000"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg119",
+    "text": "Quelle est la capitale de la Roumanie ?",
+    "answers": [
+      "Budapest",
+      "Bucarest",
+      "Sofia",
+      "Belgrade"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg120",
+    "text": "Quel pays a le plus de volcans actifs ?",
+    "answers": [
+      "Islande",
+      "Japon",
+      "Indonésie",
+      "États-Unis"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg121",
+    "text": "Combien d'années a duré l'Empire ottoman ?",
+    "answers": [
+      "200",
+      "400",
+      "600",
+      "800"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg122",
+    "text": "Quelle est la capitale de la Tchéquie ?",
+    "answers": [
+      "Bratislava",
+      "Prague",
+      "Budapest",
+      "Vienne"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg123",
+    "text": "Quel pays a le plus grand réseau ferroviaire ?",
+    "answers": [
+      "Chine",
+      "États-Unis",
+      "Inde",
+      "Russie"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg124",
+    "text": "Combien de montagnes dans les Carpates ?",
+    "answers": [
+      "3",
+      "5",
+      "Des dizaines",
+      "100"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg125",
+    "text": "Quelle est la capitale de la Bulgarie ?",
+    "answers": [
+      "Sofia",
+      "Bucarest",
+      "Belgrade",
+      "Athènes"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg126",
+    "text": "Quel pays a le plus de lacs ?",
+    "answers": [
+      "Canada",
+      "Finlande",
+      "États-Unis",
+      "Suède"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg127",
+    "text": "Combien d'années a duré la conquête de l'Ouest ?",
+    "answers": [
+      "20",
+      "30",
+      "50",
+      "100"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg128",
+    "text": "Quelle est la capitale de la Slovaquie ?",
+    "answers": [
+      "Prague",
+      "Bratislava",
+      "Vienne",
+      "Budapest"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg129",
+    "text": "Quel pays a le plus de circuits de F1 ?",
+    "answers": [
+      "États-Unis",
+      "Italie",
+      "Espagne",
+      "Allemagne"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg130",
+    "text": "Combien de pays dans le Commonwealth ?",
+    "answers": [
+      "20",
+      "30",
+      "50",
+      "56"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg131",
+    "text": "Quelle est la capitale de la Lituanie ?",
+    "answers": [
+      "Riga",
+      "Vilnius",
+      "Tallinn",
+      "Kaunas"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg132",
+    "text": "Quel pays a la plus grande réserve de pétrole ?",
+    "answers": [
+      "États-Unis",
+      "Arabie Saoudite",
+      "Russie",
+      "Venezuela"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg133",
+    "text": "Combien d'années a duré l'Empire mongol ?",
+    "answers": [
+      "50",
+      "100",
+      "150",
+      "200"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg134",
+    "text": "Quelle est la capitale de la Lettonie ?",
+    "answers": [
+      "Vilnius",
+      "Riga",
+      "Tallinn",
+      "Kaunas"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg135",
+    "text": "Quel pays a le plus de sites UNESCO ?",
+    "answers": [
+      "France",
+      "Italie",
+      "Chine",
+      "Espagne"
+    ],
+    "correct": 3,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg136",
+    "text": "Combien de pays en Amérique du Nord ?",
+    "answers": [
+      "2",
+      "3",
+      "5",
+      "7"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg137",
+    "text": "Quelle est la capitale de l'Estonie ?",
+    "answers": [
+      "Riga",
+      "Tallinn",
+      "Helsinki",
+      "Vilnius"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg138",
+    "text": "Quel pays a le plus de temps de travail ?",
+    "answers": [
+      "France",
+      "Allemagne",
+      "Japon",
+      "Mexique"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg139",
+    "text": "Combien d'années a duré l'Empire byzantin ?",
+    "answers": [
+      "200",
+      "500",
+      "1000",
+      "1500"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg140",
+    "text": "Quelle est la capitale de la Géorgie ?",
+    "answers": [
+      "Tbilissi",
+      "Bakou",
+      "Erevan",
+      "Ankara"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg141",
+    "text": "Quel pays a le plus de festivals ?",
+    "answers": [
+      "France",
+      "Espagne",
+      "Italie",
+      "Allemagne"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg142",
+    "text": "Combien d'années a duré l'Empire aztèque ?",
+    "answers": [
+      "50",
+      "100",
+      "200",
+      "500"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg143",
+    "text": "Quelle est la capitale de l'Arménie ?",
+    "answers": [
+      "Tbilissi",
+      "Bakou",
+      "Erevan",
+      "Ankara"
+    ],
+    "correct": 2,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg144",
+    "text": "Quel pays a le plus de cyclistes ?",
+    "answers": [
+      "France",
+      "Pays-Bas",
+      "Belgique",
+      "Espagne"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg145",
+    "text": "Combien d'années a duré l'Empire inca ?",
+    "answers": [
+      "50",
+      "100",
+      "200",
+      "300"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg146",
+    "text": "Quelle est la capitale de l'Azerbaïdjan ?",
+    "answers": [
+      "Tbilissi",
+      "Bakou",
+      "Erevan",
+      "Ankara"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg147",
+    "text": "Quel pays a le plus de fromages ?",
+    "answers": [
+      "France",
+      "Italie",
+      "Suisse",
+      "Pays-Bas"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg148",
+    "text": "Combien de siècles a duré le Moyen Âge ?",
+    "answers": [
+      "5",
+      "10",
+      "15",
+      "20"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg149",
+    "text": "Quelle est la capitale de la Moldavie ?",
+    "answers": [
+      "Chișinău",
+      "Bucarest",
+      "Sofia",
+      "Odessa"
+    ],
+    "correct": 0,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "hg150",
+    "text": "Quel pays a le plus de touristes ?",
+    "answers": [
+      "États-Unis",
+      "France",
+      "Espagne",
+      "Chine"
+    ],
+    "correct": 1,
+    "category": "Histoire & Géographie",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv1",
+    "text": "Quel est le métier de Mario ?",
+    "answers": [
+      "Mécanicien",
+      "Plombier",
+      "Boulanger",
+      "Couturier"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv2",
+    "text": "Quel hérisson bleu court très vite ?",
+    "answers": [
+      "Knuckles",
+      "Sonic",
+      "Shadow",
+      "Tails"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv3",
+    "text": "Dans quel jeu construit-on des maisons et évite-t-on des Creepers ?",
+    "answers": [
+      "Terraria",
+      "Minecraft",
+      "Roblox",
+      "Fortnite"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv4",
+    "text": "Quel est le Pokémon jaune avec des éclairs ?",
+    "answers": [
+      "Joliflor",
+      "Raichu",
+      "Pikachu",
+      "Pichu"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv5",
+    "text": "Comment s'appelle le dinosaure vert de Mario ?",
+    "answers": [
+      "Bowser",
+      "Toad",
+      "Yoshi",
+      "Birdo"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv6",
+    "text": "Quel jeu de tir utilise de la peinture ?",
+    "answers": [
+      "Fortnite",
+      "Splatoon",
+      "Overwatch",
+      "Call of Duty"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv7",
+    "text": "Comment s'appelle l'héroïne de Tomb Raider ?",
+    "answers": [
+      "Lara Croft",
+      "Nathan Drake",
+      "Elena Fisher",
+      "Abby"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv8",
+    "text": "Dans Zelda, quel est le nom du héros ?",
+    "answers": [
+      "Zelda",
+      "Ganon",
+      "Link",
+      "Navi"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv9",
+    "text": "De quelle couleur est la casquette de Luigi ?",
+    "answers": [
+      "Rouge",
+      "Bleue",
+      "Verte",
+      "Jaune"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv10",
+    "text": "Quel singe est le rival de Mario ?",
+    "answers": [
+      "Diddy Kong",
+      "King Kong",
+      "Donkey Kong",
+      "Cranky Kong"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv11",
+    "text": "Quel jeu de danse suit les mouvements à l'écran ?",
+    "answers": [
+      "DDR",
+      "Just Dance",
+      "Beat Saber",
+      "Flipt"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv12",
+    "text": "Comment s'appelle la boule rose qui avale ses ennemis ?",
+    "answers": [
+      "Kirby",
+      "Jigglypuff",
+      "Pikachu",
+      "Pac-Man"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv13",
+    "text": "Quel dragon violet est héros de jeux de plateforme ?",
+    "answers": [
+      "Spyro",
+      "Bowser",
+      "Charizard",
+      "Alduin"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv14",
+    "text": "Dans quel jeu trouve-t-on l'imposteur ?",
+    "answers": [
+      "Alien",
+      "Among Us",
+      "Dead by Daylight",
+      "Overcooked"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv15",
+    "text": "Comment s'appelle le frère de Mario en vert ?",
+    "answers": [
+      "Wario",
+      "Toad",
+      "Luigi",
+      "Yoshi"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv16",
+    "text": "Quel jeu de foot se joue avec des voitures ?",
+    "answers": [
+      "FIFA",
+      "Rocket League",
+      "Mario Strikers",
+      "eFootball"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv17",
+    "text": "Comment s'appelle le héros d'Uncharted ?",
+    "answers": [
+      "Nathan Drake",
+      "Lara Croft",
+      "Indiana Jones",
+      "Ethan Hunt"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv18",
+    "text": "Dans quel jeu s'affrontent Mario, Pikachu et Kirby ?",
+    "answers": [
+      "Tekken",
+      "Street Fighter",
+      "Super Smash Bros",
+      "Mortal Kombat"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv19",
+    "text": "Comment s'appelle l'application pour chasser des Pokémon ?",
+    "answers": [
+      "Pokémon GO",
+      "Pokémon Masters",
+      "Pokémon UNITE",
+      "Pokémon Sleep"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv20",
+    "text": "Quel est le nom du personnage par défaut de Minecraft ?",
+    "answers": [
+      "Alex",
+      "Steve",
+      "Notch",
+      "Herobrine"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv21",
+    "text": "Quel hérisson noir est le rival de Sonic ?",
+    "answers": [
+      "Silver",
+      "Metal Sonic",
+      "Shadow",
+      "Knuckles"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv22",
+    "text": "Comment s'appelle le petit robot bleu avec un canon ?",
+    "answers": [
+      "Mega Man",
+      "Proto Man",
+      "Zero",
+      "Bionic Commando"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv23",
+    "text": "Comment s'appelle le héros de God of War ?",
+    "answers": [
+      "Kratos",
+      "Atreus",
+      "Zeus",
+      "Thor"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv24",
+    "text": "Comment s'appelle le jeu où l'on incarne un haricot ?",
+    "answers": [
+      "Stumble Guys",
+      "Fall Guys",
+      "Among Us",
+      "Party Animals"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv25",
+    "text": "Comment s'appelle le héros de Rayman ?",
+    "answers": [
+      "Rayman",
+      "Globox",
+      "Murphy",
+      "Barbara"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv26",
+    "text": "Dans quel jeu tombe-t-on d'un bus volant ?",
+    "answers": [
+      "PUBG",
+      "Fortnite",
+      "Apex Legends",
+      "Warzone"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv27",
+    "text": "Comment s'appelle la boule jaune qui mange des fantômes ?",
+    "answers": [
+      "Pac-Man",
+      "Blinky",
+      "Kirby",
+      "Sonic"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv28",
+    "text": "Console portable de Nintendo à deux écrans ?",
+    "answers": [
+      "Game Boy",
+      "GameCube",
+      "Nintendo DS",
+      "PS Vita"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv29",
+    "text": "Renard à deux queues avec Sonic ?",
+    "answers": [
+      "Knuckles",
+      "Tails",
+      "Shadow",
+      "Amy"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv30",
+    "text": "Console de Nintendo salon ou portable ?",
+    "answers": [
+      "Wii U",
+      "GameCube",
+      "Switch",
+      "NES"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv31",
+    "text": "Quel animal est Tom Nook dans Animal Crossing ?",
+    "answers": [
+      "Rat",
+      "Tanuki",
+      "Chat",
+      "Renard"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv32",
+    "text": "Princesse que Mario doit sauver ?",
+    "answers": [
+      "Zelda",
+      "Peach",
+      "Daisy",
+      "Harmonie"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv33",
+    "text": "Objet pour être 1er dans Mario Kart ?",
+    "answers": [
+      "Banane",
+      "Carapace rouge",
+      "Carapace bleue",
+      "Éclair"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv34",
+    "text": "Console du premier Pokémon ?",
+    "answers": [
+      "NES",
+      "Game Boy",
+      "Nintendo 64",
+      "DS"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv35",
+    "text": "Monstre de Minecraft qui se téléporte ?",
+    "answers": [
+      "Creeper",
+      "Zombie",
+      "Enderman",
+      "Ghast"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv36",
+    "text": "Studio qui a créé Minecraft ?",
+    "answers": [
+      "Ubisoft",
+      "Mojang",
+      "Epic Games",
+      "Sony"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv37",
+    "text": "Monnaie de Roblox ?",
+    "answers": [
+      "V-Bucks",
+      "Robux",
+      "Coins",
+      "Dollars"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv38",
+    "text": "Studio créateur de la PlayStation ?",
+    "answers": [
+      "Microsoft",
+      "Nintendo",
+      "Sony",
+      "SEGA"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv39",
+    "text": "IA de Halo ?",
+    "answers": [
+      "Siri",
+      "Cortana",
+      "Glados",
+      "Alexa"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv40",
+    "text": "Ville de départ de Pokémon Rouge ?",
+    "answers": [
+      "Bourg Palette",
+      "Argenta",
+      "Azuria",
+      "Parmanie"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv41",
+    "text": "Objet invisible dans Mario Kart ?",
+    "answers": [
+      "Étoile",
+      "Boo",
+      "Champignon",
+      "Banane"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv42",
+    "text": "Couleur de la casquette de Mario ?",
+    "answers": [
+      "Bleue",
+      "Verte",
+      "Rouge",
+      "Jaune"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv43",
+    "text": "Instrument de Zelda pour le temps ?",
+    "answers": [
+      "Flûte",
+      "Ocarina",
+      "Harpe",
+      "Guitare"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv44",
+    "text": "Monstre qui explose dans Minecraft ?",
+    "answers": [
+      "Squelette",
+      "Creeper",
+      "Araignée",
+      "Cochon"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv45",
+    "text": "Console portable Sony après PSP ?",
+    "answers": [
+      "GameGear",
+      "PS Vita",
+      "Switch",
+      "DS"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv46",
+    "text": "Jeu mobile oiseaux vs cochons ?",
+    "answers": [
+      "Flappy Bird",
+      "Angry Birds",
+      "Candy Crush",
+      "Roblox"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv47",
+    "text": "Héros de Halo ?",
+    "answers": [
+      "Doom Guy",
+      "Master Chief",
+      "Kratos",
+      "Marcus"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv48",
+    "text": "Royaume de Link ?",
+    "answers": [
+      "Mushroom Kingdom",
+      "Hyrule",
+      "Azeroth",
+      "Équestria"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv49",
+    "text": "Jeu bac à sable sur la vie quotidienne ?",
+    "answers": [
+      "Minecraft",
+      "Les Sims",
+      "Animal Crossing",
+      "GTA"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv50",
+    "text": "Bloc rare et bleu de Minecraft ?",
+    "answers": [
+      "Or",
+      "Fer",
+      "Diamant",
+      "Charbon"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv51",
+    "text": "Méchant récurrent de Zelda ?",
+    "answers": [
+      "Bowser",
+      "Ganondorf",
+      "Mewtwo",
+      "Dr Eggman"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv52",
+    "text": "Pierre pour évoluer Pikachu ?",
+    "answers": [
+      "Pierre Feu",
+      "Pierre Eau",
+      "Pierre Foudre",
+      "Pierre Lune"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv53",
+    "text": "Jeu qui utilise des briques emboîtables ?",
+    "answers": [
+      "Minecraft",
+      "LEGO",
+      "Roblox",
+      "Tetris"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv54",
+    "text": "Monde souterrain de Minecraft ?",
+    "answers": [
+      "Le Nether",
+      "L'End",
+      "Le Ciel",
+      "La Terre"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv55",
+    "text": "Jeu d'empiler des briques ?",
+    "answers": [
+      "Minecraft",
+      "LEGO",
+      "Roblox",
+      "Tetris"
+    ],
+    "correct": 3,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv56",
+    "text": "Petit robot rond de Star Wars ?",
+    "answers": [
+      "BD-1",
+      "R2-D2",
+      "BB-8",
+      "C-3PO"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv57",
+    "text": "Jeu de combat avec des Fatality ?",
+    "answers": [
+      "Tekken",
+      "Street Fighter",
+      "Mortal Kombat",
+      "Super Smash Bros"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv58",
+    "text": "Jeu avec un bus volant au début ?",
+    "answers": [
+      "PUBG",
+      "Fortnite",
+      "Apex",
+      "Warzone"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv59",
+    "text": "Frère de Mario en tenue verte ?",
+    "answers": [
+      "Wario",
+      "Waluigi",
+      "Luigi",
+      "Yoshi"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv60",
+    "text": "Petit dinosaure rose ressemblant à Yoshi ?",
+    "answers": [
+      "Birdo",
+      "Yoshi",
+      "Bowser",
+      "Toad"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv61",
+    "text": "Jeu d'aligner des bonbons ?",
+    "answers": [
+      "Candy Crush",
+      "Tetris",
+      "Bejeweled",
+      "2048"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv62",
+    "text": "Tablette technologique de Zelda BOTW ?",
+    "answers": [
+      "Tablette Sheikah",
+      "Ocarina",
+      "Master Sword",
+      "Hylian Shield"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv63",
+    "text": "Ville sous-marine de BioShock ?",
+    "answers": [
+      "Rapture",
+      "Columbia",
+      "Atlantide",
+      "Bikini Bottom"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv64",
+    "text": "Objet pour voler dans Minecraft ?",
+    "answers": [
+      "Élytres",
+      "Champignon",
+      "Plume d'ange",
+      "Ender Pearl"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv65",
+    "text": "Jeu de danse sur Switch ?",
+    "answers": [
+      "Just Dance",
+      "Dance Dance Revolution",
+      "Beat Saber",
+      "Flipt"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv66",
+    "text": "Chien qui se moque dans Duck Hunt ?",
+    "answers": [
+      "Pluto",
+      "Snoopy",
+      "Le Chien",
+      "Rex"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv67",
+    "text": "Prénom civil de Chat Noir ?",
+    "answers": [
+      "Marin",
+      "Adrien",
+      "Luka",
+      "Nino"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv68",
+    "text": "Couleur du sabre de Dark Vador ?",
+    "answers": [
+      "Bleu",
+      "Vert",
+      "Rouge",
+      "Blanc"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv69",
+    "text": "Espèce de Nemo ?",
+    "answers": [
+      "Requin",
+      "Poisson-Clown",
+      "Raie",
+      "Daurade"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv70",
+    "text": "Nom du vaisseau de Han Solo ?",
+    "answers": [
+      "Étoile Noire",
+      "Faucon Millénium",
+      "Enterprise",
+      "Naboo"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv71",
+    "text": "Prénom de la petite sœur de Gumball ?",
+    "answers": [
+      "Anaïs",
+      "Nicole",
+      "Penny",
+      "Carrie"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv72",
+    "text": "Animal de Judy Hopps dans Zootopie ?",
+    "answers": [
+      "Renard",
+      "Lapine",
+      "Lionne",
+      "Mouton"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv73",
+    "text": "Démon enfermé dans Naruto ?",
+    "answers": [
+      "Loup",
+      "Corbeau",
+      "Serpent",
+      "Renard"
+    ],
+    "correct": 3,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv74",
+    "text": "Détective enfant dans Detective Conan ?",
+    "answers": [
+      "Conan",
+      "Shinichi",
+      "Lupin",
+      "Kindaichi"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv75",
+    "text": "Bébé dinosaure rockeur ?",
+    "answers": [
+      "Yoshi",
+      "Denver",
+      "Barney",
+      "Dino"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv76",
+    "text": "Chat bleu qui poursuit des cafards ?",
+    "answers": [
+      "Tom",
+      "Oggy",
+      "Sylvestre",
+      "Felix"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv77",
+    "text": "Chat qui poursuit Jerry ?",
+    "answers": [
+      "Felix",
+      "Sylvestre",
+      "Tom",
+      "Garfield"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv78",
+    "text": "Petit garçon viking avec Krokmou ?",
+    "answers": [
+      "Stoïck",
+      "Harold",
+      "Snotlout",
+      "Tuffnut"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv79",
+    "text": "Bonhomme de neige de La Reine des Neiges ?",
+    "answers": [
+      "Frosty",
+      "Olaf",
+      "Bonhomme",
+      "Sven"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv80",
+    "text": "Sœur de la Reine des Neiges ?",
+    "answers": [
+      "Anna",
+      "Rapunzel",
+      "Ariel",
+      "Blanche-Neige"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv81",
+    "text": "Panda héros de Kung Fu Panda ?",
+    "answers": [
+      "Po",
+      "Tigresse",
+      "Grue",
+      "Mante"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv82",
+    "text": "Singe de la Pat' Patrouille ?",
+    "answers": [
+      "Chase",
+      "Marshall",
+      "Skye",
+      "Rocky"
+    ],
+    "correct": 3,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv83",
+    "text": "Couleur de la peau des Simpson ?",
+    "answers": [
+      "Orange",
+      "Rose",
+      "Jaune",
+      "Blanche"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv84",
+    "text": "Créateur de la série Les Simpson ?",
+    "answers": [
+      "Seth MacFarlane",
+      "Matt Groening",
+      "Trey Parker",
+      "Mike Judge"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv85",
+    "text": "Héros qui tire plus vite que son ombre ?",
+    "answers": [
+      "Billy the Kid",
+      "Lucky Luke",
+      "Zorro",
+      "Le Lone Ranger"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv86",
+    "text": "Géant vert le plus fort des Avengers ?",
+    "answers": [
+      "Iron Man",
+      "Thor",
+      "Hulk",
+      "Captain America"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv87",
+    "text": "Comment s'appelle la camionnette de Scooby-Doo ?",
+    "answers": [
+      "La Machinette",
+      "La Mystery Machine",
+      "Le Batmobile",
+      "Le Van"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv88",
+    "text": "Couleur du Génie d'Aladdin ?",
+    "answers": [
+      "Rouge",
+      "Vert",
+      "Bleu",
+      "Or"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv89",
+    "text": "Nom de l'éponge sous la mer ?",
+    "answers": [
+      "Bob l'éponge",
+      "Patrick",
+      "Carlo",
+      "Squidward"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv90",
+    "text": "Chien peureux de Sammy ?",
+    "answers": [
+      "Idefix",
+      "Snoopy",
+      "Scooby-Doo",
+      "Pluto"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv91",
+    "text": "Petit frère de Peppa Pig ?",
+    "answers": [
+      "George",
+      "Charlie",
+      "Tom",
+      "Pedro"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv92",
+    "text": "Pouvoir secret d'Anya dans Spy x Family ?",
+    "answers": [
+      "Force",
+      "Téléportation",
+      "Télépathie",
+      "Voler"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv93",
+    "text": "Couleur du bonnet du Grand Schtroumpf ?",
+    "answers": [
+      "Bleu",
+      "Blanc",
+      "Rouge",
+      "Vert"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv94",
+    "text": "Animal de Gumball ?",
+    "answers": [
+      "Chien",
+      "Lapin",
+      "Chat",
+      "Poisson"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv95",
+    "text": "Petit robot de Astro's Playroom ?",
+    "answers": [
+      "Astro",
+      "BD-1",
+      "R2-D2",
+      "Wall-E"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv96",
+    "text": "Jeu de Lego avec des super-héros ?",
+    "answers": [
+      "LEGO City",
+      "LEGO Marvel",
+      "LEGO Star Wars",
+      "LEGO Batman"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv97",
+    "text": "Petit oiseau bleu poursuivi par Vil Coyote ?",
+    "answers": [
+      "Tweety",
+      "Woody",
+      "Bip Bip",
+      "Hibou"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv98",
+    "text": "Super-héros a une cicatrice en éclair ?",
+    "answers": [
+      "Batman",
+      "Superman",
+      "Spider-Man",
+      "Harry Potter"
+    ],
+    "correct": 3,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv99",
+    "text": "Comment s'appelle le chat noir de Kiki ?",
+    "answers": [
+      "Jiji",
+      "Luna",
+      "Salem",
+      "Crookshanks"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv100",
+    "text": "Gaulois tombé dans la potion magique ?",
+    "answers": [
+      "Astérix",
+      "Obélix",
+      "Panoramix",
+      "Idéfix"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv101",
+    "text": "Chat orange qui adore les lasagnes ?",
+    "answers": [
+      "Tom",
+      "Felix",
+      "Garfield",
+      "Sylvestre"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv102",
+    "text": "Créatures jaunes qui adorent les bananes ?",
+    "answers": [
+      "Les Schtroumpfs",
+      "Les Minions",
+      "Les Pikmin",
+      "Les Oompa-Loompas"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv103",
+    "text": "Pirate qui veut devenir Roi des Pirates ?",
+    "answers": [
+      "Barbe Noire",
+      "Shanks",
+      "Luffy",
+      "Crocodile"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv104",
+    "text": "Oncle méchant de Simba ?",
+    "answers": [
+      "Mufasa",
+      "Scar",
+      "Timon",
+      "Pumbaa"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv105",
+    "text": "Personnage qui mange des épinards pour être fort ?",
+    "answers": [
+      "Superman",
+      "Astérix",
+      "Popeye",
+      "Hercule"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv106",
+    "text": "Quel est le cri du Marsupilami ?",
+    "answers": [
+      "Houba Houba",
+      "Tic Tac",
+      "Grrrr",
+      "Couic Couic"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv107",
+    "text": "Premier compagnon de Sacha ?",
+    "answers": [
+      "Pikachu",
+      "Bulbizarre",
+      "Carapuce",
+      "Salamèche"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv108",
+    "text": "Super-héros millionnaire en armure ?",
+    "answers": [
+      "Bruce Wayne",
+      "Iron Man",
+      "Black Panther",
+      "Lex Luthor"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv109",
+    "text": "Petit bonhomme en pain d'épices dans Shrek ?",
+    "answers": [
+      "Gingy",
+      "Ti'Biscuit",
+      "Le Chapelier",
+      "Pinocchio"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv110",
+    "text": "Capitaine du Black Pearl ?",
+    "answers": [
+      "Barbe Noire",
+      "Jack Sparrow",
+      "Davy Jones",
+      "Will Turner"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv111",
+    "text": "Chat qui poursuit Speedy Gonzales ?",
+    "answers": [
+      "Tom",
+      "Sylvestre",
+      "Felix",
+      "Garfield"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv112",
+    "text": "Oiseau de la route 66 ?",
+    "answers": [
+      "Tweety",
+      "Bip Bip",
+      "Woody",
+      "Hibou"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv113",
+    "text": "Nom du fils de Mufasa ?",
+    "answers": [
+      "Scar",
+      "Simba",
+      "Nala",
+      "Rafiki"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv114",
+    "text": "Personnage avec un nez qui s'allonge ?",
+    "answers": [
+      "Pinocchio",
+      "Gepetto",
+      "Dumbo",
+      "Peter Pan"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv115",
+    "text": "Super-héros avec une toile ?",
+    "answers": [
+      "Batman",
+      "Superman",
+      "Spider-Man",
+      "Ant-Man"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv116",
+    "text": "Bébé dragon rose (Mario) ?",
+    "answers": [
+      "Yoshi",
+      "Birdo",
+      "Bowser",
+      "Toad"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv117",
+    "text": "Poisson bleu amnésique ?",
+    "answers": [
+      "Dory",
+      "Nemo",
+      "Marlin",
+      "Gill"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv118",
+    "text": "Raton laveur expert en armes (Marvel) ?",
+    "answers": [
+      "Rocket Raccoon",
+      "Groot",
+      "Star-Lord",
+      "Howard the Duck"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv119",
+    "text": "Maître de Sangoku sur son île ?",
+    "answers": [
+      "Piccolo",
+      "Kami",
+      "Tortue Géniale",
+      "Krillin"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv120",
+    "text": "Dragon ami de Harold ?",
+    "answers": [
+      "Stormfly",
+      "Croc",
+      "Hookfang",
+      "Meatlug"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv121",
+    "text": "Lieu de vie de Bob l'éponge ?",
+    "answers": [
+      "Rocher",
+      "Ananas",
+      "Coquillage",
+      "Grotte"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv122",
+    "text": "Chef du WOOHP (Totally Spies) ?",
+    "answers": [
+      "Tom",
+      "Bill",
+      "Jerry",
+      "Bob"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv123",
+    "text": "Ranma + eau froide = ?",
+    "answers": [
+      "Panda",
+      "Fille",
+      "Canard",
+      "Cochon"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv124",
+    "text": "IA maléfique dans Code Lyoko ?",
+    "answers": [
+      "X.A.N.A.",
+      "Ulrich",
+      "Odd",
+      "Aelita"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv125",
+    "text": "Super-héros avec un manteau rouge très rapide ?",
+    "answers": [
+      "Superman",
+      "Quicksilver",
+      "Flash",
+      "Dash"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv126",
+    "text": "Prénom civil de Chat Noir ?",
+    "answers": [
+      "Marin",
+      "Adrien",
+      "Luka",
+      "Nino"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv127",
+    "text": "Espèce du dragon Krokmou ?",
+    "answers": [
+      "Furie Noire",
+      "Terreur",
+      "Ronfle",
+      "Changewing"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv128",
+    "text": "Propriétaire des jouets dans Toy Story ?",
+    "answers": [
+      "Sid",
+      "Andy",
+      "Bonnie",
+      "Al"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv129",
+    "text": "Petit chevalier de la Pat' Patrouille ?",
+    "answers": [
+      "Chase",
+      "Marshall",
+      "Ruben",
+      "Ryder"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv130",
+    "text": "Sorcier le plus célèbre du cinéma ?",
+    "answers": [
+      "Gandalf",
+      "Harry Potter",
+      "Merlin",
+      "Voldemort"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv131",
+    "text": "Couleur du sabre de Luke Skywalker ?",
+    "answers": [
+      "Rouge",
+      "Vert",
+      "Bleu",
+      "Violet"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv132",
+    "text": "Frère de Vegeta venu du futur ?",
+    "answers": [
+      "Gohan",
+      "Trunks",
+      "Goten",
+      "Broly"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv133",
+    "text": "Animal qui est Richard (papa de Gumball) ?",
+    "answers": [
+      "Un lapin rose",
+      "Un chat bleu",
+      "Un poisson",
+      "Un chien"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv134",
+    "text": "Ami elfe de maison de Harry Potter ?",
+    "answers": [
+      "Gobelin",
+      "Dobby",
+      "Legolas",
+      "Yoda"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv135",
+    "text": "Tournoi d'arts martiaux de Dragon Ball ?",
+    "answers": [
+      "Tenkaichi Budokai",
+      "Chunin",
+      "Olympiades",
+      "Les Jeux"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv136",
+    "text": "Monture fidèle de Link ?",
+    "answers": [
+      "Epona",
+      "Ruto",
+      "Zelda",
+      "Midna"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv137",
+    "text": "Squelette rigolo dans Undertale ?",
+    "answers": [
+      "Sans",
+      "Papyrus",
+      "Undyne",
+      "Toriel"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv138",
+    "text": "Jeune sorcière avec un balai dans Kiki ?",
+    "answers": [
+      "Kiki",
+      "Jiji",
+      "Ursula",
+      "Méfiez-vous"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv139",
+    "text": "Jeu de tir à la première personne historique ?",
+    "answers": [
+      "Call of Duty WWII",
+      "Battlefield 1",
+      "Fortnite",
+      "Overwatch"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv140",
+    "text": "Petit robot dépanneur dans Star Wars ?",
+    "answers": [
+      "R2-D2",
+      "BD-1",
+      "BB-8",
+      "C-3PO"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv141",
+    "text": "Couleur du bonnet de Mario ?",
+    "answers": [
+      "Bleu",
+      "Vert",
+      "Rouge",
+      "Jaune"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv142",
+    "text": "Araignée de Minecraft ?",
+    "answers": [
+      "Phantom",
+      "Araignée",
+      "Cave Spider",
+      "Silverfish"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv143",
+    "text": "Méchant de Zelda (cochon) ?",
+    "answers": [
+      "Bowser",
+      "Ganon",
+      "Dr Eggman",
+      "Wario"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv144",
+    "text": "Prénom de la nièce de Gadget ?",
+    "answers": [
+      "Sophie",
+      "Penny",
+      "Louna",
+      "Chloé"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv145",
+    "text": "Petit frère de Mario en Wario ?",
+    "answers": [
+      "Waluigi",
+      "Luigi",
+      "Toad",
+      "Yoshi"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv146",
+    "text": "Jeu avec des cubes destructibles ?",
+    "answers": [
+      "Minecraft",
+      "Roblox",
+      "Fortnite",
+      "Terraria"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv147",
+    "text": "Pokémon qui peut copier l'apparence ?",
+    "answers": [
+      "Mewtwo",
+      "Métamorph",
+      "Porygon",
+      "Zoroark"
+    ],
+    "correct": 1,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv148",
+    "text": "Jeu de stratégie sur un damier ?",
+    "answers": [
+      "Les Échecs",
+      "LEGO",
+      "Tetris",
+      "Minecraft"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv149",
+    "text": "Personnage de Disney avec un nez qui s'allonge ?",
+    "answers": [
+      "Pinocchio",
+      "Dumbo",
+      "Peter Pan",
+      "Geppetto"
+    ],
+    "correct": 0,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  },
+  {
+    "id": "jv150",
+    "text": "Super-héros avec un bouclier rond rouge et bleu ?",
+    "answers": [
+      "Iron Man",
+      "Thor",
+      "Captain America",
+      "Batman"
+    ],
+    "correct": 2,
+    "category": "Jeux Vidéo",
+    "type": "multiple-choice"
+  }
 ];
 
 export const ALL_CASH_QUESTIONS_PART2: CashAnswerQuestion[] = [
-  ...sciencesCash,
-  ...histoireCash,
-  ...jeuxVideoCash,
+  {
+    "id": "sn_ca1",
+    "text": "Combien de pattes a un chat ?",
+    "acceptedAnswers": [
+      "4",
+      "quatre"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca2",
+    "text": "Plus grand organe du corps humain ?",
+    "acceptedAnswers": [
+      "La peau"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca3",
+    "text": "Gaz que les plantes absorbent ?",
+    "acceptedAnswers": [
+      "Le dioxyde de carbone",
+      "CO2"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca4",
+    "text": "Animal terrestre le plus rapide ?",
+    "acceptedAnswers": [
+      "Le guépard"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca5",
+    "text": "Formule chimique de l'eau ?",
+    "acceptedAnswers": [
+      "H2O"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca6",
+    "text": "Combien de planètes dans le système solaire ?",
+    "acceptedAnswers": [
+      "8",
+      "huit"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca7",
+    "text": "Plus grand océan du monde ?",
+    "acceptedAnswers": [
+      "Le Pacifique"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca8",
+    "text": "Nombre d'os dans le corps humain ?",
+    "acceptedAnswers": [
+      "206"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca9",
+    "text": "Animal qui produit du miel ?",
+    "acceptedAnswers": [
+      "L'abeille"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca10",
+    "text": "Nombre de couleurs dans l'arc-en-ciel ?",
+    "acceptedAnswers": [
+      "7",
+      "sept"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca11",
+    "text": "Animal qui change de couleur ?",
+    "acceptedAnswers": [
+      "Le caméléon"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca12",
+    "text": "Organe qui pompe le sang ?",
+    "acceptedAnswers": [
+      "Le cœur"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca13",
+    "text": "Nombre de continents sur Terre ?",
+    "acceptedAnswers": [
+      "7",
+      "sept"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca14",
+    "text": "Plus gros oiseau du monde ?",
+    "acceptedAnswers": [
+      "L'autruche"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca15",
+    "text": "Planète rouge du système solaire ?",
+    "acceptedAnswers": [
+      "Mars"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca16",
+    "text": "Nombre de sens de l'être humain ?",
+    "acceptedAnswers": [
+      "5",
+      "cinq"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca17",
+    "text": "Plus grande étoile de notre système ?",
+    "acceptedAnswers": [
+      "Le Soleil"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca18",
+    "text": "Type d'animal de la baleine ?",
+    "acceptedAnswers": [
+      "Un mammifère"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca19",
+    "text": "Gaz principal de l'air ?",
+    "acceptedAnswers": [
+      "L'azote"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca20",
+    "text": "Oiseau incapable de voler ?",
+    "acceptedAnswers": [
+      "Le pingouin"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca21",
+    "text": "Animal qui hiberne ?",
+    "acceptedAnswers": [
+      "L'ours"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca22",
+    "text": "Définition d'un herbivore ?",
+    "acceptedAnswers": [
+      "Un animal qui mange des plantes"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca23",
+    "text": "Nombre de secondes dans une minute ?",
+    "acceptedAnswers": [
+      "60",
+      "soixante"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca24",
+    "text": "Couleur du sang humain ?",
+    "acceptedAnswers": [
+      "Rouge"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca25",
+    "text": "Bébé d'une vache ?",
+    "acceptedAnswers": [
+      "Un veau"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca26",
+    "text": "Planète avec des anneaux ?",
+    "acceptedAnswers": [
+      "Saturne"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca27",
+    "text": "Nombre de pattes d'une pieuvre ?",
+    "acceptedAnswers": [
+      "8",
+      "huit"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca28",
+    "text": "Couleur d'une carotte ?",
+    "acceptedAnswers": [
+      "Orange"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca29",
+    "text": "Température du corps humain ?",
+    "acceptedAnswers": [
+      "37°C",
+      "37 degrés"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca30",
+    "text": "Gaz que l'on expire ?",
+    "acceptedAnswers": [
+      "Le dioxyde de carbone",
+      "CO2"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca31",
+    "text": "Bébé du chat ?",
+    "acceptedAnswers": [
+      "Un chaton"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca32",
+    "text": "Planète la plus grande ?",
+    "acceptedAnswers": [
+      "Jupiter"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca33",
+    "text": "Animal avec une carapace ?",
+    "acceptedAnswers": [
+      "La tortue"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca34",
+    "text": "Gaz nécessaire pour respirer ?",
+    "acceptedAnswers": [
+      "L'oxygène"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca35",
+    "text": "Animal marin à 8 bras ?",
+    "acceptedAnswers": [
+      "La pieuvre"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca36",
+    "text": "Animal le plus gros félin ?",
+    "acceptedAnswers": [
+      "Le tigre"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca37",
+    "text": "Durée d'une grossesse humaine ?",
+    "acceptedAnswers": [
+      "9 mois",
+      "neuf mois"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca38",
+    "text": "Animal du désert qui stocke de l'eau ?",
+    "acceptedAnswers": [
+      "Le chameau"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca39",
+    "text": "Planète bleue ?",
+    "acceptedAnswers": [
+      "La Terre"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca40",
+    "text": "Animal avec des plumes ?",
+    "acceptedAnswers": [
+      "L'oiseau"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca41",
+    "text": "Nombre d'heures dans une journée ?",
+    "acceptedAnswers": [
+      "24",
+      "vingt-quatre"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca42",
+    "text": "Science des animaux ?",
+    "acceptedAnswers": [
+      "La zoologie"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca43",
+    "text": "Bébé du lapin ?",
+    "acceptedAnswers": [
+      "Un lapereau"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca44",
+    "text": "Animal qui pond les plus gros œufs ?",
+    "acceptedAnswers": [
+      "L'autruche"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca45",
+    "text": "Saison la plus chaude ?",
+    "acceptedAnswers": [
+      "L'été"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca46",
+    "text": "Animal avec un long cou ?",
+    "acceptedAnswers": [
+      "La girafe"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca47",
+    "text": "Saison la plus froide ?",
+    "acceptedAnswers": [
+      "L'hiver"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca48",
+    "text": "Animal le plus lourd ?",
+    "acceptedAnswers": [
+      "L'éléphant"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca49",
+    "text": "Animal nocturne ?",
+    "acceptedAnswers": [
+      "La chouette"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "sn_ca50",
+    "text": "Bébé de l'éléphant ?",
+    "acceptedAnswers": [
+      "Un éléphanteau"
+    ],
+    "category": "Sciences & Nature",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca1",
+    "text": "Capitale de la France ?",
+    "acceptedAnswers": [
+      "Paris"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca2",
+    "text": "Monument de Paris ?",
+    "acceptedAnswers": [
+      "La Tour Eiffel"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca3",
+    "text": "Pays des pyramides ?",
+    "acceptedAnswers": [
+      "L'Égypte",
+      "Égypte"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca4",
+    "text": "Capitale de l'Angleterre ?",
+    "acceptedAnswers": [
+      "Londres"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca5",
+    "text": "Pays de la pizza ?",
+    "acceptedAnswers": [
+      "L'Italie",
+      "Italie"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca6",
+    "text": "Capitale de l'Espagne ?",
+    "acceptedAnswers": [
+      "Madrid"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca7",
+    "text": "Plus haut sommet du monde ?",
+    "acceptedAnswers": [
+      "L'Everest"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca8",
+    "text": "Capitale de l'Allemagne ?",
+    "acceptedAnswers": [
+      "Berlin"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca9",
+    "text": "Capitale de l'Italie ?",
+    "acceptedAnswers": [
+      "Rome"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca10",
+    "text": "Capitale du Japon ?",
+    "acceptedAnswers": [
+      "Tokyo"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca11",
+    "text": "Capitale du Brésil ?",
+    "acceptedAnswers": [
+      "Brasilia"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca12",
+    "text": "Capitale du Canada ?",
+    "acceptedAnswers": [
+      "Ottawa"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca13",
+    "text": "Capitale de la Chine ?",
+    "acceptedAnswers": [
+      "Pékin",
+      "Beijing"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca14",
+    "text": "Capitale de la Russie ?",
+    "acceptedAnswers": [
+      "Moscou"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca15",
+    "text": "Capitale de l'Inde ?",
+    "acceptedAnswers": [
+      "New Delhi"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca16",
+    "text": "Capitale des États-Unis ?",
+    "acceptedAnswers": [
+      "Washington"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca17",
+    "text": "Capitale de l'Australie ?",
+    "acceptedAnswers": [
+      "Canberra"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca18",
+    "text": "Pays en forme de botte ?",
+    "acceptedAnswers": [
+      "L'Italie",
+      "Italie"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca19",
+    "text": "Plus long fleuve du monde ?",
+    "acceptedAnswers": [
+      "Le Nil"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca20",
+    "text": "Pays avec le plus de Coupes du Monde ?",
+    "acceptedAnswers": [
+      "Le Brésil",
+      "Brésil"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca21",
+    "text": "Capitale de la Belgique ?",
+    "acceptedAnswers": [
+      "Bruxelles"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca22",
+    "text": "Capitale de la Suisse ?",
+    "acceptedAnswers": [
+      "Berne"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca23",
+    "text": "Capitale de la Grèce ?",
+    "acceptedAnswers": [
+      "Athènes"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca24",
+    "text": "Capitale du Portugal ?",
+    "acceptedAnswers": [
+      "Lisbonne"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca25",
+    "text": "Pays des tulipes ?",
+    "acceptedAnswers": [
+      "Les Pays-Bas",
+      "Pays-Bas"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca26",
+    "text": "Capitale de la Suède ?",
+    "acceptedAnswers": [
+      "Stockholm"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca27",
+    "text": "Capitale de la Norvège ?",
+    "acceptedAnswers": [
+      "Oslo"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca28",
+    "text": "Capitale de la Pologne ?",
+    "acceptedAnswers": [
+      "Varsovie"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca29",
+    "text": "Capitale de la Turquie ?",
+    "acceptedAnswers": [
+      "Ankara"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca30",
+    "text": "Pays du soleil levant ?",
+    "acceptedAnswers": [
+      "Le Japon",
+      "Japon"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca31",
+    "text": "Capitale de la Croatie ?",
+    "acceptedAnswers": [
+      "Zagreb"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca32",
+    "text": "Capitale du Maroc ?",
+    "acceptedAnswers": [
+      "Rabat"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca33",
+    "text": "Capitale de la Tunisie ?",
+    "acceptedAnswers": [
+      "Tunis"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca34",
+    "text": "Capitale de l'Égypte ?",
+    "acceptedAnswers": [
+      "Le Caire"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca35",
+    "text": "Capitale de l'Autriche ?",
+    "acceptedAnswers": [
+      "Vienne"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca36",
+    "text": "Capitale du Mexique ?",
+    "acceptedAnswers": [
+      "Mexico"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca37",
+    "text": "Capitale de l'Argentine ?",
+    "acceptedAnswers": [
+      "Buenos Aires"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca38",
+    "text": "Capitale de la Finlande ?",
+    "acceptedAnswers": [
+      "Helsinki"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca39",
+    "text": "Capitale de l'Irlande ?",
+    "acceptedAnswers": [
+      "Dublin"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca40",
+    "text": "Pays le plus visité ?",
+    "acceptedAnswers": [
+      "La France",
+      "France"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca41",
+    "text": "Capitale de la Hongrie ?",
+    "acceptedAnswers": [
+      "Budapest"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca42",
+    "text": "Capitale de la Roumanie ?",
+    "acceptedAnswers": [
+      "Bucarest"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca43",
+    "text": "Capitale de la Bulgarie ?",
+    "acceptedAnswers": [
+      "Sofia"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca44",
+    "text": "Capitale de la Tchéquie ?",
+    "acceptedAnswers": [
+      "Prague"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca45",
+    "text": "Capitale du Pérou ?",
+    "acceptedAnswers": [
+      "Lima"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca46",
+    "text": "Capitale de la Colombie ?",
+    "acceptedAnswers": [
+      "Bogota"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca47",
+    "text": "Capitale du Chili ?",
+    "acceptedAnswers": [
+      "Santiago"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca48",
+    "text": "Pays qui a découvert l'Amérique ?",
+    "acceptedAnswers": [
+      "L'Espagne",
+      "Espagne"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca49",
+    "text": "Capitale de la Slovaquie ?",
+    "acceptedAnswers": [
+      "Bratislava"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "hg_ca50",
+    "text": "Capitale de la Lituanie ?",
+    "acceptedAnswers": [
+      "Vilnius"
+    ],
+    "category": "Histoire & Géographie",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca1",
+    "text": "Métier de Mario ?",
+    "acceptedAnswers": [
+      "Plombier"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca2",
+    "text": "Hérisson bleu très rapide ?",
+    "acceptedAnswers": [
+      "Sonic"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca3",
+    "text": "Jeu de construction avec des Creepers ?",
+    "acceptedAnswers": [
+      "Minecraft"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca4",
+    "text": "Pokémon jaune avec des éclairs ?",
+    "acceptedAnswers": [
+      "Pikachu"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca5",
+    "text": "Dinosaure vert de Mario ?",
+    "acceptedAnswers": [
+      "Yoshi"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca6",
+    "text": "Jeu de tir avec de la peinture ?",
+    "acceptedAnswers": [
+      "Splatoon"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca7",
+    "text": "Héroïne de Tomb Raider ?",
+    "acceptedAnswers": [
+      "Lara Croft"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca8",
+    "text": "Nom du héros de Zelda ?",
+    "acceptedAnswers": [
+      "Link"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca9",
+    "text": "Rival singe de Mario ?",
+    "acceptedAnswers": [
+      "Donkey Kong"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca10",
+    "text": "Jeu avec l'imposteur dans un vaisseau ?",
+    "acceptedAnswers": [
+      "Among Us"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca11",
+    "text": "Personnage par défaut de Minecraft ?",
+    "acceptedAnswers": [
+      "Steve"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca12",
+    "text": "Boule jaune qui mange des fantômes ?",
+    "acceptedAnswers": [
+      "Pac-Man"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca13",
+    "text": "Console portable de Nintendo à 2 écrans ?",
+    "acceptedAnswers": [
+      "Nintendo DS",
+      "DS"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca14",
+    "text": "Console salon/portable de Nintendo ?",
+    "acceptedAnswers": [
+      "La Switch"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca15",
+    "text": "Studio qui a créé Minecraft ?",
+    "acceptedAnswers": [
+      "Mojang"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca16",
+    "text": "Monnaie de Roblox ?",
+    "acceptedAnswers": [
+      "Robux"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca17",
+    "text": "IA de Halo ?",
+    "acceptedAnswers": [
+      "Cortana"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca18",
+    "text": "Princesse sauvée par Mario ?",
+    "acceptedAnswers": [
+      "Peach"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca19",
+    "text": "Objet invisible dans Mario Kart ?",
+    "acceptedAnswers": [
+      "Boo"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca20",
+    "text": "Monstre qui explose dans Minecraft ?",
+    "acceptedAnswers": [
+      "Le Creeper"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca21",
+    "text": "Jeu mobile oiseaux vs cochons ?",
+    "acceptedAnswers": [
+      "Angry Birds"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca22",
+    "text": "Héros de Halo ?",
+    "acceptedAnswers": [
+      "Master Chief"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca23",
+    "text": "Royaume de Zelda ?",
+    "acceptedAnswers": [
+      "Hyrule"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca24",
+    "text": "Bloc rare bleu de Minecraft ?",
+    "acceptedAnswers": [
+      "Le diamant"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca25",
+    "text": "Monde souterrain de Minecraft ?",
+    "acceptedAnswers": [
+      "Le Nether"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca26",
+    "text": "Jeu d'empiler des briques ?",
+    "acceptedAnswers": [
+      "Tetris"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca27",
+    "text": "Petit robot rond de Star Wars ?",
+    "acceptedAnswers": [
+      "BB-8"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca28",
+    "text": "Jeu de combat avec Fatality ?",
+    "acceptedAnswers": [
+      "Mortal Kombat"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca29",
+    "text": "Frère de Mario en vert ?",
+    "acceptedAnswers": [
+      "Luigi"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca30",
+    "text": "Jeu d'aligner des bonbons ?",
+    "acceptedAnswers": [
+      "Candy Crush"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca31",
+    "text": "Objet pour voler dans Minecraft ?",
+    "acceptedAnswers": [
+      "Les Élytres"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca32",
+    "text": "Ville sous-marine de BioShock ?",
+    "acceptedAnswers": [
+      "Rapture"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca33",
+    "text": "Jeu avec un bus volant ?",
+    "acceptedAnswers": [
+      "Fortnite"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca34",
+    "text": "Couleur du bonnet de Mario ?",
+    "acceptedAnswers": [
+      "Rouge"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca35",
+    "text": "Couleur du bonnet de Luigi ?",
+    "acceptedAnswers": [
+      "Vert"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca36",
+    "text": "Chien peureux de Scooby-Doo ?",
+    "acceptedAnswers": [
+      "Scooby-Doo",
+      "Scooby"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca37",
+    "text": "Bonhomme de neige de La Reine des Neiges ?",
+    "acceptedAnswers": [
+      "Olaf"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca38",
+    "text": "Petit frère de Peppa Pig ?",
+    "acceptedAnswers": [
+      "George"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca39",
+    "text": "Boule rose qui avale ses ennemis ?",
+    "acceptedAnswers": [
+      "Kirby"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca40",
+    "text": "Dragon violet héros de jeux ?",
+    "acceptedAnswers": [
+      "Spyro"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca41",
+    "text": "Camionnette de Scooby-Doo ?",
+    "acceptedAnswers": [
+      "La Mystery Machine"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca42",
+    "text": "Éponge sous la mer ?",
+    "acceptedAnswers": [
+      "Bob l'éponge"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca43",
+    "text": "Gaulois très fort grâce à une potion ?",
+    "acceptedAnswers": [
+      "Obélix"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca44",
+    "text": "Chat orange amateur de lasagnes ?",
+    "acceptedAnswers": [
+      "Garfield"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca45",
+    "text": "Créatures jaunes adorant les bananes ?",
+    "acceptedAnswers": [
+      "Les Minions"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca46",
+    "text": "Pirate qui veut être Roi des Pirates ?",
+    "acceptedAnswers": [
+      "Luffy"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca47",
+    "text": "Personnage qui mange des épinards ?",
+    "acceptedAnswers": [
+      "Popeye"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca48",
+    "text": "Premier Pokémon de Sacha ?",
+    "acceptedAnswers": [
+      "Pikachu"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca49",
+    "text": "Super-héros avec une armure rouge et or ?",
+    "acceptedAnswers": [
+      "Iron Man"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  },
+  {
+    "id": "jv_ca50",
+    "text": "Capitaine du Black Pearl ?",
+    "acceptedAnswers": [
+      "Jack Sparrow"
+    ],
+    "category": "Jeux Vidéo",
+    "type": "cash-answer"
+  }
 ];
-

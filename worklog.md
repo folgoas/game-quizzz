@@ -470,3 +470,30 @@ Stage Summary:
 - Project restored to the version from the tar file
 - Dev server running on port 3000, page compiles and serves correctly
 - Minor duplicate `src/src/` directory cleaned up
+---
+Task ID: 1
+Agent: Main
+Task: Fix Alice mode questions + Rewrite all normal questions for ages 7-77
+
+Work Log:
+- Analyzed the Alice mode code flow: settings.specialMode → buildRoundQuestions uses ALICE_QUESTIONS_MCQ/CASH pools - CORRECT
+- Read all 3 question bank files: questions-bank.ts (800), questions-bank-part2.ts (600), alice-questions.ts (270)
+- Found that Alice questions content is appropriate (pop culture, manga, video games)
+- Identified that normal mode questions were too hard (capitals of obscure countries, chemistry symbols, complex numbers)
+- Generated completely new questions-bank.ts with 800 family-friendly questions (ages 7-77)
+  - Culture Générale: 150 MCQ + 50 Cash
+  - Cinéma & Séries: 150 MCQ + 50 Cash
+  - Sport: 150 MCQ + 50 Cash
+  - Musique: 150 MCQ + 50 Cash
+- Generated completely new questions-bank-part2.ts with 600 family-friendly questions
+  - Sciences & Nature: 150 MCQ + 50 Cash
+  - Histoire & Géographie: 150 MCQ + 50 Cash
+  - Jeux Vidéo: 150 MCQ + 50 Cash
+- Questions now include easy ones for kids (colors, animals, counting) and medium ones for adults
+- Alice mode questions unchanged (270 questions about pop culture, manga, video games)
+- Dev server restarted and compiles successfully with 0 errors
+
+Stage Summary:
+- 1400 normal mode questions rewritten for ages 7-77
+- Alice mode code confirmed correct - questions work properly when folgoas code is entered
+- All questions are in French with appropriate difficulty levels
