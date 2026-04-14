@@ -1,9 +1,14 @@
 FROM node:20-alpine
 WORKDIR /app
-COPY mini-services/quiz-service/package*.json ./
+
+# On garde la structure pour que les imports relatifs ../../src fonctionnent
+COPY package*.json ./
+COPY mini-services/quiz-service/package*.json ./mini-services/quiz-service/
 RUN npm install
-COPY mini-services/quiz-service/ ./
-COPY src/lib/ ./src/lib/
-COPY prisma/ ./prisma/
+RUN cd mini-services/quiz-service && npm install
+
+COPY . .
+
 EXPOSE 3004
-CMD npx prisma@6 generate && npx prisma@6 db push --skip-generate && npm run dev
+WORKDIR /app/mini-services/quiz-service
+CMD npx prisma@6 generate --schema=../../prisma/schema.prisma && npx prisma@6 db push --skip-generate --schema=../../prisma/schema.prisma && npm run dev
