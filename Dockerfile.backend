@@ -4,5 +4,6 @@ COPY mini-services/quiz-service/package*.json ./
 RUN npm install
 COPY mini-services/quiz-service/ ./
 COPY src/lib/ ./src/lib/
+COPY prisma/ ./prisma/
 EXPOSE 3004
-CMD ["npm", "run", "dev"]
+CMD npx prisma generate && npx prisma db push && npm run dev
