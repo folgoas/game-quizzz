@@ -1,14 +1,16 @@
 FROM node:20-alpine
 WORKDIR /app
 
-# On garde la structure pour que les imports relatifs ../../src fonctionnent
-COPY package*.json ./
-COPY mini-services/quiz-service/package*.json ./mini-services/quiz-service/
-RUN npm install
-RUN cd mini-services/quiz-service && npm install
-
+# On copie tout pour être sûr de ne rien rater
 COPY . .
 
-EXPOSE 3004
+# On se place dans le dossier du backend pour l'installation
 WORKDIR /app/mini-services/quiz-service
-CMD npx prisma@6 generate --schema=../../prisma/schema.prisma && npx prisma@6 db push --skip-generate --schema=../../prisma/schema.prisma && npm run dev
+RUN npm install
+
+EXPOSE 3004
+
+# Script de démarrage robuste
+CMD npx prisma@6 generate --schema=../../prisma/schema.prisma && \
+    npx prisma@6 db push --skip-generate --schema=../../prisma/schema.prisma && \
+    npm run dev
