@@ -10,7 +10,7 @@
     "@google/generative-ai": "^0.24.1",
     "socket.io": "^4.8.3",
     "tsx": "^4.21.0",
-    "prisma": "^6.11.1",
-    "@prisma/client": "^6.11.1"
+    "prisma": "6.11.1",
+    "@prisma/client": "6.11.1"
   }
 }
