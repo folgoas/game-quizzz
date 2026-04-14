@@ -1,0 +1,8 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY mini-services/quiz-service/package*.json ./
+RUN npm install
+COPY mini-services/quiz-service/ ./
+COPY src/lib/ ./src/lib/
+EXPOSE 3004
+CMD ["npm", "run", "dev"]

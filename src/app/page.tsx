@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { useGamePolling } from '@/hooks/useGamePolling';
+import { useGameSocket } from '@/hooks/useGameSocket';
 import { useSound } from '@/hooks/useSound';
 import { useBGM } from '@/hooks/useBGM';
 import { GameState, GameView, GameSettings, BUZZER_COLORS, AVATAR_EMOJIS, CATEGORIES, ALICE_CATEGORIES, ALICE_MODE_CODE, GAME_DURATIONS, QUESTION_TYPE_LABELS } from '@/lib/game-types';
@@ -11,8 +11,38 @@ import {
   Trophy, Users, Play, AlertCircle, CheckCircle2, XCircle,
   MonitorPlay, Smartphone, Copy, Settings, Crown, Star,
   Zap, Clock, ChevronRight, RotateCcw, Eye, X, Timer, Pencil,
-  Flame, Target, Sparkles, Lock, Wand2, Volume2, VolumeX
+  Flame, Target, Sparkles, Lock, Wand2, Volume2, VolumeX, FastForward
 } from 'lucide-react';
+
+// ==================== PLAYER EXIT BUTTON ====================
+function PlayerExitButton() {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <button onClick={() => setShow(true)} className="opacity-60 hover:opacity-100 transition-opacity focus:outline-none flex items-center justify-center -rotate-2">
+        <span className="text-xl sm:text-2xl font-[family-name:var(--font-titan)] text-white game-text-outline-sm drop-shadow-md">BUZZ!</span>
+      </button>
+      <AnimatePresence>
+        {show && (
+          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 bg-black/70 z-[9999] flex items-center justify-center p-4 text-left">
+            <motion.div initial={{scale:0.9, opacity:0}} animate={{scale:1, opacity:1}} exit={{scale:0.9, opacity:0}} className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center">
+              <AlertCircle size={44} className="text-red-500 mx-auto mb-3" />
+              <h2 className="text-xl font-bold text-gray-800 mb-2">Quitter la partie ?</h2>
+              <p className="text-gray-600 mb-6 text-sm font-bold">Voulez-vous vraiment retourner à l'accueil ?</p>
+              <div className="flex gap-3">
+                <button onClick={() => setShow(false)} className="flex-1 py-3 rounded-xl bg-gray-200 text-gray-700 font-bold hover:bg-gray-300">Annuler</button>
+                <button onClick={() => {
+                  localStorage.removeItem('buzz_room_code');
+                  window.location.reload();
+                }} className="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 shadow-md">Quitter</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
 
 // ==================== CONFETTI ====================
 function Confetti() {
@@ -60,14 +90,39 @@ function HostConfig({ onCreate, onCancel, specialMode }: {
   const [hostName, setHostName] = useState('');
   const [gameDuration, setGameDuration] = useState(20);
   const [rounds, setRounds] = useState<string[]>(
-    specialMode ? ALICE_CATEGORIES : ['Culture Générale', 'Cinéma & Séries', 'Sport']
+    specialMode ? ALICE_CATEGORIES.slice(0, 3) : ['Culture Générale', 'Cinéma & Séries', 'Sport', 'Musique']
   );
   const [step, setStep] = useState(0);
 
-  const questionsPerRound = Math.floor((gameDuration * 60 - 60) / 30); // ~30s per question
-  const estimatedTime = questionsPerRound * 30 * 3 + 30; // 3 rounds + transitions
+  const roundMapping: Record<number, { count: number; q: number }> = {
+    10: { count: 2, q: 10 },
+    15: { count: 3, q: 10 },
+    20: { count: 4, q: 10 },
+    30: { count: 5, q: 12 },
+    45: { count: 7, q: 12 },
+  };
 
-  const availableCats = specialMode ? ALICE_CATEGORIES : CATEGORIES.filter(c => !rounds.includes(c));
+  const currentMapping = roundMapping[gameDuration] || { count: 3, q: 10 };
+  const targetRoundCount = currentMapping.count;
+  const questionsPerRound = currentMapping.q;
+  const estimatedTime = targetRoundCount * questionsPerRound * 30 + 30; // approx time
+
+  useEffect(() => {
+    setRounds(prev => {
+      const newRounds = [...prev];
+      if (newRounds.length > targetRoundCount) {
+        return newRounds.slice(0, targetRoundCount);
+      }
+      while (newRounds.length < targetRoundCount) {
+        const pool = specialMode ? ALICE_CATEGORIES : CATEGORIES;
+        const available = pool.filter(c => !newRounds.includes(c));
+        newRounds.push(available[0] || pool[0]);
+      }
+      return newRounds;
+    });
+  }, [gameDuration, specialMode, targetRoundCount]);
+
+  const availableCats = specialMode ? ALICE_CATEGORIES : CATEGORIES;
 
   const handleSetRound = (idx: number, cat: string) => {
     const r = [...rounds];
@@ -83,6 +138,8 @@ function HostConfig({ onCreate, onCancel, specialMode }: {
       specialMode: !!specialMode,
     }, hostName.trim() || 'Hôte');
   };
+
+  const allAvailableCats = specialMode ? [...ALICE_CATEGORIES, ...CATEGORIES.filter(c => !ALICE_CATEGORIES.includes(c))] : CATEGORIES;
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4 sm:p-6 game-bg">
@@ -128,26 +185,36 @@ function HostConfig({ onCreate, onCancel, specialMode }: {
           </div>
         </motion.div>
 
-        {/* 3 Rounds */}
+        {/* Rounds */}
         <motion.div initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.3}}
           className="bg-white rounded-2xl p-4 border-4 border-white shadow-lg">
-          <label className="block text-sm font-bold text-gray-500 mb-3 uppercase tracking-wider">
-            <Flame size={14} className="inline mr-1" /> 3 Manches sur des thèmes différents
+          <label className="block text-sm font-bold text-gray-500 mb-3 uppercase tracking-wider flex justify-between items-center">
+            <span><Flame size={14} className="inline mr-1" /> {rounds.length} Manches choisies</span>
           </label>
-          <div className="space-y-3">
-            {[0,1,2].map(i => (
-              <div key={i} className="flex items-center gap-3">
+          <div className="space-y-3 max-h-56 overflow-y-auto pr-2 scrollbar-hide">
+            {rounds.map((cat, i) => (
+              <div key={i} className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-[#FF66CC] text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-md">
                   {i+1}
                 </div>
-                <select value={rounds[i]||''} onChange={e=>handleSetRound(i, e.target.value)}
-                  className="flex-1 px-3 py-2 rounded-xl bg-gray-50 border-3 border-gray-200 text-base font-bold text-gray-800 focus:outline-none focus:border-[#FF66CC] font-[family-name:var(--font-fredoka)]">
-                  {(specialMode ? ALICE_CATEGORIES : CATEGORIES).map(c => <option key={c} value={c} disabled={!availableCats.includes(c)&&rounds[i]!==c}>{c}</option>)}
+                <select value={cat||''} onChange={e=>handleSetRound(i, e.target.value)}
+                  className="flex-1 px-3 py-2 rounded-xl bg-gray-50 border-3 border-gray-200 text-base font-bold text-gray-800 focus:outline-none focus:border-[#FF66CC] font-[family-name:var(--font-fredoka)] truncate">
+                  {allAvailableCats.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
+                <button onClick={() => setRounds(rounds.filter((_, idx)=>idx!==i))}
+                  className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors border-2 border-transparent hover:border-red-200">
+                  <X size={18} />
+                </button>
               </div>
             ))}
           </div>
-          <p className="text-sm text-gray-500 mt-3 text-center">
+          
+          <button onClick={() => setRounds([...rounds, allAvailableCats[0]])}
+            className="w-full mt-3 py-2 border-3 border-dashed border-gray-300 text-gray-500 font-bold rounded-xl hover:border-[#FF66CC] hover:text-[#FF66CC] hover:bg-[#FF66CC]/5 transition-all text-sm">
+            + Ajouter un thème
+          </button>
+
+          <p className="text-sm text-gray-500 mt-4 text-center">
             {questionsPerRound} questions par manche • ~{Math.ceil(estimatedTime/60)} min estimées
           </p>
         </motion.div>
@@ -190,8 +257,8 @@ function HostLobby({ gameState, playerId, onStartGame, onKickPlayer }: {
 }) {
   const [copySuccess, setCopySuccess] = useState(false);
   const playerList = useMemo(() =>
-    Object.values(gameState.players).sort((a,b) => a.id===playerId?-1:b.id===playerId?1:0),
-    [gameState.players, playerId]);
+    Object.values(gameState.players).filter(p => p.id !== gameState.hostId).sort((a,b) => a.id===playerId?-1:b.id===playerId?1:0),
+    [gameState.players, playerId, gameState.hostId]);
 
   const joinUrl = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}#code=${gameState.code}` : '';
   const copyLink = async () => {
@@ -223,7 +290,7 @@ function HostLobby({ gameState, playerId, onStartGame, onKickPlayer }: {
         <div className="text-center flex-1">
           <p className="text-sm text-gray-500 mb-2 font-bold uppercase tracking-wider">Scannez ce code</p>
           <div className="bg-gray-50 p-2 rounded-xl border-3 border-gray-100 shadow-inner inline-block">
-            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(joinUrl)}&format=png&bgcolor=ffffff&color=333333`} alt="QR Code" className="w-32 h-32 rounded-lg" />
+            <img src={`https://quickchart.io/qr?text=${encodeURIComponent(joinUrl)}&size=150`} alt="QR Code" className="w-32 h-32 rounded-lg" />
           </div>
           <button onClick={copyLink} className="mt-3 bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 border-b-3 border-gray-300 active:border-b-0 active:translate-y-1 shadow-sm">
             <Copy size={14} /> {copySuccess ? '✅ Copié !' : 'Copier le lien'}
@@ -261,7 +328,6 @@ function HostLobby({ gameState, playerId, onStartGame, onKickPlayer }: {
               {p.id !== playerId && (
                 <button onClick={()=>onKickPlayer(p.id)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 p-0.5"><X size={12}/></button>
               )}
-              {p.id === playerId && <span className="bg-[#FFD700] text-xs text-gray-800 px-2 py-0.5 rounded-full font-bold">HÔTE</span>}
             </motion.div>
           ))}
         </div>
@@ -301,7 +367,10 @@ function PlayerLobby({ gameState, playerId, onSetSound }: { gameState: GameState
   if (!me) return null;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4 sm:p-6 game-bg touch-optimized overflow-y-auto">
+    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4 sm:p-6 game-bg touch-optimized overflow-y-auto relative">
+      <div className="absolute top-4 left-4 z-50">
+        <PlayerExitButton />
+      </div>
       <motion.div initial={{scale:0}} animate={{scale:1}} transition={{type:'spring',bounce:0.5}}
         className="bg-white p-4 rounded-full border-5 border-[#00E676] shadow-[0_6px_0_rgba(0,0,0,0.12)] mb-3">
         <CheckCircle2 size={48} className="text-[#00E676]" />
@@ -349,13 +418,22 @@ function RoundTransition({ gameState, playerId, onNextRound }: {
   const roundIdx = gameState.currentRound + 1; // Next round
   const nextRound = gameState.settings.rounds[roundIdx];
   const isHost = playerId === gameState.hostId;
-  const sorted = Object.values(gameState.players).sort((a,b)=>b.score-a.score);
+  const sorted = Object.values(gameState.players).filter(p => p.id !== gameState.hostId).sort((a,b)=>b.score-a.score);
   const sound = useSound();
 
-  useEffect(() => { sound.playRoundStart(); }, []);
+  useEffect(() => { 
+    if (isHost) {
+      sound.playRoundStart(); 
+    }
+  }, [isHost, sound]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center game-bg">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center game-bg relative">
+      {!isHost && (
+        <div className="absolute top-4 left-4 z-50">
+          <PlayerExitButton />
+        </div>
+      )}
       <Confetti />
       <motion.div initial={{scale:0}} animate={{scale:1}} transition={{type:'spring',bounce:0.4,delay:0.3}}
         className="bg-white rounded-[2rem] border-[6px] border-[#FFD700] shadow-[0_10px_0_rgba(0,0,0,0.15)] p-8 sm:p-12 max-w-lg w-full">
@@ -445,34 +523,59 @@ function TimerBar({ startTime, duration, onExpire }: { startTime: number; durati
 }
 
 // ==================== HOST GAME SCREEN ====================
-function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onRestart }: {
+function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onRestart, onDestroyRoom }: {
   gameState: GameState; playerId: string;
-  onNextState: () => void; onNextRound: () => void; onRestart: () => void;
+  onNextState: () => void; onNextRound: () => void; onRestart: () => void; onDestroyRoom: () => void;
 }) {
   const q = gameState.currentQuestions[gameState.currentQuestionIndex];
-  const sorted = useMemo(() => Object.values(gameState.players).sort((a,b)=>b.score-a.score), [gameState.players]);
-  const answeredCount = Object.values(gameState.players).filter(p => p.currentAnswer !== null || p.cashAnswer !== null).length;
-  const total = Object.keys(gameState.players).length;
+  const sorted = useMemo(() => Object.values(gameState.players).filter(p => p.id !== gameState.hostId).sort((a,b)=>b.score-a.score), [gameState.players, gameState.hostId]);
+  const answeredCount = Object.values(gameState.players).filter(p => p.id !== gameState.hostId && (p.currentAnswer !== null || p.cashAnswer !== null)).length;
+  const total = Object.keys(gameState.players).length - 1;
   const qType = q?.type || 'multiple-choice';
   const typeInfo = QUESTION_TYPE_LABELS[qType as keyof typeof QUESTION_TYPE_LABELS] || QUESTION_TYPE_LABELS['multiple-choice'];
-
-  if (gameState.status === 'finished') return <ResultsScreen gameState={gameState} onRestart={onRestart} />;
 
   if (!q) return null;
 
   const isMCQ = qType === 'multiple-choice' || qType === 'speed-choice';
 
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+  if ((gameState.status as string) === 'finished') return <VictoryScreen gameState={gameState} onRestart={onRestart} onDestroyRoom={onDestroyRoom} isHost={playerId === gameState.hostId} />;
+
   return (
     <div className="flex flex-col h-screen w-full game-bg relative overflow-hidden">
+      {/* Exit Modal */}
+      <AnimatePresence>
+        {showExitConfirm && (
+          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4">
+            <motion.div initial={{scale:0.9, opacity:0}} animate={{scale:1, opacity:1}} exit={{scale:0.9, opacity:0}} className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center">
+              <AlertCircle size={48} className="text-red-500 mx-auto mb-4" />
+              <h2 className="text-xl font-bold text-gray-800 mb-2">Quitter la partie ?</h2>
+              <p className="text-gray-600 mb-6 text-sm font-bold">Voulez-vous vraiment retourner à l'accueil ?</p>
+              <div className="flex gap-3">
+                <button onClick={() => setShowExitConfirm(false)} className="flex-1 py-3 rounded-xl bg-gray-200 text-gray-700 font-bold hover:bg-gray-300">Annuler</button>
+                <button onClick={() => {
+                  onDestroyRoom();
+                  localStorage.removeItem('buzz_room_code');
+                  window.location.reload();
+                }} className="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 shadow-md">Quitter</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <div className="h-16 sm:h-20 bg-white/95 border-b-[5px] border-white flex items-center justify-between px-3 sm:px-6 shadow-lg relative z-20 shrink-0">
         <div className="absolute inset-0 opacity-5" style={{backgroundImage:'repeating-linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000),repeating-linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000)',backgroundPosition:'0 0,12px 12px',backgroundSize:'24px 24px'}} />
         <div className="flex items-center gap-2 relative z-10">
-          <h1 className="text-2xl sm:text-4xl font-[family-name:var(--font-titan)] text-[#B8860B] transform -rotate-1">BUZZ!</h1>
+          <button onClick={() => setShowExitConfirm(true)} className="hover:scale-105 transition-transform origin-left text-left focus:outline-none group">
+            <h1 className="text-2xl sm:text-4xl font-[family-name:var(--font-titan)] text-[#B8860B] transform -rotate-1 group-hover:text-[#FFD700] transition-colors">BUZZ!</h1>
+          </button>
         </div>
         <div className="flex items-center gap-2 relative z-10 flex-wrap justify-end">
           <div className="bg-[#FF66CC] text-white text-sm sm:text-base px-3 py-1.5 rounded-full font-bold border-2 border-white">
-            Manche {gameState.currentRound + 1}/3
+            Manche {gameState.currentRound + 1}/{gameState.settings.rounds.length}
           </div>
           <div className="bg-[#00C9FF] text-white text-sm sm:text-base px-3 py-1.5 rounded-full font-bold border-2 border-white">
             {gameState.currentQuestionIndex + 1}/{gameState.currentQuestions.length}
@@ -496,17 +599,17 @@ function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onResta
       <div className="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 z-10 w-full max-w-4xl mx-auto overflow-y-auto scrollbar-hide">
         {/* Question Type Badge */}
         <div className="mb-2 flex items-center justify-center gap-2">
-          <div className="flex items-center gap-1 px-3 py-1 rounded-full border-2 text-xs sm:text-sm font-bold" style={{borderColor:typeInfo.color,backgroundColor:typeInfo.color+'20',color:typeInfo.color}}>
-            <span>{typeInfo.icon}</span>
-            <span>{typeInfo.label}</span>
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border-2 text-xs sm:text-sm font-bold shadow-sm" style={{borderColor:typeInfo.color, backgroundColor: 'white', color:typeInfo.color}}>
+            <span className="flex items-center justify-center bg-white rounded shadow-inner p-0.5">{typeInfo.icon}</span>
+            <span className="uppercase tracking-wider">{typeInfo.label}</span>
           </div>
           {qType === 'speed-choice' && (
-            <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600 font-bold bg-white/90 px-2.5 py-1 rounded-full">
+            <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-700 font-bold bg-white px-2.5 py-1.5 rounded-full shadow-sm border-2 border-amber-200">
               <Zap size={14} className="text-[#F59E0B]" /> Plus vite = plus de points !
             </div>
           )}
           {qType === 'cash-answer' && (
-            <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600 font-bold bg-white/90 px-2.5 py-1 rounded-full">
+            <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-700 font-bold bg-white px-2.5 py-1.5 rounded-full shadow-sm border-2 border-purple-200">
               <Pencil size={14} className="text-[#8B5CF6]" /> Tapez votre réponse !
             </div>
           )}
@@ -515,19 +618,19 @@ function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onResta
         {/* Question */}
         <motion.div initial={{scale:0.9,opacity:0}} animate={{scale:1,opacity:1}}
           className="bg-white border-[4px] border-[#00C9FF] rounded-[1.5rem] p-4 sm:p-8 mb-4 sm:mb-6 shadow-[0_8px_0_rgba(0,201,255,0.25)] relative w-full text-center">
-          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#FFD700] text-white text-xs sm:text-sm font-bold px-3 py-1 rounded-full border-2 border-white shadow">
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#FFD700] text-gray-900 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full border-2 border-white shadow-md uppercase tracking-widest">
             {q.category}
           </div>
           <h2 className="text-lg sm:text-2xl md:text-4xl font-bold text-gray-800 leading-snug mt-1">{q.text}</h2>
         </motion.div>
 
         {/* Answers */}
-        {isMCQ && q.answers && (
+        {isMCQ && 'answers' in q && Array.isArray((q as any).answers) && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 w-full">
-            {q.answers.map((ans: string, idx: number) => {
+            {(q as any).answers.map((ans: string, idx: number) => {
               const color = BUZZER_COLORS[idx];
               const isRevealed = gameState.questionState === 'revealed';
-              const isCorrect = idx === q.correct;
+              const isCorrect = idx === (q as any).correct;
               const isActive = gameState.questionState !== 'reading';
               const dimWrong = isRevealed && !isCorrect;
               const count = Object.values(gameState.players).filter(p => p.currentAnswer === idx).length;
@@ -558,11 +661,11 @@ function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onResta
           <div className="bg-white/90 rounded-xl p-4 border-3 border-[#8B5CF6] shadow-lg text-center max-w-sm">
             <Pencil size={24} className="mx-auto text-[#8B5CF6] mb-2" />
             <p className="text-base font-bold text-gray-700">Les joueurs tapent leur réponse sur leur téléphone</p>
-            {gameState.questionState === 'revealed' && q.acceptedAnswers && (
+            {gameState.questionState === 'revealed' && 'acceptedAnswers' in q && Array.isArray((q as any).acceptedAnswers) && (
               <motion.div initial={{opacity:0}} animate={{opacity:1}}
                 className="mt-3 bg-green-50 rounded-xl p-2 border-2 border-green-300">
                 <p className="text-xs text-gray-500 font-bold">Réponse(s) acceptée(s)</p>
-                <p className="text-lg font-bold text-green-600">{q.acceptedAnswers.join(' / ')}</p>
+                <p className="text-lg font-bold text-green-600">{(q as any).acceptedAnswers.join(' / ')}</p>
               </motion.div>
             )}
           </div>
@@ -571,19 +674,19 @@ function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onResta
 
       {/* Player Bar */}
       <div className="shrink-0 bg-white/95 border-t-3 border-white shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-20">
-        <div className="flex items-end justify-center gap-1.5 sm:gap-2.5 px-2 sm:px-4 py-2 overflow-x-auto scrollbar-hide max-h-[150px]">
+        <div className="flex items-end justify-center gap-1.5 sm:gap-2.5 px-2 sm:px-4 pt-4 pb-2 overflow-x-auto scrollbar-hide align-bottom">
           {sorted.map((player, rank) => {
             const hasAnswered = player.currentAnswer !== null || player.cashAnswer !== null;
             const isRevealed = gameState.questionState === 'revealed';
-            const isCorrect = isMCQ && player.currentAnswer === q?.correct;
+            const isCorrect = (isMCQ && player.currentAnswer === q?.correct) || (q?.type === 'cash-answer' && player.isCashAnswerCorrect === true);
             const heights = ['h-14 sm:h-16','h-10 sm:h-12','h-8 sm:h-10'];
             const pipeH = heights[Math.min(rank,2)] || heights[2];
             return (
-              <div key={player.id} className="flex flex-col items-center w-20 sm:w-28 md:w-32 shrink-0 relative">
-                <div className="absolute -top-8 flex flex-col items-center">
+              <div key={player.id} className="flex flex-col items-center w-20 sm:w-28 md:w-32 shrink-0 relative pt-1">
+                <div className="h-8 flex flex-col items-center justify-end mb-1 shrink-0">
                   {gameState.questionState==='answering' && hasAnswered && <div className="bg-[#FFD700] border-2 border-white w-5 h-5 rounded-full animate-bounce shadow" />}
                   {isRevealed && hasAnswered && (
-                    <div className="mb-1 bg-white rounded-full p-1 border-2 border-gray-200 shadow transform -rotate-12">
+                    <div className="bg-white rounded-full p-1 border-2 border-gray-200 shadow transform -rotate-12 mb-1">
                       {isCorrect?<span className="text-[#00E676] font-bold text-sm leading-none block">✓</span>:<XCircle size={14} className="text-red-500"/>}
                     </div>
                   )}
@@ -593,8 +696,7 @@ function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onResta
                   <span className="mr-0.5">{AVATAR_EMOJIS[player.avatarIndex]}</span>{player.name}
                 </div>
                 <div className="w-full flex flex-col items-center z-10">
-                  <div className="w-full h-3 pipe-top" />
-                  <div className={`w-[85%] ${pipeH} pipe-body transition-all duration-500`} />
+                  <div className={`w-[90%] ${pipeH} podium-pedestal transition-all duration-500`} style={{ backgroundColor: player.color }} />
                 </div>
               </div>
             );
@@ -637,8 +739,11 @@ function PlayerBuzzerScreen({ gameState, playerId, onAnswer }: {
   if (!me || !q) return null;
   const qType = q.type;
 
-  if (gameState.status === 'finished') return (
-    <div className="h-screen w-screen flex flex-col buzzer-dots-bg touch-optimized">
+  if ((gameState.status as string) === 'finished') return (
+    <div className="h-screen w-screen flex flex-col buzzer-dots-bg touch-optimized relative">
+      <div className="absolute top-4 left-4 z-50">
+        <PlayerExitButton />
+      </div>
       <div className="flex-1 flex flex-col items-center justify-center p-6">
         <motion.div initial={{scale:0}} animate={{scale:1}} transition={{type:'spring',bounce:0.5}}>
           <div className="bg-white p-5 rounded-2xl border-5 border-[#FFD700] shadow-lg text-center">
@@ -652,13 +757,17 @@ function PlayerBuzzerScreen({ gameState, playerId, onAnswer }: {
   );
 
   return (
-    <div className="h-screen w-screen flex flex-col buzzer-dots-bg touch-optimized overflow-hidden">
-      <div className="h-14 bg-white border-b-[4px] border-gray-200 flex items-center justify-between px-3 shadow-md z-10 shrink-0">
-        <div className="flex items-center gap-1.5">
-          <span className="text-base">{AVATAR_EMOJIS[me.avatarIndex]||'🎮'}</span>
-          <span className="font-bold text-sm truncate max-w-[100px]">{me.name}</span>
+    <div className="h-screen w-screen flex flex-col buzzer-dots-bg touch-optimized overflow-hidden relative">
+      <div className="h-14 bg-white border-b-[4px] border-gray-200 flex items-center px-3 shadow-md z-10 shrink-0 relative">
+        <div className="absolute left-3 flex flex-col items-center justify-center" style={{ width: '60px' }}>
+          <PlayerExitButton />
+          <span className="text-[9px] font-bold text-gray-400 tracking-widest leading-none mt-0.5">{gameState.code}</span>
         </div>
-        <div className="flex items-center gap-1 text-gray-800 font-[family-name:var(--font-titan)] text-xl">
+        <div className="w-full flex justify-center items-center gap-1.5 pl-14">
+          <span className="text-base">{AVATAR_EMOJIS[me.avatarIndex]||'🎮'}</span>
+          <span className="font-bold text-sm truncate max-w-[80px]">{me.name}</span>
+        </div>
+        <div className="absolute right-3 flex items-center gap-1 text-gray-800 font-[family-name:var(--font-titan)] text-xl">
           <Trophy size={18}/><span>{me.score}</span>
         </div>
       </div>
@@ -737,19 +846,19 @@ function PlayerBuzzerScreen({ gameState, playerId, onAnswer }: {
         {gameState.questionState === 'revealed' && (
           <motion.div initial={{scale:0.8,opacity:0}} animate={{scale:1,opacity:1}} className="bg-white p-5 rounded-[1.5rem] border-5 border-gray-200 shadow-lg text-center">
             {qType === 'cash-answer' ? (
-              me.cashAnswer && checkCashCorrect(me.cashAnswer, q.acceptedAnswers) ? (
+              me.isCashAnswerCorrect === true ? (
                 <><motion.div animate={{rotate:[0,10,-10,0]}} className="bg-green-50 p-3 rounded-full mb-2 inline-block"><Star size={36} className="text-[#FFD700]"/></motion.div>
                 <h2 className="text-xl font-bold text-[#00E676]">Bonne réponse ! 🎉</h2></>
               ) : me.cashAnswer ? (
                 <><div className="bg-red-50 p-3 rounded-full mb-2 inline-block"><XCircle size={36} className="text-red-400"/></div>
                 <h2 className="text-xl font-bold text-red-500">Mauvaise réponse</h2>
-                <p className="text-sm text-gray-400 mt-1">Réponse: {q.acceptedAnswers?.join(' / ')}</p></>
+                <p className="text-sm text-gray-400 mt-1">Réponse: {(q as any).acceptedAnswers?.join(' / ')}</p></>
               ) : (
                 <><div className="bg-orange-50 p-3 rounded-full mb-2 inline-block"><Clock size={36} className="text-orange-400"/></div>
                 <h2 className="text-xl font-bold text-orange-500">Temps écoulé !</h2></>
               )
             ) : (
-              me.currentAnswer === q.correct ? (
+              me.currentAnswer === (q as any).correct ? (
                 <><motion.div animate={{rotate:[0,10,-10,0]}} className="bg-green-50 p-3 rounded-full mb-2 inline-block"><Star size={36} className="text-[#FFD700]"/></motion.div>
                 <h2 className="text-xl font-bold text-[#00E676]">Bonne réponse ! 🎉</h2></>
               ) : me.currentAnswer !== null ? (
@@ -768,78 +877,273 @@ function PlayerBuzzerScreen({ gameState, playerId, onAnswer }: {
   );
 }
 
-function checkCashCorrect(answer: string, accepted: string[]): boolean {
-  const normalized = answer.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-  return accepted.some(a => a.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim() === normalized);
+
+// ==================== VICTORY MUSIC HOOK ====================
+function useVictoryMusic(shouldPlay: boolean) {
+  useEffect(() => {
+    if (!shouldPlay) return;
+    const audio = new Audio('/audio/victory.mp3');
+    audio.volume = 0.6;
+    audio.play().catch(() => {});
+    return () => { audio.pause(); audio.currentTime = 0; };
+  }, [shouldPlay]);
 }
 
-// ==================== RESULTS ====================
-function ResultsScreen({ gameState, onRestart }: { gameState: GameState; onRestart: () => void }) {
-  const sorted = useMemo(() => Object.values(gameState.players).sort((a,b)=>b.score-a.score), [gameState.players]);
-  const styles = ['gold-gradient border-[#FFD700]','silver-gradient border-[#C0C0C0]','bronze-gradient border-[#CD7F32]'];
-  const heights = ['h-28 sm:h-36','h-20 sm:h-28','h-16 sm:h-20'];
+// ==================== CREDITS MUSIC HOOK ====================
+function useCreditsMusic(shouldPlay: boolean) {
+  useEffect(() => {
+    if (!shouldPlay) return;
+    const audio = new Audio('/audio/credits.mp3');
+    audio.volume = 0.5;
+    audio.loop = false;
+    audio.play().catch(() => {});
+    return () => { audio.pause(); audio.currentTime = 0; };
+  }, [shouldPlay]);
+}
+
+const CREDITS_DATA = [
+  { role: "Direction de Projet & Idées Géniales (ou pas)", description: "Ceux qui ont décidé que le monde avait désespérément besoin d'un énième quizz pour savoir quel Pokémon mange quoi au petit-déjeuner.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Développement & Sorcellerie Numérique", description: "Pour avoir transformé des lignes de code incompréhensibles en une application qui tourne rond (la plupart du temps), sans invoquer de démons.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Incrustation VIP Exceptionnelle", description: "Alice Savry car elle voulait absolument apparaître dans les crédits (et elle a bien raison !).", team: "Alice Savry" },
+  { role: "Département des Boutons qui brillent", description: "Pour s'être assuré que chaque clic procure une satisfaction visuelle frôlant l'extase biblique.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Ministère du Recyclage de Questions", description: "Ceux qui font en sorte que vous ne tombiez pas sur la même question deux fois, sauf si vous avez vraiment une mauvaise mémoire.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Architecte du Mode Secret 'Alice'", description: "Le génie responsable du code que personne n'est censé connaître mais que tout le monde utilise déjà.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Consultant en Pixels Légèrement Décalés", description: "L'expert qui a passé 4 heures à bouger un logo de 1 pixel vers la gauche, pour finalement le remettre à sa place initiale.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Direction Artistique & Design d'Interface", description: "Pour les pixels chatoyants et les boutons tellement beaux qu'on a envie de les cliquer juste pour le plaisir.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Section 'Pourquoi ça ne marche pas sur mon iPhone?'", description: "Une équipe héroïque qui a combattu les caprices de Safari Mobile pendant des nuits blanches.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Gardien du Silence des Joueurs", description: "Responsable du bouton 'Mute' pour ceux qui n'apprécient pas le génie musical de nos thèmes à 3h du matin.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Spécialiste en Histoires de Bureau", description: "Il falliat bien une anecdote : Un jour, l'IA a essayé de deviner le mot de passe de Sébastien. Elle a proposé 'SébastienEstLeMeilleur'. Elle a gagné un accès root immédiat et une augmentation de RAM.", team: "Une histoire vraie (presque)" },
+  { role: "Rédaction & Recherche de Trivia Inutile", description: "Les encyclopédies vivantes qui connaissent le poids exact de l'épée de Cloud Strife, mais qui ont oublié de sortir les poubelles.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Intégration des Données & Gestion du Chaos", description: "Pour avoir réussi à ranger des milliers de questions dans la base de données sans que tout ne s'effondre.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Conception Sonore & Bruitage de Comptoir", description: "Les créateurs des petits sons \"Ding!\" de victoire et des \"Boum!\" de défaite.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Assurance Qualité & Cassage de Jouets", description: "Ces braves gens qui ont passé des heures à cliquer frénétiquement partout pour trouver les bugs.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Marketing & Vente de Rêve (et de pixels)", description: "Pour avoir convaincu le monde entier que ce quizz était une question de vie ou de mort (spoiler: c'est juste du fun).", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Traduction & Adaptation (Localisation)", description: "Pour s'être assurés que les blagues fonctionnent dans toutes les langues, même si l'humour de dév est intraduisible.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Gestion Légale & Textes qu'on ne lit jamais", description: "Les gardiens des CGU que tout le monde accepte sans lire, mais qui sont là pour nous protéger.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Support Technique & Psychologie", description: "L'équipe qui répond poliment \"Avez-vous essayé de redémarrer ?\" aux joueurs qui ont 'laggué'.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Approvisionnement en Café & Snacks", description: "Le véritable carburant du projet. Sans eux, l'app s'appellerait encore 'Test_V3_final_final.js'.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Brigade de l'Animation Spring", description: "Pour ces rebonds si satisfaisants qu'ils pourraient soigner l'anxiété (ou en causer si ça rebondit trop).", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Expert en 'Ça marchait hier'", description: "Celui qui regarde son code avec trahison après une mise à jour mineure de Node.js.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Maître des Emojis Aléatoires", description: "Pour avoir choisi avec soin le 💩 ou le 🎉 qui s'affiche au bon (ou mauvais) moment.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Ministère de la Redondance Redondante", description: "Responsable de s'assurer que si un truc est dit une fois, il sera redit à nouveau de manière redondante.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Chef de la Confetti-Thérapie", description: "Pour avoir calculé la trajectoire optimale de chaque morceau de papier numérique lors de la victoire.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Coordinateur des '15 Secondes de Trop'", description: "Celui qui a décidé de vous faire attendre assez longtemps pour que vous commenciez à douter de votre connexion.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Sondage d'Opinion Imaginaire", description: "Ceux qui prétendent savoir ce que les joueurs pensent avant même qu'ils n'aient téléchargé l'app.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Recherche en Psychologie des Buzzer-Frénétiques", description: "Etude sur pourquoi les gens appuient 12 fois sur un bouton quand une seule fois suffit.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Entretien des Ventilateurs de Serveur", description: "Pour avoir empêché notre hébergement de décoller comme une fusée SpaceX sous la charge des WebSockets.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Générateur Automatique de Fautes de Frappe", description: "Le stagiaire numérique invisible qui rajoute des 's' là où il n'en faut pas.", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" },
+  { role: "Remerciements Spéciaux", description: "À la patience des proches, au courant électrique qui n'a jamais coupé, et à vous, joueur, qui lisez enfin ces crédits ! (Sérieusement, bravo !)", team: "Sébastien Savry & Gabriel Dubois & L'IA la plus utile à ce moment là" }
+];
+
+// ==================== VICTORY SCREEN ====================
+function VictoryScreen({ gameState, onRestart, onDestroyRoom, isHost }: {
+  gameState: GameState; onRestart: () => void; onDestroyRoom: () => void; isHost: boolean;
+}) {
+  const sorted = useMemo(() =>
+    Object.values(gameState.players).filter(p => p.id !== gameState.hostId).sort((a,b) => b.score - a.score),
+    [gameState.players, gameState.hostId]
+  );
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [showScores, setShowScores] = useState(false);
+  const [startCredits, setStartCredits] = useState(false);
+
+  useVictoryMusic(isHost && !startCredits);
+  useCreditsMusic(isHost && startCredits);
+
+  // Sequence: Podium -> Leaderboard (2.8s) -> Wait (15s total) -> Credits
+  useEffect(() => {
+    const tScores = setTimeout(() => setShowScores(true), 2800);
+    const tCredits = setTimeout(() => setStartCredits(true), 15000);
+    return () => { clearTimeout(tScores); clearTimeout(tCredits); };
+  }, []);
+
+  const podiumOrder = [
+    { player: sorted[1], rank: 2, delay: 0.5, height: 'h-28 sm:h-36', color: '#00C9FF', x: -80, label: '2' },
+    { player: sorted[0], rank: 1, delay: 1.0, height: 'h-40 sm:h-52', color: '#FF66CC', x: 0,   label: '1' },
+    { player: sorted[2], rank: 3, delay: 1.5, height: 'h-20 sm:h-28', color: '#FF8C00', x: 80,  label: '3' },
+  ];
+
+  const medalColors: Record<number, string> = { 1: '#FF66CC', 2: '#00C9FF', 3: '#FF8C00' };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 game-bg relative overflow-y-auto scrollbar-hide">
-      <Confetti />
-      <motion.div initial={{y:-20,opacity:0}} animate={{y:0,opacity:1}} className="text-center mb-5 mt-4">
-        <h1 className="text-4xl sm:text-6xl font-[family-name:var(--font-titan)] text-[#FFD700] game-title">RÉSULTATS</h1>
-        <p className="text-base sm:text-xl font-bold text-white game-text-outline">
-          🏆 3 manches • {sorted.length} joueurs
-        </p>
-      </motion.div>
+    <div className="min-h-screen w-full relative overflow-hidden game-bg scrollbar-hide">
+      <AnimatePresence>
+        {showExitConfirm && (
+          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 bg-black/70 z-[9999] flex items-center justify-center p-4">
+            <motion.div initial={{scale:0.9}} animate={{scale:1}} exit={{scale:0.9}} className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center text-gray-800">
+              <AlertCircle size={48} className="text-red-500 mx-auto mb-4" />
+              <h2 className="text-xl font-bold mb-2">Quitter la partie ?</h2>
+              <div className="flex gap-3 mt-4">
+                <button onClick={() => setShowExitConfirm(false)} className="flex-1 py-3 rounded-xl bg-gray-200 text-gray-700 font-bold">Annuler</button>
+                <button onClick={() => { onDestroyRoom(); localStorage.removeItem('buzz_room_code'); window.location.reload(); }} className="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold">Quitter</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Podium Top 3 */}
-      <div className="flex items-end justify-center gap-2 sm:gap-4 mb-6 w-full max-w-2xl">
-        {sorted[1] && <motion.div initial={{y:40,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.4}} className="flex flex-col items-center flex-1 max-w-[120px]">
-          <div className="text-2xl sm:text-3xl">{AVATAR_EMOJIS[sorted[1].avatarIndex]}</div>
-          <div className="text-white font-bold text-sm sm:text-base truncate max-w-full mb-1 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">{sorted[1].name}</div>
-          <div className="text-lg sm:text-2xl font-bold text-[#6B7280] mb-1">{sorted[1].score}</div>
-          <div className={`w-full ${heights[1]} rounded-t-xl ${styles[1]} border-t-3 flex items-start justify-center pt-2`}><span className="text-2xl sm:text-3xl font-bold text-white game-text-outline-sm">2</span></div>
-        </motion.div>}
-        {sorted[0] && <motion.div initial={{y:-20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.2}} className="flex flex-col items-center flex-1 max-w-[140px]">
-          <motion.div animate={{y:[0,-4,0]}} transition={{duration:2,repeat:Infinity}}><Crown size={28} className="text-[#FFD700] mx-auto mb-1"/></motion.div>
-          <div className="text-3xl sm:text-4xl">{AVATAR_EMOJIS[sorted[0].avatarIndex]}</div>
-          <div className="text-white font-bold text-base sm:text-lg truncate max-w-full mb-1 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">{sorted[0].name}</div>
-          <div className="text-2xl sm:text-4xl font-[family-name:var(--font-titan)] text-[#B8860B] mb-1">{sorted[0].score}</div>
-          <div className={`w-full ${heights[0]} rounded-t-xl ${styles[0]} border-t-4 flex items-start justify-center pt-3`}><span className="text-3xl sm:text-4xl font-bold text-white game-text-outline-sm">1</span></div>
-        </motion.div>}
-        {sorted[2] && <motion.div initial={{y:40,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.6}} className="flex flex-col items-center flex-1 max-w-[110px]">
-          <div className="text-2xl sm:text-3xl">{AVATAR_EMOJIS[sorted[2].avatarIndex]}</div>
-          <div className="text-white font-bold text-sm sm:text-base truncate max-w-full mb-1 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">{sorted[2].name}</div>
-          <div className="text-lg sm:text-2xl font-bold text-[#92400E] mb-1">{sorted[2].score}</div>
-          <div className={`w-full ${heights[2]} rounded-t-xl ${styles[2]} border-t-3 flex items-start justify-center pt-1.5`}><span className="text-xl sm:text-2xl font-bold text-white game-text-outline-sm">3</span></div>
-        </motion.div>}
-      </div>
+      {/* Main Sliding Container */}
+      <motion.div
+        animate={{ y: startCredits ? '-100%' : '0%' }}
+        transition={{ duration: 1.5, ease: "easeInOut" }}
+        className="h-full w-full flex flex-col items-center justify-start absolute inset-0"
+      >
+        {/* UPPER PART: PODIUM SCREEN */}
+        <div className="h-full min-h-screen w-full flex flex-col items-center justify-start shrink-0 relative overflow-hidden"
+             style={{background: 'radial-gradient(ellipse at 50% 0%, #1a0a35 0%, #0a1a40 50%, #0891B2 100%)'}}>
 
-      {/* Full Leaderboard */}
-      <motion.div initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.8}}
-        className="bg-white/95 backdrop-blur rounded-2xl border-4 border-white shadow-xl p-3 sm:p-4 w-full max-w-xl mb-5">
-        <h3 className="text-base font-bold text-gray-700 mb-2 flex items-center gap-1.5"><Trophy size={18} className="text-[#FFD700]"/> Classement</h3>
-        <div className="space-y-1.5 max-h-48 overflow-y-auto scrollbar-hide">
-          {sorted.map((p, rank) => (
-            <div key={p.id} className={`flex items-center gap-2 px-2 py-1.5 rounded-lg ${rank<3?'bg-gray-50':''}`}>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white ${rank===0?'bg-[#FFD700]':rank===1?'bg-[#C0C0C0]':rank===2?'bg-[#CD7F32]':'bg-gray-300'}`}>{rank+1}</div>
-              <span className="text-base">{AVATAR_EMOJIS[p.avatarIndex]}</span>
-              <span className="font-bold text-gray-700 flex-1 truncate text-base">{p.name}</span>
-              <span className={`font-[family-name:var(--font-titan)] text-base ${rank===0?'text-amber-600':rank===1?'text-gray-500':rank===2?'text-amber-800':'text-gray-500'}`}>{p.score}</span>
+          {/* Star sparkle particles - scoped to podium screen */}
+          <div className="absolute inset-0 pointer-events-none z-0">
+            {Array.from({length: 30}).map((_, i) => (
+              <motion.div key={i}
+                className="absolute text-yellow-300"
+                style={{ left: `${Math.random()*100}%`, top: `${Math.random()*100}%`, fontSize: `${Math.random()*16+8}px` }}
+                animate={{ opacity: [0, 1, 0], scale: [0.5, 1.2, 0.5], y: [0, -20, 0] }}
+                transition={{ duration: 2 + Math.random()*3, repeat: Infinity, delay: Math.random()*4 }}
+              >✦</motion.div>
+            ))}
+          </div>
+
+          <Confetti />
+
+          {/* Title */}
+          <motion.div initial={{y:-60,opacity:0}} animate={{y:0,opacity:1}} transition={{type:'spring',bounce:0.4,duration:0.8}}
+            className="text-center pt-8 pb-4 relative z-10 w-full px-4">
+            <motion.h1
+              animate={{scale:[1,1.04,1]}} transition={{duration:2,repeat:Infinity}}
+              className="text-5xl sm:text-7xl font-[family-name:var(--font-titan)] text-[#FFD700] game-title">
+              🏆 VICTOIRE !
+            </motion.h1>
+            <p className="text-white font-bold text-base sm:text-lg mt-2 game-text-outline-sm">
+              {sorted.length} joueurs • {gameState.settings.rounds.length} manches
+            </p>
+          </motion.div>
+
+          {/* PODIUM */}
+          <div className="flex items-end justify-center gap-3 sm:gap-6 w-full max-w-2xl px-4 relative z-10 mt-4 overflow-visible">
+            {podiumOrder.map(({ player, rank, delay, height, color, x, label }) => (
+              player ? (
+                <motion.div key={`podium-${rank}`} className="flex flex-col items-center flex-1 max-w-[160px]"
+                  initial={{ x, opacity: 0, y: 60 }}
+                  animate={{ x: 0, opacity: 1, y: 0 }}
+                  transition={{ delay, type: 'spring', bounce: 0.4, duration: 0.8 }}>
+                  {rank === 1 && (
+                    <motion.div animate={{y:[0,-6,0],rotate:[-5,5,-5]}} transition={{duration:2,repeat:Infinity}} className="mb-1">
+                      <Crown size={36} className="text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]" />
+                    </motion.div>
+                  )}
+                  <motion.div initial={{scale:0}} animate={{scale:1}} transition={{delay: delay+0.3, type:'spring', bounce:0.6}} className={`${ rank===1 ? 'text-5xl sm:text-6xl' : 'text-3xl sm:text-4xl' } mb-1`}>
+                    {AVATAR_EMOJIS[player.avatarIndex] || '🎮'}
+                  </motion.div>
+                  <div className="text-white font-bold text-sm sm:text-base truncate max-w-full mb-1 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] text-center">{player.name}</div>
+                  <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay: delay+0.5}} className={`font-[family-name:var(--font-titan)] mb-2 ${ rank===1 ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl' }`} style={{color: medalColors[rank]}}>{player.score}</motion.div>
+                  <motion.div className={`w-full ${height} rounded-t-2xl border-4 border-white/50 flex items-start justify-center pt-3 relative overflow-hidden shadow-lg`} style={{ backgroundColor: color }} initial={{scaleY:0, originY:1}} animate={{scaleY:1}} transition={{delay: delay+0.1, type:'spring', bounce:0.2, duration:0.6}}>
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
+                    <span className={`font-[family-name:var(--font-titan)] text-white game-text-outline-sm ${ rank===1 ? 'text-5xl' : 'text-3xl' }`}>{label}</span>
+                  </motion.div>
+                </motion.div>
+              ) : <div key={`podium-empty-${rank}`} className="flex-1 max-w-[160px]" />
+            ))}
+          </div>
+
+          {/* Leaderboard */}
+          <AnimatePresence>
+            {showScores && (
+              <motion.div initial={{y:40,opacity:0}} animate={{y:0,opacity:1}} transition={{type:'spring',bounce:0.3}}
+                className="relative z-10 bg-white/10 backdrop-blur-sm border-2 border-white/20 rounded-2xl p-4 w-full max-w-xl mx-4 mt-6 mb-4">
+                <h3 className="text-white font-bold text-base mb-3 flex items-center gap-1.5"><Trophy size={18} className="text-[#FFD700]"/> Classement complet</h3>
+                <div className="space-y-1.5 max-h-48 overflow-y-auto scrollbar-hide">
+                  {sorted.map((p, rank) => (
+                    <motion.div key={p.id} initial={{x:-30,opacity:0}} animate={{x:0,opacity:1}} transition={{delay: rank*0.06}} className={`flex items-center gap-2 px-3 py-2 rounded-xl ${ rank < 3 ? 'bg-white/20' : 'bg-white/5' }`}>
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${ rank===0?'bg-[#FFD700] text-gray-900':rank===1?'bg-gray-400 text-white':rank===2?'bg-amber-700 text-white':'bg-white/20 text-white' }`}>{rank+1}</div>
+                      <span className="text-lg">{AVATAR_EMOJIS[p.avatarIndex]}</span>
+                      <span className="font-bold text-white flex-1 truncate">{p.name}</span>
+                      <span className={`font-[family-name:var(--font-titan)] text-lg ${ rank===0?'text-[#FFD700]':rank===1?'text-gray-300':rank===2?'text-amber-500':'text-white/70' }`}>{p.score}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Action Buttons */}
+          <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:3}} className="relative z-10 flex gap-4 mb-8 mt-2">
+            <motion.button whileTap={{scale:0.95}} onClick={() => setShowExitConfirm(true)} className="bg-white/20 text-white text-lg font-bold px-6 py-3 rounded-full border-2 border-white/40 backdrop-blur-sm hover:bg-white/30 transition-colors">Quitter</motion.button>
+            <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={onRestart} className="bg-[#FFD700] text-gray-900 text-lg font-bold px-10 py-3 rounded-full border-4 border-white btn-3d-heavy flex items-center gap-2 shadow-2xl"><RotateCcw size={20}/> Rejouer</motion.button>
+          </motion.div>
+        </div>
+
+        {/* LOWER PART: CREDITS ROLL */}
+        <div className="h-full min-h-[150vh] w-full bg-black flex flex-col items-center pt-20 shrink-0 relative overflow-hidden">
+          {/* Scrolling Credits Text */}
+          <motion.div
+            animate={startCredits ? { y: "-100%" } : { y: "100%" }}
+            transition={{ duration: 180, ease: "linear" }}
+            className="w-full max-w-3xl px-8 flex flex-col items-center text-center gap-16 pb-32"
+          >
+            <div className="mb-20">
+               <h2 className="text-6xl font-[family-name:var(--font-titan)] text-[#FFD700] mb-4">BUZZ QUIZZ !</h2>
+               <p className="text-white/50 font-bold uppercase tracking-widest text-sm italic">Merci d'avoir joué</p>
             </div>
-          ))}
+
+            {CREDITS_DATA.map((item, i) => (
+              <div key={i} className="flex flex-col gap-3">
+                <h3 className="text-[#FF66CC] font-bold text-xl uppercase tracking-wider">{item.role}</h3>
+                <p className="text-white/60 text-sm max-w-md mx-auto leading-relaxed">{item.description}</p>
+                <div className="bg-white/10 h-[1px] w-12 mx-auto" />
+                <p className="text-white font-bold text-lg font-[family-name:var(--font-fredoka)]">{item.team}</p>
+              </div>
+            ))}
+
+            <div className="mt-40 mb-20 flex flex-col items-center gap-6">
+               <Trophy size={60} className="text-[#FFD700] animate-bounce" />
+               <p className="text-white/30 text-xs italic">Version 2.0 • 2026 • Buzz Studio</p>
+            </div>
+          </motion.div>
+
+          {/* Stationary End Button (Fade in when credits finish) */}
+          <AnimatePresence>
+            {startCredits && (
+              <>
+                {/* Skip Credits Button */}
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2 }}
+                  onClick={onRestart}
+                  className="absolute top-6 right-6 z-30 pointer-events-auto px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white border border-white/20 backdrop-blur-md text-sm font-bold flex items-center gap-2 transition-all"
+                >
+                  Passer <FastForward size={16} />
+                </motion.button>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 180, duration: 2 }}
+                  className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onRestart}
+                    className="pointer-events-auto px-12 py-5 rounded-full bg-[#FFD700] text-gray-900 border-4 border-white text-xl font-bold shadow-2xl uppercase tracking-widest btn-3d-heavy"
+                  >
+                    <RotateCcw size={24} className="inline-block mr-2 mt-[-4px]" />
+                    Retour à l'accueil
+                  </motion.button>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
-
-      <motion.button initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:1}}
-        whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={onRestart}
-        className="bg-[#00C9FF] text-white text-lg sm:text-xl font-bold px-8 sm:px-12 py-3 sm:py-5 rounded-full border-[4px] border-white btn-3d-heavy flex items-center gap-2 shadow-2xl mb-6">
-        <RotateCcw size={22}/> Rejouer
-      </motion.button>
     </div>
   );
 }
 
 // ==================== MAIN PAGE ====================
 export default function BuzzQuizPage() {
-  const game = useGamePolling();
+  const game = useGameSocket();
   const [showConfig, setShowConfig] = useState(false);
   const [configSettings, setConfigSettings] = useState<GameSettings | null>(null);
   const [specialMode, setSpecialMode] = useState(false);
@@ -854,9 +1158,22 @@ export default function BuzzQuizPage() {
     return isHost ? 'host-game' : 'player-game';
   }, [game.gameState, game.playerId, showConfig]);
 
-  // BGM plays on menu, host-config, host-lobby only
-  const bgmShouldPlay = view === 'menu' || view === 'host-config' || view === 'host-lobby';
-  const bgm = useBGM(bgmShouldPlay);
+  const isVictory = view === 'host-game' && game.gameState?.status === 'finished';
+
+  const isHost = game.gameState && game.playerId === game.gameState.hostId;
+
+  // BGM stops during victory screen so victory.mp3 can play cleanly
+  const bgmShouldPlay = !isVictory && (
+    view === 'host-config' ||
+    view === 'host-lobby' ||
+    view === 'host-game' ||
+    (view === 'round-transition' && isHost)
+  );
+
+  // Muffle the background music during active game questions for ambiance
+  const isMuffled = view === 'host-game' && game.gameState?.status !== 'finished';
+
+  const bgm = useBGM(bgmShouldPlay, isMuffled);
 
   const handleCreateFromConfig = useCallback((settings: GameSettings, hostName: string) => {
     setConfigSettings(settings);
@@ -873,12 +1190,27 @@ export default function BuzzQuizPage() {
     setShowConfig(true);
   }, []);
 
+  // Test mode: 2 questions per round, skip config screen entirely
+  const handleCreateTest = useCallback(() => {
+    const settings: GameSettings = {
+      gameDuration: 10,
+      timerDuration: 25,
+      rounds: [
+        { category: 'Culture Générale', questionCount: 2 },
+        { category: 'Sport', questionCount: 2 },
+        { category: 'Musique', questionCount: 2 },
+      ],
+      specialMode: false,
+    };
+    game.createRoom(settings, 'Hôte-Test');
+  }, [game]);
+
   const errorToShow = (view === 'menu' || view === 'host-config') ? game.error : null;
 
   return (
-    <main className="min-h-screen touch-optimized">
+    <main className="min-h-screen touch-optimized overflow-x-hidden">
         {view === 'menu' && (
-          <MainMenu onCreateQuick={handleCreateQuick} onJoin={(code, name) => game.joinRoom(code, name)} error={errorToShow} onClearError={() => game.setError(null)} onCreateAlice={handleCreateAlice} isDancing={bgm.isPlaying} needsUnlock={bgm.needsUnlock} onUnlock={bgm.unlockAudio} muted={bgm.muted} onToggleMute={bgm.toggleMute} />
+          <MainMenu onCreateQuick={handleCreateQuick} onJoin={(code, name) => game.joinRoom(code, name)} error={errorToShow} onClearError={() => game.setError(null)} onCreateAlice={handleCreateAlice} onCreateTest={handleCreateTest} isDancing={true} needsUnlock={bgm.needsUnlock} onUnlock={bgm.unlockAudio} muted={bgm.muted} onToggleMute={bgm.toggleMute} />
         )}
 
         {view === 'host-config' && (
@@ -894,8 +1226,10 @@ export default function BuzzQuizPage() {
         )}
 
         {view === 'host-game' && game.gameState && (
-          <HostGameScreen gameState={game.gameState} playerId={game.playerId!} onNextState={game.nextQuestionState}
-            onNextRound={game.nextRound} onRestart={game.restartGame} />
+          game.gameState.status === 'finished'
+            ? <VictoryScreen gameState={game.gameState} onRestart={game.restartGame} onDestroyRoom={game.destroyRoom} isHost={!!isHost} />
+            : <HostGameScreen gameState={game.gameState} playerId={game.playerId!} onNextState={game.nextQuestionState}
+                onNextRound={game.nextRound} onRestart={game.restartGame} onDestroyRoom={game.destroyRoom} />
         )}
 
         {view === 'player-game' && game.gameState && (
@@ -942,21 +1276,31 @@ export default function BuzzQuizPage() {
 }
 
 // Simple MainMenu that launches config
-function MainMenu({ onCreateQuick, onJoin, error, onClearError, onCreateAlice, isDancing, needsUnlock, onUnlock, muted, onToggleMute }: {
-  onCreateQuick: () => void; onJoin: (code: string, name: string) => void; error: string | null; onClearError: () => void; onCreateAlice: () => void; isDancing: boolean; needsUnlock?: boolean; onUnlock?: () => void; muted?: boolean; onToggleMute?: () => void;
+function MainMenu({ onCreateQuick, onJoin, error, onClearError, onCreateAlice, onCreateTest, isDancing, needsUnlock, onUnlock, muted, onToggleMute }: {
+  onCreateQuick: () => void; onJoin: (code: string, name: string) => void; error: string | null; onClearError: () => void; onCreateAlice: () => void; onCreateTest: () => void; isDancing: boolean; needsUnlock?: boolean; onUnlock?: () => void; muted?: boolean; onToggleMute?: () => void;
 }) {
   const [playerName, setPlayerName] = useState('');
   const [secretCode, setSecretCode] = useState('');
   const [aliceUnlocked, setAliceUnlocked] = useState(false);
   const [showCodeInput, setShowCodeInput] = useState(false);
-  const initialCode = typeof window !== 'undefined' && window.location.hash.startsWith('#code=') ? window.location.hash.replace('#code=', '').toUpperCase() : '';
-  const [code, setCode] = useState(initialCode);
+  const [showNamePopup, setShowNamePopup] = useState(false);
+  const [code, setCode] = useState('');
+
+  // Read hash AFTER mount only (avoids SSR hydration mismatch)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash.startsWith('#code=')) {
+      setCode(window.location.hash.replace('#code=', '').toUpperCase());
+    }
+  }, []);
 
   const buzzLetters = ['B', 'U', 'Z', 'Z', '!'];
 
   const handleCodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (secretCode.trim().toLowerCase() === ALICE_MODE_CODE.toLowerCase()) {
+    const lower = secretCode.trim().toLowerCase();
+    if (lower === 'folgoas-test') {
+      onCreateTest();
+    } else if (lower === ALICE_MODE_CODE.toLowerCase()) {
       setAliceUnlocked(true);
       setShowCodeInput(false);
     }
@@ -1027,11 +1371,6 @@ function MainMenu({ onCreateQuick, onJoin, error, onClearError, onCreateAlice, i
       </div>
 
       {error && <ErrorBanner message={error} onClose={onClearError} />}
-
-      <motion.div initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.3}} className="w-full max-w-xs mb-6">
-        <input type="text" placeholder="Ton Pseudo" maxLength={12} value={playerName} onChange={e=>setPlayerName(e.target.value)}
-          className="w-full px-5 py-3 rounded-full bg-white border-4 border-white/80 text-center text-xl font-bold text-gray-800 focus:outline-none focus:border-[#FFD700] focus:ring-4 focus:ring-[#FFD700]/30 shadow-[0_5px_0_rgba(0,0,0,0.12)] placeholder:text-gray-400 transition-all font-[family-name:var(--font-fredoka)]" />
-      </motion.div>
 
       {/* Alice Mode Unlock Button */}
       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.35}} className="w-full max-w-xs mb-5">
@@ -1147,19 +1486,41 @@ function MainMenu({ onCreateQuick, onJoin, error, onClearError, onCreateAlice, i
                 ))}
               </div>
             </div>
-            <form onSubmit={e=>{e.preventDefault(); if(code.trim()&&playerName.trim()){onJoin(code.trim(), playerName.trim());}}}
-              className="flex flex-col gap-2.5 relative z-10">
+            <div className="flex flex-col gap-2.5 relative z-10">
               <input type="text" placeholder="CODE" maxLength={4} value={code} onChange={e=>setCode(e.target.value.toUpperCase())}
-                className="w-full px-4 py-2.5 rounded-full bg-gray-50 border-3 border-gray-200 text-center text-xl font-bold uppercase text-gray-800 focus:outline-none focus:border-[#00C9FF] focus:bg-white transition-all tracking-[0.25em] font-[family-name:var(--font-fredoka)]" required />
-              <p className="text-xs text-gray-500 text-center">Entrez le code affiché sur l'écran principal</p>
-              <button type="submit" disabled={!playerName.trim()||!code.trim()}
+                onKeyDown={e=>{ if(e.key==='Enter' && code.trim()) setShowNamePopup(true); }}
+                className="w-full px-4 py-2.5 rounded-full bg-gray-50 border-3 border-gray-200 text-center text-xl font-bold uppercase text-gray-800 focus:outline-none focus:border-[#00C9FF] focus:bg-white transition-all tracking-[0.25em] font-[family-name:var(--font-fredoka)]" />
+              <p className="text-xs text-gray-500 text-center">Entrez le code affiché sur l&apos;écran principal</p>
+              <button type="button" onClick={() => { if(code.trim()) setShowNamePopup(true); }} disabled={!code.trim()}
                 className="w-full bg-[#FFD700] text-gray-800 text-lg font-bold py-2.5 rounded-full border-4 border-white btn-3d-heavy mt-0.5 flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
                 <Play size={18}/> GO !
               </button>
-            </form>
+            </div>
           </div>
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {showNamePopup && (
+          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 bg-black/70 z-[9999] flex items-center justify-center p-4 text-left">
+            <motion.div initial={{scale:0.9, opacity:0}} animate={{scale:1, opacity:1}} exit={{scale:0.9, opacity:0}} className="bg-[#00C9FF] rounded-[2rem] p-6 max-w-sm w-full shadow-2xl text-center border-[6px] border-white relative">
+              <button onClick={() => setShowNamePopup(false)} className="absolute -top-4 -right-4 bg-white text-gray-800 rounded-full p-1 border-4 border-gray-200 shadow-lg hover:scale-110 transition-transform">
+                <X size={24} />
+              </button>
+              <Users size={44} className="text-white mx-auto mb-3" />
+              <h2 className="text-2xl font-bold text-white mb-2 game-text-outline-dark">Quel est ton pseudo ?</h2>
+              <p className="text-white/90 mb-5 text-sm font-bold">Choisis un nom sympa pour la partie !</p>
+              <form onSubmit={e=>{e.preventDefault(); if(playerName.trim()){onJoin(code.trim(), playerName.trim()); setShowNamePopup(false);}}}>
+                <input type="text" placeholder="Ton Pseudo" maxLength={12} value={playerName} onChange={e=>setPlayerName(e.target.value)} autoFocus
+                  className="w-full px-5 py-3 mb-4 rounded-full bg-white border-4 border-white/80 text-center text-xl font-bold text-gray-800 focus:outline-none focus:border-[#FFD700] focus:ring-4 focus:ring-[#FFD700]/30 shadow-inner placeholder:text-gray-400 transition-all font-[family-name:var(--font-fredoka)]" />
+                <button type="submit" disabled={!playerName.trim()} className="w-full py-3 rounded-full bg-[#FFD700] text-gray-800 font-bold text-xl border-4 border-white btn-3d shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                  Rejoindre la partie !
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

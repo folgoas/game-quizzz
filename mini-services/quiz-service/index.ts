@@ -1,130 +1,38 @@
-import { createServer } from 'http'
-import { Server } from 'socket.io'
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const httpServer = createServer()
-const io = new Server(httpServer, {
-  path: '/',
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  },
-  pingTimeout: 60000,
-  pingInterval: 25000,
-})
+import { ALL_MCQ_QUESTIONS_PART1, ALL_CASH_QUESTIONS_PART1 } from '../../src/lib/questions-bank';
+import { ALL_MCQ_QUESTIONS_PART2, ALL_CASH_QUESTIONS_PART2 } from '../../src/lib/questions-bank-part2';
+import { ALICE_QUESTIONS_MCQ, ALICE_QUESTIONS_CASH } from '../../src/lib/alice-questions';
+import { NEW_THEMES_MCQ, NEW_THEMES_CASH } from '../../src/lib/new-themes-questions';
+import { THEMES_PART1_MCQ, THEMES_PART1_CASH } from '../../src/lib/pop-culture-themes-2-part1';
+import { THEMES_PART2_MCQ, THEMES_PART2_CASH } from '../../src/lib/pop-culture-themes-2-part2';
+import { THEMES_PART3_MCQ } from '../../src/lib/pop-culture-themes-2-part3';
+import { THEMES_MANGA_MCQ, THEMES_MANGA_CASH } from '../../src/lib/pop-culture-themes-mangas';
+import type { Player, Question, GameSettings } from '../../src/lib/game-types';
+import { ALICE_CATEGORIES } from '../../src/lib/game-types';
 
-// ==================== TYPES ====================
-
-interface Player {
-  id: string;
-  name: string;
-  score: number;
-  currentAnswer: number | null;
-  answerTime: number | null;
-  connected: boolean;
-  color: string;
-  avatarIndex: number;
-}
-
-interface Question {
-  id: string;
-  text: string;
-  answers: string[];
-  correct: number;
-  category: string;
-}
-
-interface GameSettings {
-  category: string;
-  questionCount: number;
-  timerDuration: number;
-}
-
-interface GameRoom {
-  code: string;
-  hostId: string;
-  players: Map<string, Player>;
-  questions: Question[];
-  currentQuestionIndex: number;
-  questionState: 'reading' | 'answering' | 'revealed';
-  timerStartsAt: number | null;
-  status: 'lobby' | 'playing' | 'finished';
-  settings: GameSettings;
-  avatarCounter: number;
-}
-
-// ==================== QUESTION DATABASE ====================
-
-const QUESTION_DB: Question[] = [
-  // Culture Générale
-  { id: 'cg1', text: "Quel est le plus grand océan de la Terre ?", answers: ["Atlantique", "Indien", "Pacifique", "Arctique"], correct: 2, category: "Culture Générale" },
-  { id: 'cg2', text: "Combien de planètes composent notre système solaire ?", answers: ["7", "8", "9", "10"], correct: 1, category: "Culture Générale" },
-  { id: 'cg3', text: "Quelle est la monnaie du Japon ?", answers: ["Yuan", "Won", "Yen", "Ringgit"], correct: 2, category: "Culture Générale" },
-  { id: 'cg4', text: "Quel est le plus petit pays du monde ?", answers: ["Monaco", "Vatican", "Malte", "Liechtenstein"], correct: 1, category: "Culture Générale" },
-  { id: 'cg5', text: "Combien de continents y a-t-il sur Terre ?", answers: ["5", "6", "7", "8"], correct: 2, category: "Culture Générale" },
-  { id: 'cg6', text: "Quel est le plus long fleuve du monde ?", answers: ["Le Nil", "L'Amazone", "Le Mississippi", "Le Yangtsé"], correct: 1, category: "Culture Générale" },
-  { id: 'cg7', text: "Quelle est la capitale de l'Australie ?", answers: ["Sydney", "Melbourne", "Canberra", "Brisbane"], correct: 2, category: "Culture Générale" },
-  { id: 'cg8', text: "Quel gaz compose principalement l'atmosphère terrestre ?", answers: ["Oxygène", "Azote", "CO2", "Hélium"], correct: 1, category: "Culture Générale" },
-
-  // Cinéma & Séries
-  { id: 'cs1', text: "Quel acteur incarne Iron Man dans les films Marvel ?", answers: ["Chris Evans", "Robert Downey Jr.", "Chris Hemsworth", "Mark Ruffalo"], correct: 1, category: "Cinéma & Séries" },
-  { id: 'cs2', text: "Comment s'appelle le vaisseau spatial dans Star Wars ?", answers: ["Enterprise", "Faucon Millenium", "Serenity", "Normandy"], correct: 1, category: "Cinéma & Séries" },
-  { id: 'cs3', text: "Quel film a remporté la Palme d'Or à Cannes en 2019 ?", answers: ["Joker", "Parasite", "1917", "Once Upon a Time"], correct: 1, category: "Cinéma & Séries" },
-  { id: 'cs4', text: "Qui a réalisé le film 'Inception' ?", answers: ["Steven Spielberg", "Christopher Nolan", "James Cameron", "Ridley Scott"], correct: 1, category: "Cinéma & Séries" },
-  { id: 'cs5', text: "Dans quelle saga trouve-t-on le personnage de Luke Skywalker ?", answers: ["Star Trek", "Star Wars", "Stargate", "Battlestar Galactica"], correct: 1, category: "Cinéma & Séries" },
-  { id: 'cs6', text: "Quel est le premier long-métrage d'animation Disney ?", answers: ["Blanche-Neige", "Pinocchio", "Cendrillon", "Fantasia"], correct: 0, category: "Cinéma & Séries" },
-  { id: 'cs7', text: "Qui joue le role de Jack dans Titanic ?", answers: ["Brad Pitt", "Tom Cruise", "Leonardo DiCaprio", "Johnny Depp"], correct: 2, category: "Cinéma & Séries" },
-  { id: 'cs8', text: "Comment s'appelle le robot dans 'Wall-E' ?", answers: ["Wall-E", "EVA", "R2-D2", "Optimus"], correct: 0, category: "Cinéma & Séries" },
-
-  // Sport
-  { id: 'sp1', text: "Quel pays a remporté la Coupe du Monde en 1998 ?", answers: ["Brésil", "Italie", "Allemagne", "France"], correct: 3, category: "Sport" },
-  { id: 'sp2', text: "Combien de joueurs composent une équipe de rugby ?", answers: ["11", "13", "15", "18"], correct: 2, category: "Sport" },
-  { id: 'sp3', text: "Dans quel sport utilise-t-on une raquette et un volant ?", answers: ["Tennis", "Badminton", "Squash", "Ping-pong"], correct: 1, category: "Sport" },
-  { id: 'sp4', text: "Quel pays a gagné le plus de Tour de France ?", answers: ["France", "Belgique", "Espagne", "Italie"], correct: 2, category: "Sport" },
-  { id: 'sp5', text: "Combien de temps dure un match de football ?", answers: ["60 min", "80 min", "90 min", "120 min"], correct: 2, category: "Sport" },
-  { id: 'sp6', text: "Quelle est la distance d'un marathon ?", answers: ["21 km", "36 km", "42.195 km", "50 km"], correct: 2, category: "Sport" },
-  { id: 'sp7', text: "Dans quel pays sont nés les Jeux Olympiques modernes ?", answers: ["France", "Grèce", "Italie", "Angleterre"], correct: 1, category: "Sport" },
-  { id: 'sp8', text: "Quel sport pratique-t-on à Roland-Garros ?", answers: ["Golf", "Tennis", "Cricket", "Baseball"], correct: 1, category: "Sport" },
-
-  // Musique
-  { id: 'mu1', text: "Qui a composé la 9e Symphonie ?", answers: ["Mozart", "Beethoven", "Bach", "Vivaldi"], correct: 1, category: "Musique" },
-  { id: 'mu2', text: "De quel groupe vient la chanson 'Bohemian Rhapsody' ?", answers: ["The Beatles", "Led Zeppelin", "Queen", "Pink Floyd"], correct: 2, category: "Musique" },
-  { id: 'mu3', text: "Quel instrument a 88 touches ?", answers: ["Guitare", "Piano", "Orgue", "Harpe"], correct: 1, category: "Musique" },
-  { id: 'mu4', text: "Qui est surnommé le 'Roi de la Pop' ?", answers: ["Elvis Presley", "Michael Jackson", "Prince", "Freddie Mercury"], correct: 1, category: "Musique" },
-  { id: 'mu5', text: "Quel artiste français a chanté 'La Vie en Rose' ?", answers: ["Charles Aznavour", "Jacques Brel", "Édith Piaf", "Georges Brassens"], correct: 2, category: "Musique" },
-  { id: 'mu6', text: "De quel pays vient le reggae ?", answers: ["Cuba", "Jamaïque", "Brésil", "Trinité"], correct: 1, category: "Musique" },
-  { id: 'mu7', text: "Combien de cordes a une guitare classique ?", answers: ["4", "5", "6", "8"], correct: 2, category: "Musique" },
-  { id: 'mu8', text: "Quel groupe a créé l'album 'The Dark Side of the Moon' ?", answers: ["The Doors", "Pink Floyd", "Led Zeppelin", "Deep Purple"], correct: 1, category: "Musique" },
-
-  // Sciences & Nature
-  { id: 'sn1', text: "Quel est le symbole chimique de l'or ?", answers: ["Ag", "Au", "Fe", "O"], correct: 1, category: "Sciences & Nature" },
-  { id: 'sn2', text: "En quelle année l'homme a-t-il marché sur la Lune ?", answers: ["1965", "1969", "1971", "1973"], correct: 1, category: "Sciences & Nature" },
-  { id: 'sn3', text: "Quel est l'animal terrestre le plus rapide ?", answers: ["Lion", "Guépard", "Gazelle", "Faucon"], correct: 1, category: "Sciences & Nature" },
-  { id: 'sn4', text: "Combien d'os possède le corps humain adulte ?", answers: ["186", "206", "226", "256"], correct: 1, category: "Sciences & Nature" },
-  { id: 'sn5', text: "Quelle planète est surnommée la 'Planète Rouge' ?", answers: ["Vénus", "Mars", "Jupiter", "Saturne"], correct: 1, category: "Sciences & Nature" },
-  { id: 'sn6', text: "Qui a peint la Joconde ?", answers: ["Van Gogh", "Picasso", "Léonard de Vinci", "Michel-Ange"], correct: 2, category: "Sciences & Nature" },
-  { id: 'sn7', text: "Quel est le plus grand organe du corps humain ?", answers: ["Foie", "Cerveau", "Peau", "Poumons"], correct: 2, category: "Sciences & Nature" },
-  { id: 'sn8', text: "Quelle est la vitesse de la lumière (km/s) ?", answers: ["200 000", "300 000", "400 000", "500 000"], correct: 1, category: "Sciences & Nature" },
-
-  // Histoire & Géographie
-  { id: 'hg1', text: "En quelle année a eu lieu la Révolution française ?", answers: ["1776", "1789", "1799", "1804"], correct: 1, category: "Histoire & Géographie" },
-  { id: 'hg2', text: "Quelle est la capitale du Canada ?", answers: ["Toronto", "Montréal", "Vancouver", "Ottawa"], correct: 3, category: "Histoire & Géographie" },
-  { id: 'hg3', text: "Qui a découvert l'Amérique en 1492 ?", answers: ["Magellan", "Colomb", "Vespucci", "Cortés"], correct: 1, category: "Histoire & Géographie" },
-  { id: 'hg4', text: "Quel est le plus grand désert du monde ?", answers: ["Sahara", "Antarctique", "Gobi", "Kalahari"], correct: 1, category: "Histoire & Géographie" },
-  { id: 'hg5', text: "Le mur de Berlin est tombé en quelle année ?", answers: ["1987", "1988", "1989", "1990"], correct: 2, category: "Histoire & Géographie" },
-  { id: 'hg6', text: "Quel pays a la plus grande superficie ?", answers: ["Canada", "Chine", "USA", "Russie"], correct: 3, category: "Histoire & Géographie" },
-  { id: 'hg7', text: "Quelle est la capitale de l'Égypte ?", answers: ["Le Caire", "Alexandrie", "Gizeh", "Louxor"], correct: 0, category: "Histoire & Géographie" },
-  { id: 'hg8', text: "Qui était Napoléon Bonaparte ?", answers: ["Roi d'Angleterre", "Empereur des Français", "Roi d'Espagne", "Président américain"], correct: 1, category: "Histoire & Géographie" },
-
-  // Jeux Vidéo
-  { id: 'jv1', text: "Quel est le personnage principal de Super Mario ?", answers: ["Luigi", "Mario", "Toad", "Yoshi"], correct: 1, category: "Jeux Vidéo" },
-  { id: 'jv2', text: "Quel jeu a popularisé les Battle Royale ?", answers: ["Fortnite", "PUBG", "Apex Legends", "H1Z1"], correct: 1, category: "Jeux Vidéo" },
-  { id: 'jv3', text: "De quelle saga vient le Master Sword ?", answers: ["Final Fantasy", "Zelda", "Dark Souls", "Skyrim"], correct: 1, category: "Jeux Vidéo" },
-  { id: 'jv4', text: "Comment s'appelle le héros de Minecraft ?", answers: ["Alex", "Steve", "Notch", "Herobrine"], correct: 1, category: "Jeux Vidéo" },
-  { id: 'jv5', text: "Quel studio a créé Pokémon ?", answers: ["Nintendo", "Game Freak", "Square Enix", "Bandai"], correct: 1, category: "Jeux Vidéo" },
-  { id: 'jv6', text: "En quelle année la PlayStation 1 est-elle sortie ?", answers: ["1992", "1994", "1996", "1998"], correct: 1, category: "Jeux Vidéo" },
-  { id: 'jv7', text: "Quel est le best-seller de l'histoire du jeu vidéo ?", answers: ["Tetris", "Minecraft", "GTA V", "Wii Sports"], correct: 1, category: "Jeux Vidéo" },
-  { id: 'jv8', text: "Qui est le rival de Sonic ?", answers: ["Mario", "Knuckles", "Shadow", "Dr. Eggman"], correct: 3, category: "Jeux Vidéo" },
+const MCQ_QUESTIONS = [
+  ...ALL_MCQ_QUESTIONS_PART1, ...ALL_MCQ_QUESTIONS_PART2,
+  ...NEW_THEMES_MCQ, ...THEMES_PART1_MCQ, ...THEMES_PART2_MCQ, ...THEMES_PART3_MCQ, ...THEMES_MANGA_MCQ
 ];
+const CASH_QUESTIONS = [
+  ...ALL_CASH_QUESTIONS_PART1, ...ALL_CASH_QUESTIONS_PART2,
+  ...NEW_THEMES_CASH, ...THEMES_PART1_CASH, ...THEMES_PART2_CASH, ...THEMES_MANGA_CASH
+];
+
+const FULL_ALICE_MCQ = [
+  ...ALICE_QUESTIONS_MCQ,
+  ...MCQ_QUESTIONS.filter((q: any) => !ALICE_CATEGORIES.includes(q.category))
+];
+const FULL_ALICE_CASH = [
+  ...ALICE_QUESTIONS_CASH,
+  ...CASH_QUESTIONS.filter((q: any) => !ALICE_CATEGORIES.includes(q.category))
+];
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
 const PLAYER_COLORS = [
   '#EF4444', '#3B82F6', '#22C55E', '#F59E0B', '#A855F7', '#EC4899',
@@ -137,109 +45,260 @@ const PLAYER_COLORS = [
 
 const AVATAR_EMOJIS = ['🎮', '🏆', '⭐', '🎯', '🎲', '🎪', '🎵', '🎨', '🚀', '🔥', '💎', '🎪', '🌟', '👑', '🦊', '🐼', '🦁', '🐸', '🦄', '🐲', '🐙', '🦋', '🌸', '🎸', '🥊', '⚽', '🏀', '🎱', '🧩', '🎭', '🎪', '🎪'];
 
-// ==================== ROOM MANAGEMENT ====================
-
-const rooms = new Map<string, GameRoom>();
 const MAX_PLAYERS = 32;
 
-const generateCode = (): string => {
+function generateCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
-  for (let i = 0; i < 4; i++) {
-    code += chars[Math.floor(Math.random() * chars.length)];
-  }
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
   return code;
-};
+}
 
-const generateId = (): string => Math.random().toString(36).substr(2, 9);
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
-const getRoomState = (room: GameRoom): any => {
-  const playersObj: Record<string, Player> = {};
-  room.players.forEach((p, id) => {
-    playersObj[id] = p;
+function removeAccents(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+function buildRoundQuestions(category: string, questionCount: number, usedIds?: Set<string>, specialMode?: boolean): any[] {
+  const questions: any[] = [];
+  const notUsed = (q: any) => !usedIds || !usedIds.has(q.id);
+
+  const mcqPool = specialMode ? FULL_ALICE_MCQ : MCQ_QUESTIONS;
+  const cashPool = specialMode ? FULL_ALICE_CASH : CASH_QUESTIONS;
+
+  const filteredMcq = shuffle(mcqPool.filter(q => q.category === category && notUsed(q)));
+  const filteredCash = shuffle(cashPool.filter(q => q.category === category && notUsed(q)));
+  const mcqAvailable = filteredMcq.length;
+  const cashAvailable = filteredCash.length;
+
+  const totalAvailable = mcqAvailable + cashAvailable;
+  const target = Math.min(questionCount, totalAvailable);
+
+  let cashCount = Math.min(cashAvailable, Math.max(cashAvailable > 0 ? 1 : 0, Math.round(target * 0.25)));
+
+  const remaining = target - cashCount;
+  const idealSpeed = Math.round(remaining * 0.33);
+  const idealMCQ = remaining - idealSpeed;
+
+  let mcqCount: number, speedCount: number;
+  if (idealMCQ + idealSpeed <= mcqAvailable) {
+    mcqCount = idealMCQ;
+    speedCount = idealSpeed;
+  } else {
+    mcqCount = Math.round(mcqAvailable * 0.67);
+    speedCount = mcqAvailable - mcqCount;
+    if (speedCount === 0 && mcqAvailable >= 2) { speedCount = 1; mcqCount = mcqAvailable - 1; }
+  }
+
+  let mcqIdx = 0;
+  for (let i = 0; i < mcqCount && mcqIdx < filteredMcq.length; i++, mcqIdx++) {
+    questions.push({ ...filteredMcq[mcqIdx], type: 'multiple-choice' });
+  }
+
+  for (let i = 0; i < speedCount && mcqIdx < filteredMcq.length; i++, mcqIdx++) {
+    questions.push({ ...filteredMcq[mcqIdx], type: 'speed-choice' });
+  }
+
+  for (let i = 0; i < Math.min(cashCount, filteredCash.length); i++) {
+    questions.push(filteredCash[i]);
+  }
+
+  return shuffle(questions);
+}
+
+function levenshteinDistance(a: string, b: string): number {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+function normalizePhonetic(str: string): string {
+  let s = str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  // Retirer les majuscules, la ponctuation et les tirets
+  s = s.replace(/[-_.,!?'"]/g, " ");
+  // Retirer les articles courants pour se concentrer sur le sens
+  s = s.replace(/\b(le|la|les|l|un|une|des|de|du|d|et|est)\b/g, "");
+  s = s.replace(/\s+/g, ""); // tout coller
+  
+  // Simplification phonétique extrême pour les enfants
+  s = s.replace(/ph/g, "f");
+  s = s.replace(/eau|au/g, "o");
+  s = s.replace(/qu|q/g, "k");
+  s = s.replace(/c(?=[aou])/g, "k");
+  s = s.replace(/c(?=[ei])/g, "s");
+  s = s.replace(/ç/g, "s");
+  s = s.replace(/y/g, "i");
+  s = s.replace(/z/g, "s");
+  s = s.replace(/h/g, ""); // h souvent muet
+  s = s.replace(/(.)\1+/g, "$1"); // retirer les doubles consonnes/voyelles
+  s = s.replace(/[sxe]$/, ""); // retirer les e, s, x muets à la fin
+  return s;
+}
+
+function checkCashAnswer(answer: string, accepted: string[]): boolean {
+  if (!answer) return false;
+  
+  const normAns = normalizePhonetic(answer);
+  const basicAns = removeAccents(answer).replace(/\s+/g, "").toLowerCase();
+
+  return accepted.some(a => {
+    const normAcc = normalizePhonetic(a);
+    const basicAcc = removeAccents(a).replace(/\s+/g, "").toLowerCase();
+
+    // Correspondance parfaite sur la phonétique ou juste sans espaces
+    if (normAcc === normAns || basicAcc === basicAns) return true;
+
+    // Correspondance avec 1 ou 2 fautes sur la version purement phonétique
+    const distPhone = levenshteinDistance(normAns, normAcc);
+    const maxPhoneMistakes = normAcc.length >= 5 ? 2 : (normAcc.length >= 3 ? 1 : 0);
+    if (distPhone <= maxPhoneMistakes) return true;
+
+    // Correspondance avec 1 ou 2 fautes sur le mot brut collé (sauvegarde)
+    const distBasic = levenshteinDistance(basicAns, basicAcc);
+    const maxBasicMistakes = basicAcc.length >= 6 ? 2 : (basicAcc.length >= 4 ? 1 : 0);
+    if (distBasic <= maxBasicMistakes) return true;
+
+    return false;
   });
+}
 
-  return {
-    code: room.code,
-    hostId: room.hostId,
-    status: room.status,
-    players: playersObj,
-    questions: room.questions,
-    currentQuestionIndex: room.currentQuestionIndex,
-    questionState: room.questionState,
-    timerStartsAt: room.timerStartsAt,
-    timerDuration: room.settings.timerDuration,
-    settings: room.settings,
-  };
+async function checkCashAnswerAI(playerAnswer: string, questionText: string, acceptedAnswers: string[], playerName: string, ipAddress: string): Promise<boolean> {
+  // L'IA est complètement désactivée pour éviter les pannes de quotas !
+  // On utilise à la place le super-algorithme phonétique générant mathématiquement des dizaines de variations
+  const isCorrect = checkCashAnswer(playerAnswer, acceptedAnswers);
+  console.log(`[LOCAL JUDGE] Player: "${playerName}" | Answer: "${playerAnswer}" | Accepted: ${acceptedAnswers.join(',')} => ${isCorrect ? 'OUI' : 'NON'}`);
+  return isCorrect;
+}
+
+interface Player {
+  id: string; // the sessionId
+  socketId: string; // the current connection ID
+  name: string;
+  score: number;
+  currentAnswer: number | null;
+  cashAnswer: string | null;
+  isCashAnswerCorrect?: boolean | null;
+  answerTime: number | null;
+  color: string;
+  avatarIndex: number;
+  connected: boolean;
+  buzzerSoundId: string;
+  ipAddress: string;
+}
+
+interface GameRoom {
+  code: string;
+  hostId: string; // host sessionId
+  status: 'lobby' | 'playing' | 'round-transition' | 'finished';
+  players: Record<string, Player>; // map sessionId to Player
+  currentRound: number;
+  currentQuestions: Question[];
+  currentQuestionIndex: number;
+  questionState: 'reading' | 'answering' | 'revealed';
+  timerStartsAt: number | null;
+  timerDuration: number;
+  settings: GameSettings;
+  avatarCounter: number;
+  roundScores: { round: number; scores: Record<string, number> }[];
+  usedQuestionIds: Set<string>;
+}
+
+const rooms = new Map<string, GameRoom>();
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  path: '/',
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  },
+  pingTimeout: 60000,
+  pingInterval: 25000,
+});
+
+const getRoomStateForClient = (room: GameRoom) => {
+  const { usedQuestionIds, ...clientState } = room;
+  return clientState;
 };
 
-const broadcastRoomState = (room: GameRoom, excludeId?: string) => {
-  const state = getRoomState(room);
-  room.players.forEach((player, playerId) => {
-    if (playerId !== excludeId && player.connected) {
-      io.to(playerId).emit('state-update', state);
+const broadcastRoomState = (room: GameRoom, excludeSocketId?: string) => {
+  const state = getRoomStateForClient(room);
+  Object.values(room.players).forEach(p => {
+    if (p.socketId !== excludeSocketId && p.connected && p.socketId) {
+      io.to(p.socketId).emit('state-update', state);
     }
   });
 };
 
-const selectQuestions = (category: string, count: number): Question[] => {
-  let pool = category === 'Mixte' ? [...QUESTION_DB] : QUESTION_DB.filter(q => q.category === category);
-  // Shuffle
-  for (let i = pool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [pool[i], pool[j]] = [pool[j], pool[i]];
-  }
-  return pool.slice(0, Math.min(count, pool.length));
-};
-
-// ==================== SOCKET HANDLERS ====================
-
 io.on('connection', (socket) => {
   console.log(`[CONNECT] ${socket.id}`);
 
-  socket.on('create-room', (data: { settings: GameSettings }) => {
+  socket.on('create-room', (data: { settings: GameSettings; hostName?: string; sessionId: string }) => {
     const code = generateCode();
+    const gameSettings = data.settings || { gameDuration: 20, timerDuration: 25, rounds: [] };
+    
+    let hostName = data.hostName || 'Hôte';
+    if (typeof data.settings === 'string') { // backwards compatibility if passed differently
+        hostName = data.hostName || 'Hôte';
+    }
+
+    const hostSession = data.sessionId;
+
     const room: GameRoom = {
       code,
-      hostId: socket.id,
-      players: new Map(),
-      questions: [],
+      hostId: hostSession,
+      status: 'lobby',
+      players: {
+        [hostSession]: {
+          id: hostSession, socketId: socket.id, name: hostName, score: 0, currentAnswer: null, cashAnswer: null, answerTime: null,
+          color: PLAYER_COLORS[0], avatarIndex: 0, connected: true, buzzerSoundId: 'buzzer-classique',
+          ipAddress: socket.handshake.address
+        }
+      },
+      currentRound: 0,
+      currentQuestions: [],
       currentQuestionIndex: 0,
       questionState: 'reading',
       timerStartsAt: null,
-      status: 'lobby',
-      settings: data.settings || { category: 'Mixte', questionCount: 10, timerDuration: 10 },
-      avatarCounter: 0,
+      timerDuration: 25,
+      settings: gameSettings,
+      avatarCounter: 1,
+      roundScores: gameSettings.rounds.map((_, idx) => ({ round: idx, scores: {} })),
+      usedQuestionIds: new Set<string>(),
     };
-
-    // Add host as a player
-    room.players.set(socket.id, {
-      id: socket.id,
-      name: 'Hôte',
-      score: 0,
-      currentAnswer: null,
-      answerTime: null,
-      connected: true,
-      color: PLAYER_COLORS[0],
-      avatarIndex: 0,
-    });
-    room.avatarCounter = 1;
 
     rooms.set(code, room);
     console.log(`[ROOM CREATED] ${code} by ${socket.id}`);
 
-    socket.emit('room-created', { code, state: getRoomState(room) });
+    socket.emit('room-created', { code, state: getRoomStateForClient(room) });
   });
 
   socket.on('update-host-name', (data: { name: string }) => {
-    // Find room where this socket is host
     for (const [, room] of rooms) {
-      if (room.hostId === socket.id) {
-        const player = room.players.get(socket.id);
-        if (player) {
-          player.name = data.name;
-          broadcastRoomState(room);
-        }
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (player && room.hostId === player.id) {
+        player.name = data.name || 'Hôte';
+        broadcastRoomState(room);
         break;
       }
     }
@@ -247,7 +306,8 @@ io.on('connection', (socket) => {
 
   socket.on('update-settings', (data: { settings: GameSettings }) => {
     for (const [, room] of rooms) {
-      if (room.hostId === socket.id) {
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (player && room.hostId === player.id) {
         room.settings = data.settings;
         broadcastRoomState(room);
         break;
@@ -255,13 +315,24 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('join-room', (data: { code: string; name: string }) => {
-    const { code, name } = data;
-    const upperCode = code.toUpperCase().trim();
-    const room = rooms.get(upperCode);
+  socket.on('join-room', (data: { code: string; name: string; buzzerSoundId?: string; sessionId: string }) => {
+    const code = data.code.toUpperCase().trim();
+    const room = rooms.get(code);
 
     if (!room) {
       socket.emit('error', { message: 'Partie introuvable. Vérifiez le code.' });
+      return;
+    }
+
+    if (room.players[data.sessionId]) {
+      // Reconnection logic
+      room.players[data.sessionId].socketId = socket.id;
+      room.players[data.sessionId].connected = true;
+      room.players[data.sessionId].ipAddress = socket.handshake.address;
+      if (data.buzzerSoundId) room.players[data.sessionId].buzzerSoundId = data.buzzerSoundId;
+      console.log(`[PLAYER RECONNECTED] ${room.players[data.sessionId].name} (${data.sessionId}) from ${socket.handshake.address}`);
+      socket.emit('room-joined', { state: getRoomStateForClient(room), playerId: data.sessionId });
+      broadcastRoomState(room, socket.id);
       return;
     }
 
@@ -269,107 +340,128 @@ io.on('connection', (socket) => {
       socket.emit('error', { message: 'La partie a déjà commencé !' });
       return;
     }
-
-    if (room.players.size >= MAX_PLAYERS) {
+    if (Object.keys(room.players).length >= MAX_PLAYERS && !room.players[data.sessionId]) {
       socket.emit('error', { message: 'La partie est pleine (32 joueurs max).' });
       return;
     }
 
-    // Check for duplicate name
-    let playerName = name.trim();
-    let existingNames = Array.from(room.players.values()).map(p => p.name);
-    if (existingNames.includes(playerName)) {
-      let counter = 2;
-      while (existingNames.includes(`${playerName} ${counter}`)) counter++;
-      playerName = `${playerName} ${counter}`;
+    let pName = (data.name || '').trim();
+    const existingNames = Object.values(room.players).map(p => p.name);
+    if (existingNames.includes(pName)) {
+      let c = 2;
+      while (existingNames.includes(`${pName} ${c}`)) c++;
+      pName = `${pName} ${c}`;
     }
 
-    const player: Player = {
-      id: socket.id,
-      name: playerName,
-      score: 0,
-      currentAnswer: null,
-      answerTime: null,
+    room.players[data.sessionId] = {
+      id: data.sessionId, socketId: socket.id, name: pName, score: 0, currentAnswer: null, cashAnswer: null, answerTime: null,
       connected: true,
       color: PLAYER_COLORS[room.avatarCounter % PLAYER_COLORS.length],
       avatarIndex: room.avatarCounter % AVATAR_EMOJIS.length,
+      buzzerSoundId: data.buzzerSoundId || 'buzzer-classique',
+      ipAddress: socket.handshake.address,
     };
-
-    room.players.set(socket.id, player);
     room.avatarCounter++;
 
-    console.log(`[PLAYER JOINED] ${playerName} (${socket.id}) in room ${upperCode}`);
+    console.log(`[PLAYER JOINED] ${pName} (${data.sessionId}) on socket ${socket.id} in room ${code}`);
 
-    socket.emit('room-joined', { state: getRoomState(room), playerId: socket.id });
+    socket.emit('room-joined', { state: getRoomStateForClient(room), playerId: data.sessionId });
     broadcastRoomState(room, socket.id);
   });
 
   socket.on('start-game', () => {
     for (const [, room] of rooms) {
-      if (room.hostId === socket.id && room.status === 'lobby') {
-        if (room.players.size < 2) {
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (player && room.hostId === player.id && room.status === 'lobby') {
+        if (Object.keys(room.players).length < 2) {
           socket.emit('error', { message: 'Il faut au moins 2 joueurs pour commencer !' });
           return;
         }
 
-        room.questions = selectQuestions(room.settings.category, room.settings.questionCount);
-        room.status = 'playing';
+        const round0 = room.settings.rounds[0];
+        const isSpecial = !!room.settings.specialMode;
+        room.usedQuestionIds = new Set<string>();
+        room.currentQuestions = buildRoundQuestions(round0.category, round0.questionCount, room.usedQuestionIds, isSpecial);
+        room.currentQuestions.forEach(q => room.usedQuestionIds.add(q.id));
+        
+        room.currentRound = 0;
         room.currentQuestionIndex = 0;
         room.questionState = 'reading';
         room.timerStartsAt = null;
+        room.status = 'playing';
 
-        // Reset all scores
-        room.players.forEach(p => {
-          p.score = 0;
-          p.currentAnswer = null;
-          p.answerTime = null;
+        Object.values(room.players).forEach(p => {
+          p.score = 0; p.currentAnswer = null; p.cashAnswer = null; p.answerTime = null; p.isCashAnswerCorrect = null;
         });
 
-        console.log(`[GAME STARTED] Room ${room.code} - ${room.questions.length} questions`);
+        console.log(`[GAME STARTED] Room ${room.code}`);
         broadcastRoomState(room);
         break;
       }
     }
   });
 
-  socket.on('next-question-state', () => {
+  socket.on('next-question-state', async () => {
     for (const [, room] of rooms) {
-      if (room.hostId === socket.id && room.status === 'playing') {
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (player && room.hostId === player.id && room.status === 'playing') {
         if (room.questionState === 'reading') {
-          // Reveal answers and start timer
           room.questionState = 'answering';
           room.timerStartsAt = Date.now();
-          console.log(`[ANSWERING] Room ${room.code} - Q${room.currentQuestionIndex + 1}`);
         } else if (room.questionState === 'answering') {
-          // Reveal correct answer and calculate scores
           room.questionState = 'revealed';
-          const currentQ = room.questions[room.currentQuestionIndex];
-          if (currentQ) {
-            room.players.forEach(p => {
-              if (p.currentAnswer === currentQ.correct && p.answerTime && room.timerStartsAt) {
-                const timeTaken = p.answerTime - room.timerStartsAt;
-                const timerMs = room.settings.timerDuration * 1000;
-                const speedBonus = Math.max(0, (timerMs - timeTaken) / timerMs);
-                const pointsEarned = 500 + Math.floor(speedBonus * 500);
-                p.score += pointsEarned;
+          const q = room.currentQuestions[room.currentQuestionIndex];
+          if (q) {
+            // Processing all players in parallel
+            await Promise.all(Object.values(room.players).map(async (p) => {
+              if (q.type === 'cash-answer' && p.cashAnswer) {
+                const isCorrect = await checkCashAnswerAI(p.cashAnswer, q.text, (q as any).acceptedAnswers, p.name, p.ipAddress);
+                p.isCashAnswerCorrect = isCorrect;
+                if (isCorrect) {
+                  const timeBonus = p.answerTime && room.timerStartsAt
+                    ? Math.max(0, (room.timerDuration * 1000 - (p.answerTime - room.timerStartsAt)) / (room.timerDuration * 1000))
+                    : 0;
+                  p.score += 800 + Math.floor(timeBonus * 400);
+                }
+              } else if (q.type === 'multiple-choice' && p.currentAnswer !== null) {
+                if (p.currentAnswer === (q as any).correct) {
+                  const timeBonus = p.answerTime && room.timerStartsAt
+                    ? Math.max(0, (room.timerDuration * 1000 - (p.answerTime - room.timerStartsAt)) / (room.timerDuration * 1000))
+                    : 0;
+                  p.score += 500 + Math.floor(timeBonus * 500);
+                }
+              } else if (q.type === 'speed-choice' && p.currentAnswer !== null) {
+                if (p.currentAnswer === (q as any).correct) {
+                  const timeBonus = p.answerTime && room.timerStartsAt
+                    ? Math.max(0, 1 - (p.answerTime - room.timerStartsAt) / (room.timerDuration * 1000))
+                    : 0;
+                  p.score += 200 + Math.floor(timeBonus * timeBonus * 1800);
+                }
               }
+            }));
+          }
+        } else if (room.questionState === 'revealed') {
+          const roundIdx = room.currentRound;
+          if (room.roundScores[roundIdx]) {
+            room.roundScores[roundIdx].scores = {};
+            Object.values(room.players).forEach(p => {
+              room.roundScores[roundIdx].scores[p.id] = p.score;
             });
           }
-          console.log(`[REVEALED] Room ${room.code} - Q${room.currentQuestionIndex + 1}`);
-        } else if (room.questionState === 'revealed') {
-          // Next question or end game
-          if (room.currentQuestionIndex >= room.questions.length - 1) {
-            room.status = 'finished';
-            console.log(`[GAME FINISHED] Room ${room.code}`);
+
+          if (room.currentQuestionIndex >= room.currentQuestions.length - 1) {
+            if (room.currentRound >= room.settings.rounds.length - 1) {
+              room.status = 'finished';
+            } else {
+              room.status = 'round-transition';
+            }
           } else {
             room.currentQuestionIndex++;
             room.questionState = 'reading';
             room.timerStartsAt = null;
-            room.players.forEach(p => {
-              p.currentAnswer = null;
-              p.answerTime = null;
+            Object.values(room.players).forEach(p => {
+              p.currentAnswer = null; p.cashAnswer = null; p.answerTime = null; p.isCashAnswerCorrect = null;
             });
-            console.log(`[NEXT Q] Room ${room.code} - Q${room.currentQuestionIndex + 1}`);
           }
         }
         broadcastRoomState(room);
@@ -378,31 +470,69 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('answer', (data: { answerIndex: number }) => {
+  socket.on('next-round', () => {
     for (const [, room] of rooms) {
-      const player = room.players.get(socket.id);
-      if (player && room.status === 'playing' && room.questionState === 'answering') {
-        if (player.currentAnswer === null) {
-          player.currentAnswer = data.answerIndex;
-          player.answerTime = Date.now();
-          console.log(`[ANSWER] ${player.name} -> ${data.answerIndex}`);
-          broadcastRoomState(room);
-        }
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (player && room.hostId === player.id && room.status === 'round-transition') {
+        room.currentRound++;
+        const roundConfig = room.settings.rounds[room.currentRound];
+        const isSpecialRound = !!room.settings.specialMode;
+        room.currentQuestions = buildRoundQuestions(roundConfig.category, roundConfig.questionCount, room.usedQuestionIds, isSpecialRound);
+        room.currentQuestions.forEach(q => room.usedQuestionIds.add(q.id));
+        
+        room.currentQuestionIndex = 0;
+        room.questionState = 'reading';
+        room.timerStartsAt = null;
+        room.status = 'playing';
+
+        Object.values(room.players).forEach(p => {
+          p.currentAnswer = null; p.cashAnswer = null; p.answerTime = null; p.isCashAnswerCorrect = null;
+        });
+
+        broadcastRoomState(room);
         break;
+      }
+    }
+  });
+
+  socket.on('answer', (data: { answerIndex?: number; cashAnswer?: string }) => {
+    for (const [, room] of rooms) {
+        const player = Object.values(room.players).find(p => p.socketId === socket.id);
+        if (player && room.status === 'playing' && room.questionState === 'answering') {
+          const q = room.currentQuestions[room.currentQuestionIndex];
+          if (q && q.type === 'cash-answer') {
+            if (!player.cashAnswer && data.cashAnswer !== undefined) {
+              player.cashAnswer = data.cashAnswer;
+              player.answerTime = Date.now();
+              broadcastRoomState(room);
+            }
+          } else if (player.currentAnswer === null && data.answerIndex !== undefined) {
+            player.currentAnswer = data.answerIndex;
+            player.answerTime = Date.now();
+            broadcastRoomState(room);
+          }
+        }
+    }
+  });
+
+  socket.on('set-sound', (data: { buzzerSoundId: string }) => {
+    for (const [, room] of rooms) {
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (player && data.buzzerSoundId) {
+        player.buzzerSoundId = data.buzzerSoundId;
+        broadcastRoomState(room);
       }
     }
   });
 
   socket.on('kick-player', (data: { playerId: string }) => {
     for (const [, room] of rooms) {
-      if (room.hostId === socket.id) {
-        const playerToKick = room.players.get(data.playerId);
-        if (playerToKick && data.playerId !== socket.id) {
-          room.players.delete(data.playerId);
-          io.to(data.playerId).emit('kicked', { message: 'Vous avez été expulsé de la partie.' });
-          broadcastRoomState(room);
-          console.log(`[KICKED] ${playerToKick.name} from room ${room.code}`);
-        }
+      const host = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (host && room.hostId === host.id && data.playerId !== host.id && room.players[data.playerId]) {
+        const socketIdTarget = room.players[data.playerId].socketId;
+        delete room.players[data.playerId];
+        io.to(socketIdTarget).emit('kicked', { message: 'Vous avez été expulsé de la partie.' });
+        broadcastRoomState(room);
         break;
       }
     }
@@ -410,19 +540,34 @@ io.on('connection', (socket) => {
 
   socket.on('restart-game', () => {
     for (const [, room] of rooms) {
-      if (room.hostId === socket.id && room.status === 'finished') {
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (player && room.hostId === player.id && room.status === 'finished') {
         room.status = 'lobby';
+        room.currentRound = 0;
+        room.currentQuestions = [];
         room.currentQuestionIndex = 0;
         room.questionState = 'reading';
         room.timerStartsAt = null;
-        room.questions = [];
-        room.players.forEach(p => {
-          p.score = 0;
-          p.currentAnswer = null;
-          p.answerTime = null;
+        room.roundScores = [{ round: 0, scores: {} }, { round: 1, scores: {} }, { round: 2, scores: {} }];
+        Object.values(room.players).forEach(p => {
+          p.score = 0; p.currentAnswer = null; p.cashAnswer = null; p.answerTime = null; p.isCashAnswerCorrect = null;
         });
-        console.log(`[GAME RESTARTED] Room ${room.code}`);
         broadcastRoomState(room);
+        break;
+      }
+    }
+  });
+
+  socket.on('destroy-room', () => {
+    for (const [code, room] of rooms) {
+      const host = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (host && room.hostId === host.id) {
+        Object.values(room.players).forEach(p => {
+          if (p.socketId) {
+            io.to(p.socketId).emit('error', { message: 'L\'hôte a fermé la partie.' });
+          }
+        });
+        rooms.delete(code);
         break;
       }
     }
@@ -431,24 +576,14 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`[DISCONNECT] ${socket.id}`);
     for (const [code, room] of rooms) {
-      const player = room.players.get(socket.id);
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
       if (player) {
         player.connected = false;
-
-        if (socket.id === room.hostId) {
-          // Host disconnected - delete room
-          room.players.forEach((p, pid) => {
-            if (pid !== socket.id) {
-              io.to(pid).emit('error', { message: "L'hôte s'est déconnecté. La partie est terminée." });
-            }
-          });
-          rooms.delete(code);
-          console.log(`[ROOM DELETED] ${code} (host disconnected)`);
-        } else {
-          room.players.delete(socket.id);
-          broadcastRoomState(room);
-          console.log(`[PLAYER LEFT] ${player.name} from room ${code}`);
-        }
+        
+        // Let them reconnect, don't destroy host room immediately
+        // Just broadcast they disconnected.
+        console.log(`[PLAYER DISCONNECTED] ${player.name} (${player.id}) marked offline`);
+        broadcastRoomState(room);
         break;
       }
     }
@@ -459,26 +594,15 @@ io.on('connection', (socket) => {
   });
 });
 
-// ==================== START SERVER ====================
+const PORT = 3004;
+httpServer.listen(PORT, '0.0.0.0', () => {
+  console.log(`🎮 Buzz! Quiz Server running on port ${PORT}`);
+});
 
-const PORT = 3004
-httpServer.listen(PORT, () => {
-  console.log(`🎮 Buzz! Quiz Server running on port ${PORT}`)
-})
-
-// Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('Received SIGTERM, shutting down...')
-  httpServer.close(() => {
-    console.log('Server closed')
-    process.exit(0)
-  })
-})
+  httpServer.close(() => process.exit(0));
+});
 
 process.on('SIGINT', () => {
-  console.log('Received SIGINT, shutting down...')
-  httpServer.close(() => {
-    console.log('Server closed')
-    process.exit(0)
-  })
-})
+  httpServer.close(() => process.exit(0));
+});

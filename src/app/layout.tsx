@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   keywords: ["Buzz", "Quiz", "Multijoueur", "Party Game", "Buzzer", "Smartphone", "PS3"],
   authors: [{ name: "Buzz! Quiz Team" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/favicon.ico",
   },
   openGraph: {
     title: "BUZZ! Le Grand Quiz",
@@ -65,6 +65,7 @@ export default function RootLayout({
       >
         {children}
         <Toaster />
+        <div className="fixed bottom-1 right-2 text-[10px] text-black/30 font-mono z-[9999] pointer-events-none">v0.3.0</div>
       </body>
     </html>
   );

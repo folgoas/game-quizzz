@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: buzz
+      POSTGRES_PASSWORD: buzzpassword
+      POSTGRES_DB: buzzquiz
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    restart: always
+    environment:
+      - PORT=3004
+      - DATABASE_URL=postgresql://buzz:buzzpassword@db:5432/buzzquiz
+    ports:
+      - "3004:3004"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    restart: always
+    environment:
+      - PORT=3001
+      - DATABASE_URL=postgresql://buzz:buzzpassword@db:5432/buzzquiz
+      - NEXT_PUBLIC_SOCKET_URL=http://localhost:3004 # Modifie par ton IP tunnel plus tard
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+      - backend
+
+volumes:
+  db_data:

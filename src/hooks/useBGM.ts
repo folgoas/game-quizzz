@@ -10,8 +10,10 @@ const BGM_URL = '/audio/bgm.mp3';
  * Handles iOS Safari audio unlock (requires user gesture to start audio).
  * Returns the mute toggle + current muted/playing state + unlock function.
  */
-export function useBGM(shouldPlay: boolean) {
+export function useBGM(shouldPlay: boolean, isMuffled: boolean = false) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const filterNodeRef = useRef<BiquadFilterNode | null>(null);
   const [muted, setMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [needsUnlock, setNeedsUnlock] = useState(false);
@@ -25,6 +27,9 @@ export function useBGM(shouldPlay: boolean) {
     if (!audio || unlockedRef.current) return;
 
     try {
+      if (audioContextRef.current?.state === 'suspended') {
+        await audioContextRef.current.resume();
+      }
       await audio.play();
       unlockedRef.current = true;
       setNeedsUnlock(false);
@@ -64,6 +69,9 @@ export function useBGM(shouldPlay: boolean) {
 
     // Track actual play state via native events
     audio.addEventListener('playing', () => {
+      if (audioContextRef.current?.state === 'suspended') {
+        audioContextRef.current.resume().catch(() => {});
+      }
       setIsPlaying(true);
       unlockedRef.current = true;
       setNeedsUnlock(false);
@@ -73,13 +81,24 @@ export function useBGM(shouldPlay: boolean) {
 
     audioRef.current = audio;
 
-    // Try to play (will fail silently on iOS, which is fine)
-    audio.play().catch(() => {
-      pendingPlayRef.current = true;
-      setNeedsUnlock(true);
-      audio.pause();
-      audio.currentTime = 0;
-    });
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioCtx && !audioContextRef.current) {
+        const ctx = new AudioCtx();
+        audioContextRef.current = ctx;
+        
+        const source = ctx.createMediaElementSource(audio);
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 20000;
+        
+        source.connect(filter);
+        filter.connect(ctx.destination);
+        filterNodeRef.current = filter;
+      }
+    } catch (e) {
+      console.warn('Web Audio API not supported or failed to initialize', e);
+    }
 
     return () => {
       audio.pause();
@@ -94,16 +113,48 @@ export function useBGM(shouldPlay: boolean) {
     if (!audio) return;
 
     if (shouldPlay && !muted) {
+      if (audioContextRef.current?.state === 'suspended') {
+        audioContextRef.current.resume().catch(() => {});
+      }
       if (unlockedRef.current) {
         audio.play().catch(() => {});
       } else {
-        // Mark as pending - will play once unlocked via user interaction
         pendingPlayRef.current = true;
+        // Attempt to play: if it throws (e.g. mobile Safari autoplay blocked), we need user interaction
+        audio.play().catch(() => {
+          setNeedsUnlock(true);
+        });
       }
     } else {
       audio.pause();
     }
   }, [shouldPlay, muted]);
+
+  // Apply muffled filter and volume adjustments
+  useEffect(() => {
+    if (filterNodeRef.current && audioContextRef.current) {
+      const filter = filterNodeRef.current;
+      const ctx = audioContextRef.current;
+      const now = ctx.currentTime;
+      
+      if (isMuffled) {
+        filter.frequency.setTargetAtTime(800, now, 0.5);
+        if (audioRef.current) {
+          audioRef.current.volume = 0.15;
+        }
+      } else {
+        filter.frequency.setTargetAtTime(20000, now, 0.5);
+        if (audioRef.current) {
+          audioRef.current.volume = 0.35;
+        }
+      }
+    } else {
+      // Fallback if Web Audio API is unsupported
+      if (audioRef.current) {
+        audioRef.current.volume = isMuffled ? 0.15 : 0.35;
+      }
+    }
+  }, [isMuffled]);
 
   const toggleMute = useCallback(() => {
     setMuted(prev => !prev);

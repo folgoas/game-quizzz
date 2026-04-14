@@ -2,12 +2,13 @@
   "name": "quiz-service",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js"
+    "dev": "tsx watch index.ts"
   },
   "dependencies": {
-    "socket.io": "^4.8.3"
+    "@google/generative-ai": "^0.24.1",
+    "socket.io": "^4.8.3",
+    "tsx": "^4.21.0"
   }
 }

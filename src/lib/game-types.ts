@@ -27,10 +27,12 @@ export interface Player {
   score: number;
   currentAnswer: number | null;
   cashAnswer: string | null;
+  isCashAnswerCorrect?: boolean | null;
   answerTime: number | null;
   connected: boolean;
   color: string;
   avatarIndex: number;
+  buzzerSoundId?: string;
 }
 
 export interface RoundConfig {
@@ -48,10 +50,34 @@ export interface GameSettings {
 export const ALICE_CATEGORIES = [
   'Dessins animés & Manga',
   'Jeux Vidéo',
-  'Pop Culture',
+  'Pop Culture'
 ];
 
 export const ALICE_MODE_CODE = 'folgoas';
+
+export const CATEGORIES = [
+  'Culture Générale',
+  'Cinéma & Séries',
+  'Sport',
+  'Musique',
+  'Sciences & Nature',
+  'Histoire & Géographie',
+  'Jeux Vidéo',
+  'Stranger Things',
+  'Tintin',
+  'Années 80',
+  'Années 90',
+  'Années 2000',
+  'Années 2010',
+  'Années 2020',
+  'Harry Potter',
+  'Disney & Pixar',
+  'Star Wars',
+  'Super-Héros',
+  'Séries TV Cultes',
+  'Mangas'
+];
+
 
 export interface GameState {
   code: string;
@@ -72,15 +98,7 @@ export interface GameState {
 
 export type GameView = 'menu' | 'host-config' | 'host-lobby' | 'player-lobby' | 'host-game' | 'player-game' | 'round-transition';
 
-export const CATEGORIES = [
-  'Culture Générale',
-  'Cinéma & Séries',
-  'Sport',
-  'Musique',
-  'Sciences & Nature',
-  'Histoire & Géographie',
-  'Jeux Vidéo',
-];
+
 
 export const GAME_DURATIONS = [
   { label: 'Express', minutes: 10, icon: '⚡' },
