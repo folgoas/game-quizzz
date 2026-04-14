@@ -227,7 +227,6 @@ const rooms = new Map<string, GameRoom>();
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
-  path: '/',
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
