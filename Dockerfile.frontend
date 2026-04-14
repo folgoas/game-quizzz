@@ -22,4 +22,4 @@ ENV PORT=3001
 ENV HOSTNAME="0.0.0.0"
 
 # Run migrations then start server
-CMD npx prisma db push && node server.js
+CMD npx prisma@6 db push && node server.js
