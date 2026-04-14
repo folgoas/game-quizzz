@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.gitignore
+.config
+.config.caddy
+*.log
+.stats
+.accesslog
+docker-compose.yml
+Dockerfile.*
+prisma/migrations
+db/*.db
+mini-services/quiz-service/node_modules
+mini-services/quiz-service/dist
