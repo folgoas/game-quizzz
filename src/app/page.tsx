@@ -12,7 +12,7 @@ import {
   MonitorPlay, Smartphone, Copy, Settings, Crown, Star,
   Zap, Clock, ChevronRight, RotateCcw, Eye, X, Timer, Pencil,
   Flame, Target, Sparkles, Lock, Wand2, Volume2, VolumeX, FastForward,
-  ChevronDown
+  ChevronDown, HelpCircle, ArrowRight, ArrowLeft, Gamepad2
 } from 'lucide-react';
 import {
   Select,
@@ -436,14 +436,14 @@ function PlayerLobby({ gameState, playerId, onSetSound, onToggleReady }: {
         onClick={onToggleReady}
         className={`w-full max-w-sm h-16 rounded-2xl border-4 text-xl font-black uppercase tracking-widest shadow-lg flex items-center justify-center gap-2 mb-6 transition-all ${
           me.isReady 
-            ? 'bg-[#00C9FF] text-white border-white animate-pulse' 
-            : 'bg-white text-gray-400 border-gray-100 hover:border-[#00C9FF]/50 hover:text-[#00C9FF]'
+            ? 'bg-[#00E676] text-white border-white animate-pulse' 
+            : 'bg-[#FF8C00] text-white border-white animate-pulse-glow shadow-[0_0_15px_rgba(255,140,0,0.4)]'
         }`}
       >
         {me.isReady ? (
           <><CheckCircle2 size={24} /> PRÊT !</>
         ) : (
-          <>PRÊT ?</>
+          <><Star size={24} className="animate-spin-slow" /> PRÊT ?</>
         )}
       </motion.button>
 
@@ -725,7 +725,7 @@ function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onResta
           {sorted.map((player, rank) => {
             const hasAnswered = player.currentAnswer !== null || player.cashAnswer !== null;
             const isRevealed = gameState.questionState === 'revealed';
-            const isCorrect = (isMCQ && player.currentAnswer === q?.correct) || (q?.type === 'cash-answer' && player.isCashAnswerCorrect === true);
+            const isCorrect = (isMCQ && player.currentAnswer === (q as any)?.correct) || (q?.type === 'cash-answer' && player.isCashAnswerCorrect === true);
             const heights = ['h-14 sm:h-16','h-10 sm:h-12','h-8 sm:h-10'];
             const pipeH = heights[Math.min(rank,2)] || heights[2];
             return (
@@ -871,7 +871,7 @@ function PlayerBuzzerScreen({ gameState, playerId, onAnswer }: {
                 className="w-full px-4 py-3 rounded-xl bg-gray-50 border-3 border-gray-200 text-lg font-bold text-gray-800 focus:outline-none focus:border-[#8B5CF6] font-[family-name:var(--font-fredoka)]"
                 onKeyDown={e => { if (e.key === 'Enter') { const input = (e.target as HTMLInputElement).value; if (input.trim()) { onAnswer(undefined, input.trim()); playMyBuzzer(); } } }}
               />
-              <button onClick={() => { const input = document.getElementById('cash-input'); if (input) { const v = input.value.trim(); if (v) { onAnswer(undefined, v); playMyBuzzer(); } } }}
+              <button onClick={() => { const input = document.getElementById('cash-input') as HTMLInputElement; if (input) { const v = input.value.trim(); if (v) { onAnswer(undefined, v); playMyBuzzer(); } } }}
                 className="w-full mt-2 bg-[#8B5CF6] text-white text-lg font-bold py-3 rounded-xl border-3 border-white btn-3d flex items-center justify-center gap-2">
                 <Pencil size={18} /> Envoyer
               </button>
@@ -1002,7 +1002,7 @@ function VictoryScreen({ gameState, onRestart, onDestroyRoom, isHost }: {
   // Sequence: Podium -> Leaderboard (2.8s) -> Wait (15s total) -> Credits
   useEffect(() => {
     const tScores = setTimeout(() => setShowScores(true), 2800);
-    const tCredits = setTimeout(() => setStartCredits(true), 60000);
+    const tCredits = setTimeout(() => setStartCredits(true), 57000);
     return () => { clearTimeout(tScores); clearTimeout(tCredits); };
   }, []);
 
@@ -1128,7 +1128,7 @@ function VictoryScreen({ gameState, onRestart, onDestroyRoom, isHost }: {
           <motion.div
             initial={{ y: "100vh" }}
             animate={startCredits ? { y: "-100%" } : { y: "100vh" }}
-            transition={{ duration: 180, ease: "linear" }}
+            transition={{ duration: 133, ease: "linear" }}
             className="w-full max-w-3xl px-8 flex flex-col items-center text-center gap-16 pb-32"
           >
             <div className="mb-20">
@@ -1169,7 +1169,7 @@ function VictoryScreen({ gameState, onRestart, onDestroyRoom, isHost }: {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 180, duration: 2 }}
+                  transition={{ delay: 133, duration: 2 }}
                   className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
                 >
                   <motion.button
@@ -1223,7 +1223,7 @@ export default function BuzzQuizPage() {
   // Muffle the background music during active game questions for ambiance
   const isMuffled = view === 'host-game' && game.gameState?.status !== 'finished';
 
-  const bgm = useBGM(bgmShouldPlay, isMuffled);
+  const bgm = useBGM(bgmShouldPlay ?? false, isMuffled);
 
   const handleCreateFromConfig = useCallback((settings: GameSettings, hostName: string) => {
     setConfigSettings(settings);
@@ -1326,6 +1326,104 @@ export default function BuzzQuizPage() {
   );
 }
 
+// ==================== GUIDED TOUR ====================
+function GuidedTour({ onClose }: { onClose: () => void }) {
+  const [step, setStep] = useState(0);
+  
+  const steps = [
+    {
+      title: "Bienvenue sur BUZZ QUIZZ !",
+      desc: "Préparez-vous à défier vos amis dans une soirée mémorable. C'est simple, rapide et fun !",
+      icon: <Sparkles size={60} className="text-[#FFD700]" />,
+      color: "bg-[#00C9FF]"
+    },
+    {
+      title: "1 Écran pour tous",
+      desc: "L'Hôte lance la partie sur un ordinateur ou une TV. C'est là que les questions s'affichent !",
+      icon: <MonitorPlay size={60} className="text-white" />,
+      color: "bg-[#FF66CC]"
+    },
+    {
+      title: "Vos téléphones = Buzzers",
+      desc: "Chaque joueur rejoint la partie sur son smartphone en entrant le code affiché à l'écran.",
+      icon: <Smartphone size={60} className="text-white" />,
+      color: "bg-[#00E676]"
+    },
+    {
+      title: "Préparez-vous !",
+      desc: "Choisis ton avatar, ton cri de guerre (son du buzzer) et clique sur le gros bouton PRÊT !",
+      icon: <Star size={60} className="text-[#FFD700]" />,
+      color: "bg-[#FF8C00]"
+    },
+    {
+      title: "Buzzez en premier !",
+      desc: "Dès que tu connais la réponse, appuie sur ton écran ! Sois le plus rapide pour gagner plus de points.",
+      icon: <Zap size={60} className="text-white" />,
+      color: "bg-[#8B5CF6]"
+    },
+    {
+      title: "Grimpez sur le podium",
+      desc: "Le gagnant est celui qui a le plus de points à la fin. Bonne chance à tous !",
+      icon: <Trophy size={60} className="text-[#FFD700]" />,
+      color: "bg-[#00C9FF]"
+    }
+  ];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+      <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
+        className="bg-white rounded-[2.5rem] overflow-hidden max-w-md w-full shadow-2xl relative border-[6px] border-white">
+        
+        <div className={`h-48 flex items-center justify-center transition-colors duration-500 ${steps[step].color}`}>
+          <motion.div key={step} initial={{ scale: 0.5, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', bounce: 0.6 }}>
+            {steps[step].icon}
+          </motion.div>
+        </div>
+
+        <div className="p-8 text-center">
+          <motion.h3 key={`title-${step}`} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+            className="text-2xl font-[family-name:var(--font-titan)] text-gray-800 mb-3">
+            {steps[step].title}
+          </motion.h3>
+          <motion.p key={`desc-${step}`} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}
+            className="text-gray-500 font-medium leading-relaxed mb-8">
+            {steps[step].desc}
+          </motion.p>
+
+          <div className="flex gap-3">
+            {step > 0 ? (
+              <button onClick={() => setStep(step - 1)} className="flex-1 py-4 bg-gray-100 text-gray-700 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors">
+                <ArrowLeft size={20} /> Retour
+              </button>
+            ) : (
+              <button onClick={onClose} className="flex-1 py-4 bg-gray-100 text-gray-500 rounded-2xl font-bold hover:bg-gray-200 transition-colors">
+                Passer
+              </button>
+            )}
+            
+            {step < steps.length - 1 ? (
+              <button onClick={() => setStep(step + 1)} className="flex-[2] py-4 bg-[#FF66CC] text-white rounded-2xl font-bold flex items-center justify-center gap-2 btn-3d shadow-lg">
+                Suivant <ArrowRight size={20} />
+              </button>
+            ) : (
+              <button onClick={onClose} className="flex-[2] py-4 bg-[#00E676] text-white rounded-2xl font-bold flex items-center justify-center gap-2 btn-3d shadow-lg">
+                C'est parti ! <Play size={20} />
+              </button>
+            )}
+          </div>
+
+          <div className="flex justify-center gap-2 mt-6">
+            {steps.map((_, i) => (
+              <div key={i} className={`h-2 rounded-full transition-all duration-300 ${i === step ? 'w-8 bg-[#FF66CC]' : 'w-2 bg-gray-200'}`} />
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 // Simple MainMenu that launches config
 function MainMenu({ onCreateQuick, onJoin, error, onClearError, onCreateAlice, onCreateTest, isDancing, needsUnlock, onUnlock, muted, onToggleMute }: {
   onCreateQuick: () => void; onJoin: (code: string, name: string) => void; error: string | null; onClearError: () => void; onCreateAlice: () => void; onCreateTest: () => void; isDancing: boolean; needsUnlock?: boolean; onUnlock?: () => void; muted?: boolean; onToggleMute?: () => void;
@@ -1335,6 +1433,7 @@ function MainMenu({ onCreateQuick, onJoin, error, onClearError, onCreateAlice, o
   const [aliceUnlocked, setAliceUnlocked] = useState(false);
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [showNamePopup, setShowNamePopup] = useState(false);
+  const [showTour, setShowTour] = useState(false);
   const [code, setCode] = useState('');
 
   // Read hash AFTER mount only (avoids SSR hydration mismatch)
@@ -1423,38 +1522,49 @@ function MainMenu({ onCreateQuick, onJoin, error, onClearError, onCreateAlice, o
 
       {error && <ErrorBanner message={error} onClose={onClearError} />}
 
-      {/* Alice Mode Unlock Button */}
-      <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.35}} className="w-full max-w-xs mb-5">
-        <button onClick={() => { if (aliceUnlocked) { onCreateAlice(); } else { setShowCodeInput(!showCodeInput); } }}
-          className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-full border-3 font-bold text-sm transition-all ${
+      {/* Tour + Alice Mode Buttons */}
+      <div className="flex flex-col gap-2.5 w-full max-w-xs mb-6">
+        <motion.button initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.3}}
+          onClick={() => setShowTour(true)}
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white/20 border-3 border-white/30 text-white font-bold text-sm hover:bg-white/30 transition-all backdrop-blur-sm shadow-lg">
+          <HelpCircle size={18} /> Comment jouer ?
+        </motion.button>
+
+        <motion.button initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.4}}
+          onClick={() => { if (aliceUnlocked) { onCreateAlice(); } else { setShowCodeInput(!showCodeInput); } }}
+          className={`w-full flex items-center justify-center gap-2 py-3 rounded-full border-3 font-bold text-sm transition-all ${
             aliceUnlocked
-              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400 shadow-lg'
-              : 'bg-white/80 text-gray-500 border-gray-200 hover:border-purple-300 hover:text-purple-600'
+              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400 shadow-xl'
+              : 'bg-white/10 text-white/60 border-white/20 hover:border-purple-300 hover:text-purple-300'
           }`}>
           {aliceUnlocked ? (
             <><Wand2 size={16} /> Mode Soirée Pop Culture</>
           ) : (
             <><Lock size={14} /> Code secret</>
           )}
-        </button>
+        </motion.button>
+      </div>
 
-        <AnimatePresence>
-          {showCodeInput && !aliceUnlocked && (
-            <motion.form initial={{height:0,opacity:0}} animate={{height:'auto',opacity:1}} exit={{height:0,opacity:0}}
-              onSubmit={handleCodeSubmit} className="overflow-hidden mt-2">
-              <div className="flex gap-2 items-center justify-center">
-                <input type="text" placeholder="Entrez le code..." value={secretCode} onChange={e=>setSecretCode(e.target.value)}
-                  className="flex-1 px-3 py-2 rounded-full bg-white border-3 border-gray-200 text-center text-sm font-bold text-gray-800 focus:outline-none focus:border-purple-400 font-[family-name:var(--font-fredoka)]" />
-                <button type="submit" disabled={!secretCode.trim()}
-                  className="bg-purple-500 text-white px-4 py-2 rounded-full font-bold text-sm border-2 border-purple-400 disabled:opacity-50 btn-3d flex items-center gap-1">
-                  <Wand2 size={14} />
-                </button>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">Code fourni par l&apos;organisateur</p>
-            </motion.form>
-          )}
-        </AnimatePresence>
-      </motion.div>
+      <AnimatePresence>
+        {showTour && <GuidedTour onClose={() => setShowTour(false)} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCodeInput && !aliceUnlocked && (
+          <motion.form initial={{height:0,opacity:0}} animate={{height:'auto',opacity:1}} exit={{height:0,opacity:0}}
+            onSubmit={handleCodeSubmit} className="overflow-hidden mt-2">
+            <div className="flex gap-2 items-center justify-center">
+              <input type="text" placeholder="Entrez le code..." value={secretCode} onChange={e=>setSecretCode(e.target.value)}
+                className="flex-1 px-3 py-2 rounded-full bg-white border-3 border-gray-200 text-center text-sm font-bold text-gray-800 focus:outline-none focus:border-purple-400 font-[family-name:var(--font-fredoka)]" />
+              <button type="submit" disabled={!secretCode.trim()}
+                className="bg-purple-500 text-white px-4 py-2 rounded-full font-bold text-sm border-2 border-purple-400 disabled:opacity-50 btn-3d flex items-center gap-1">
+                <Wand2 size={14} />
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Code fourni par l&apos;organisateur</p>
+          </motion.form>
+        )}
+      </AnimatePresence>
       {/* ========== HÉBERGER + REJOINDRE CARDS WITH MOTION DESIGN ========== */}
       <div className="flex flex-col md:flex-row gap-5 w-full max-w-4xl justify-center px-3">
         {/* --- HÉBERGER CARD --- */}
