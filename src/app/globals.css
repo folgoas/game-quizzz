@@ -299,8 +299,6 @@
 .touch-optimized {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  overscroll-behavior-y: none;
 }
 
 /* Hide scrollbar but allow scroll */
