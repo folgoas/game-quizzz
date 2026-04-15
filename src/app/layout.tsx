@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   keywords: ["Buzz", "Quiz", "Multijoueur", "Party Game", "Buzzer", "Smartphone", "PS3"],
   authors: [{ name: "Buzz! Quiz Team" }],
   icons: {
-    icon: "/favicon.ico",
+    icon: "/logo.svg",
   },
   openGraph: {
     title: "BUZZ! Le Grand Quiz",

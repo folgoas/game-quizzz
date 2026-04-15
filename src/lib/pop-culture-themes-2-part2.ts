@@ -9,7 +9,7 @@ const shSpeed: MCQQuestion[] = [
   { id: 'sh_s6', text: "Qui meurt piqué par une araignée radioactive et obtient des pouvoirs ?", answers: ["Peter Parker", "Harry Osborn", "Bruce Banner", "Flash Thompson"], correct: 0, category: 'Super-Héros', type: 'speed-choice' },
   { id: 'sh_s7', text: "Quel super-vilain claque des doigts avec le Gant de l'Infini ?", answers: ["Ultron", "Galactus", "Thanos", "Kang"], correct: 2, category: 'Super-Héros', type: 'speed-choice' },
   { id: 'sh_s8', text: "Quel super-héros DC est ultra-rapide ('L'Homme le plus rapide') ?", answers: ["Quicksilver", "Flash", "Dash", "Sonic"], correct: 1, category: 'Super-Héros', type: 'speed-choice' },
-  { id: 'sh_s9', text: "Quel justicier Marvel poignarde et tire avec beaucoup (trop) de sang (Dead...) ?", answers: ["Deadshot", "Deadpool", "Deathstroke", "Deadeye"], correct: 1, category: 'Super-Héros', type: 'speed-choice' },
+  { id: 'sh_s9', text: "Quel justicier Marvel est expert en pistolets, sabres et humour noir ?", answers: ["Deadshot", "Deadpool", "Deathstroke", "Deadeye"], correct: 1, category: 'Super-Héros', type: 'speed-choice' },
   { id: 'sh_s10', text: "Quel roi d'Atlantis communique avec les poissons ?", answers: ["Poséidon", "Namor", "Aquaman", "Triton"], correct: 2, category: 'Super-Héros', type: 'speed-choice' },
   { id: 'sh_s11', text: "Qui est surnommé 'Le Chevalier Noir' ?", answers: ["Batman", "Superman", "Green Arrow", "Blade"], correct: 0, category: 'Super-Héros', type: 'speed-choice' },
   { id: 'sh_s12', text: "Quel est le nom de code de Natasha Romanoff ?", answers: ["Black Canary", "Captain Marvel", "La Sorcière Rouge", "Black Widow"], correct: 3, category: 'Super-Héros', type: 'speed-choice' },
@@ -32,7 +32,7 @@ const shMcq: MCQQuestion[] = [
   { id: 'sh_m11', text: "Lequel de ces super-héros NE FAIT PAS partie des Avengers originaux du film de 2012 ?", answers: ["Hulk", "Black Widow", "Spider-Man", "Hawkeye"], correct: 2, category: 'Super-Héros', type: 'multiple-choice' },
   { id: 'sh_m12', text: "Qui incarne Wonder Woman dans le DCEU (Justice League) ?", answers: ["Scarlett Johansson", "Brie Larson", "Gal Gadot", "Margot Robbie"], correct: 2, category: 'Super-Héros', type: 'multiple-choice' },
   { id: 'sh_m13', text: "Comment s'appelle le docteur qui se transforme en géant vert (Hulk) ?", answers: ["Stephen Strange", "Bruce Banner", "Reed Richards", "Hank Pym"], correct: 1, category: 'Super-Héros', type: 'multiple-choice' },
-  { id: 'sh_m14', text: "Comment Venom a-t-il été brûlé au visage/sauvé (Deadpool) ? Wait Deadpool est le film :", answers: ["Venom", "Deadpool", "Spider-Man", "Carnage"], correct: 1, category: 'Super-Héros', type: 'multiple-choice' }, // Oops, question is confusing, let's substitute
+  { id: 'sh_m14', text: "De quel super-héros Venom est-il l'ennemi juré graphique ?", answers: ["Spider-Man", "Iron Man", "Captain America", "Hulk"], correct: 0, category: 'Super-Héros', type: 'multiple-choice' },
   { id: 'sh_m15', text: "Où se trouve le QG secret de Batman ?", answers: ["Batcave", "Manoir Wayne", "Forteresse de Solitude", "Tour de l'horloge"], correct: 0, category: 'Super-Héros', type: 'multiple-choice' }
 ];
 
@@ -91,7 +91,7 @@ const tvCash: CashAnswerQuestion[] = [
   { id: 'tv_c3', text: "Avocats de New York, série avec Meghan Markle.", acceptedAnswers: ["Suits", "Suite", "Avocats sur mesure"], category: 'Séries TV Cultes', type: 'cash-answer' },
   { id: 'tv_c4', text: "Prénom du chef des orphelins (enfant surdoué) dans la série Malcolm ?", acceptedAnswers: ["Malcolm"], category: 'Séries TV Cultes', type: 'cash-answer' },
   { id: 'tv_c5', text: "Dans quelle série française d'Alexandre Astier trouve-t-on le roi Arthur ?", acceptedAnswers: ["Kaamelott", "Kamelot"], category: 'Séries TV Cultes', type: 'cash-answer' },
-  { id: 'tv_c6', text: "Terme médical pour le docteur aux pires diagnostics mais à l'ironie cinglante, incarné par Hugh Laurie.", acceptedAnswers: ["Dr House", "House", "Docteur House"], category: 'Séries TV Cultes', type: 'cash-answer' },
+  { id: 'tv_c6', text: "Comment s'appelle le docteur cynique expert en diagnostics incarné par Hugh Laurie ?", acceptedAnswers: ["Dr House", "House", "Docteur House"], category: 'Séries TV Cultes', type: 'cash-answer' },
   { id: 'tv_c7', text: "La série de Netflix avec des 'jeux' enfantins sud-coréens mortels.", acceptedAnswers: ["Squid Game", "Le jeu du calamar"], category: 'Séries TV Cultes', type: 'cash-answer' },
   { id: 'tv_c8', text: "Nom de l'acteur incarnant Jon Snow dans Game of Thrones (Kit ...) ?", acceptedAnswers: ["Kit Harington", "Harington"], category: 'Séries TV Cultes', type: 'cash-answer' },
   { id: 'tv_c9', text: "Le nom du seigneur de la drogue incarné par Wagner Moura dans Narcos.", acceptedAnswers: ["Pablo Escobar", "Escobar"], category: 'Séries TV Cultes', type: 'cash-answer' },

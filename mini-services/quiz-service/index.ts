@@ -10,7 +10,7 @@ import { THEMES_PART1_MCQ, THEMES_PART1_CASH } from '../../src/lib/pop-culture-t
 import { THEMES_PART2_MCQ, THEMES_PART2_CASH } from '../../src/lib/pop-culture-themes-2-part2';
 import { THEMES_PART3_MCQ } from '../../src/lib/pop-culture-themes-2-part3';
 import { THEMES_MANGA_MCQ, THEMES_MANGA_CASH } from '../../src/lib/pop-culture-themes-mangas';
-import type { Player, Question, GameSettings } from '../../src/lib/game-types';
+import type { Question, GameSettings } from '../../src/lib/game-types';
 import { ALICE_CATEGORIES } from '../../src/lib/game-types';
 
 const MCQ_QUESTIONS = [
@@ -203,6 +203,7 @@ interface Player {
   avatarIndex: number;
   connected: boolean;
   buzzerSoundId: string;
+  isReady: boolean;
   ipAddress: string;
 }
 
@@ -270,7 +271,7 @@ io.on('connection', (socket) => {
       players: {
         [hostSession]: {
           id: hostSession, socketId: socket.id, name: hostName, score: 0, currentAnswer: null, cashAnswer: null, answerTime: null,
-          color: PLAYER_COLORS[0], avatarIndex: 0, connected: true, buzzerSoundId: 'buzzer-classique',
+          color: PLAYER_COLORS[0], avatarIndex: 0, connected: true, buzzerSoundId: 'buzzer-classique', isReady: true, // Host is always ready
           ipAddress: socket.handshake.address
         }
       },
@@ -358,6 +359,7 @@ io.on('connection', (socket) => {
       color: PLAYER_COLORS[room.avatarCounter % PLAYER_COLORS.length],
       avatarIndex: room.avatarCounter % AVATAR_EMOJIS.length,
       buzzerSoundId: data.buzzerSoundId || 'buzzer-classique',
+      isReady: false,
       ipAddress: socket.handshake.address,
     };
     room.avatarCounter++;
@@ -372,8 +374,9 @@ io.on('connection', (socket) => {
     for (const [, room] of rooms) {
       const player = Object.values(room.players).find(p => p.socketId === socket.id);
       if (player && room.hostId === player.id && room.status === 'lobby') {
-        if (Object.keys(room.players).length < 2) {
-          socket.emit('error', { message: 'Il faut au moins 2 joueurs pour commencer !' });
+        const minPlayers = room.settings.testMode ? 1 : 2;
+        if (Object.keys(room.players).length < minPlayers) {
+          socket.emit('error', { message: `Il faut au moins ${minPlayers} joueur${minPlayers > 1 ? 's' : ''} pour commencer !` });
           return;
         }
 
@@ -520,6 +523,17 @@ io.on('connection', (socket) => {
       if (player && data.buzzerSoundId) {
         player.buzzerSoundId = data.buzzerSoundId;
         broadcastRoomState(room);
+      }
+    }
+  });
+  
+  socket.on('toggle-ready', () => {
+    for (const [, room] of rooms) {
+      const player = Object.values(room.players).find(p => p.socketId === socket.id);
+      if (player && room.status === 'lobby') {
+        player.isReady = !player.isReady;
+        broadcastRoomState(room);
+        break;
       }
     }
   });

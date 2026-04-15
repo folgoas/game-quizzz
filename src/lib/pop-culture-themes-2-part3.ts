@@ -5,7 +5,7 @@ const hpSpeedAdd: MCQQuestion[] = [
   { id: 'hp_sa2', text: "Quelle friandise permet d'avoir toutes les saveurs, même dégoûtantes ?", answers: ["Chocogrenouilles", "Dragées surprise de Bertie Crochue", "Patacitrouilles", "Suçacides"], correct: 1, category: 'Harry Potter', type: 'speed-choice' },
   { id: 'hp_sa3', text: "Qui habite le 4, Privet Drive ?", answers: ["Les Weasley", "Les Dursley", "Les Potter", "Les Malefoy"], correct: 1, category: 'Harry Potter', type: 'speed-choice' },
   { id: 'hp_sa4', text: "Quel centaure sauve Harry dans la forêt interdite (tome 1) ?", answers: ["Firenze", "Bane", "Ronan", "Magorian"], correct: 0, category: 'Harry Potter', type: 'speed-choice' },
-  { id: 'hp_sa5', text: "Qui donne l'Éclair de Feu à Harry Potter ?", answers: ["Dumbledore", "McGonagall", "Sirius Black", "Rupin"], correct: 2, category: 'Harry Potter', type: 'speed-choice' }
+  { id: 'hp_sa5', text: "Qui donne l'Éclair de Feu à Harry Potter ?", answers: ["Albus Dumbledore", "Minerva McGonagall", "Sirius Black", "Remus Lupin"], correct: 2, category: 'Harry Potter', type: 'speed-choice' }
 ];
 
 const hpMcqAdd: MCQQuestion[] = [
@@ -21,7 +21,7 @@ const dpSpeedAdd: MCQQuestion[] = [
   { id: 'dp_sa2', text: "Comment s'appelle l'oiseau coloré dans 'Là-haut' ?", answers: ["Bébert", "Kevin", "Arthur", "Doug"], correct: 1, category: 'Disney & Pixar', type: 'speed-choice' },
   { id: 'dp_sa3', text: "Dans Le Roi Lion, 'Hakuna Matata' signifie :", answers: ["Quelle belle vie", "Sans aucun souci", "Courage et force", "C'est l'histoire de la vie"], correct: 1, category: 'Disney & Pixar', type: 'speed-choice' },
   { id: 'dp_sa4', text: "Lequel de ces personnages Disney est MUET (ne parle pas) dans son film d'origine ?", answers: ["Dumbo", "Bambi", "Simba", "Pinocchio"], correct: 0, category: 'Disney & Pixar', type: 'speed-choice' },
-  { id: 'dp_sa5', text: "Dans Toy Story 2, quel personnage est ajouté à la bande de Woody ?", answers: ["La Bergère", "Jessie", "Pile-Poil", "Jessie et Pile-poil"], correct: 3, category: 'Disney & Pixar', type: 'speed-choice' }
+  { id: 'dp_sa5', text: "Dans Toy Story 2, quel nouveau duo rejoint la bande de Woody ?", answers: ["La Bergère", "Jessie seule", "Pile-Poil seul", "Jessie et Pile-Poil"], correct: 3, category: 'Disney & Pixar', type: 'speed-choice' }
 ];
 
 const dpMcqAdd: MCQQuestion[] = [
@@ -50,10 +50,10 @@ const swMcqAdd: MCQQuestion[] = [
 
 const shSpeedAdd: MCQQuestion[] = [
   { id: 'sh_sa1', text: "Qui devient 'Winter Soldier' (Le Soldat de l'Hiver) ?", answers: ["Steve Rogers", "Bucky Barnes", "Sam Wilson", "Clint Barton"], correct: 1, category: 'Super-Héros', type: 'speed-choice' },
-  { id: 'sh_sa2', text: "Quel est le vrai nom de Superman ?", answers: ["Bruce Wayne", "Kal-El", "Clark Kent", "Les deux réponses Kal-El et Clark Kent"], correct: 3, category: 'Super-Héros', type: 'speed-choice' },
+  { id: 'sh_sa2', text: "Quel est le nom kryptonien de Superman ?", answers: ["Bruce Wayne", "Clark Kent", "Barry Allen", "Kal-El"], correct: 3, category: 'Super-Héros', type: 'speed-choice' },
   { id: 'sh_sa3', text: "Quelle couleur d'anneau portent les gardiens de l'univers comme Hal Jordan ?", answers: ["Jaune", "Vert", "Rouge", "Bleu"], correct: 1, category: 'Super-Héros', type: 'speed-choice' },
   { id: 'sh_sa4', text: "Quel oiseau symbolise la famille de super-héros au manoir Wayne (Robin) ?", answers: ["Corbeau", "Rouge-gorge", "Aigle", "Faucon"], correct: 1, category: 'Super-Héros', type: 'speed-choice' },
-  { id: 'sh_sa5', text: "Thor est un dieu d'inspiration...", answers: ["Grecque", "Romaine", "Nordique (Scandinave)", "Égyptienne"], correct: 2, category: 'Super-Héros', type: 'speed-choice' }
+  { id: 'sh_sa5', text: "Dans Marvel, Thor est un dieu d'inspiration...", answers: ["Grecque", "Romaine", "Nordique", "Égyptienne"], correct: 2, category: 'Super-Héros', type: 'speed-choice' }
 ];
 
 const shMcqAdd: MCQQuestion[] = [
@@ -66,7 +66,7 @@ const shMcqAdd: MCQQuestion[] = [
 
 const tvSpeedAdd: MCQQuestion[] = [
   { id: 'tv_sa1', text: "Comment s'appelle l'inspecteur chef de police dans La Casa De Papel ?", answers: ["Raquel Murillo", "Alicia Sierra", "Tokyo", "Nairobi"], correct: 0, category: 'Séries TV Cultes', type: 'speed-choice' },
-  { id: 'tv_sa2', text: "Dans Stranger Things, quel chiffre (numéro) Eleven a-t-elle pour 'soeur' illusoire (Saison 2) ?", answers: ["008 (Kali)", "001", "007", "005"], correct: 0, category: 'Séries TV Cultes', type: 'speed-choice' },
+  { id: 'tv_sa2', text: "Dans Stranger Things, quel numéro porte la 'sœur' de Onze en saison 2 ?", answers: ["008", "001", "007", "005"], correct: 0, category: 'Séries TV Cultes', type: 'speed-choice' },
   { id: 'tv_sa3', text: "Série culte suivant un prof de chimie frappé par un cancer :", answers: ["Weeds", "Ozark", "Breaking Bad", "Narcos"], correct: 2, category: 'Séries TV Cultes', type: 'speed-choice' },
   { id: 'tv_sa4', text: "Dans Dexter, qu'appelle-t-il 'Son Passager Noir' ?", answers: ["Sa voiture de sport", "Son bateau", "Sa pulsion de meurtre", "Son boss"], correct: 2, category: 'Séries TV Cultes', type: 'speed-choice' },
   { id: 'tv_sa5', text: "Combien d'années la guerre a-t-elle sévi officiellement entre M & Scully (X-Files) ?", answers: ["5 saisons", "9 saisons", "11 saisons", "15 saisons"], correct: 2, category: 'Séries TV Cultes', type: 'speed-choice' } // actually 11 seasons overall

@@ -11,8 +11,16 @@ import {
   Trophy, Users, Play, AlertCircle, CheckCircle2, XCircle,
   MonitorPlay, Smartphone, Copy, Settings, Crown, Star,
   Zap, Clock, ChevronRight, RotateCcw, Eye, X, Timer, Pencil,
-  Flame, Target, Sparkles, Lock, Wand2, Volume2, VolumeX, FastForward
+  Flame, Target, Sparkles, Lock, Wand2, Volume2, VolumeX, FastForward,
+  ChevronDown
 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // ==================== PLAYER EXIT BUTTON ====================
 function PlayerExitButton() {
@@ -259,6 +267,7 @@ function HostLobby({ gameState, playerId, onStartGame, onKickPlayer }: {
   const playerList = useMemo(() =>
     Object.values(gameState.players).filter(p => p.id !== gameState.hostId).sort((a,b) => a.id===playerId?-1:b.id===playerId?1:0),
     [gameState.players, playerId, gameState.hostId]);
+  const allReady = playerList.length > 0 && playerList.every(p => p.isReady);
 
   const joinUrl = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}#code=${gameState.code}` : '';
   const copyLink = async () => {
@@ -278,12 +287,14 @@ function HostLobby({ gameState, playerId, onStartGame, onKickPlayer }: {
 
       {/* Code + QR */}
       <motion.div initial={{scale:0.9,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:'spring',bounce:0.3}}
-        className="bg-white rounded-[2rem] border-[6px] border-[#FF66CC] shadow-[0_8px_0_rgba(0,0,0,0.15)] p-5 sm:p-7 mb-6 flex flex-col md:flex-row items-center gap-6 w-full max-w-3xl">
+        className={`bg-white rounded-[2rem] border-[6px] shadow-[0_8px_0_rgba(0,0,0,0.15)] p-5 sm:p-7 mb-6 flex flex-col md:flex-row items-center gap-6 w-full max-w-3xl transition-colors duration-500 ${allReady ? 'border-[#00E676]' : 'border-[#FF66CC]'}`}>
         <div className="text-center flex-1">
           <p className="text-sm text-gray-500 mb-1 font-bold uppercase tracking-wider">Code de la salle</p>
           <p className="text-[4rem] sm:text-[6rem] font-[family-name:var(--font-titan)] text-[#00C9FF] game-text-outline leading-none select-all">{gameState.code}</p>
           <div className="mt-3 flex items-center gap-2 text-gray-600 text-base font-bold justify-center">
-            <Users size={16} /> {playerList.length}/32 joueurs
+            <Users size={16} className={allReady ? 'text-[#00E676]' : 'text-gray-400'} /> 
+            <span className={allReady ? 'text-[#00E676]' : ''}>{playerList.length}/32 joueurs</span>
+            {allReady && playerList.length > 0 && <span className="ml-2 bg-[#00E676] text-white text-[10px] px-2 py-0.5 rounded-full animate-pulse">PRÊT !</span>}
           </div>
         </div>
         <div className="hidden md:block w-1 h-28 bg-gray-200 rounded-full" />
@@ -322,11 +333,16 @@ function HostLobby({ gameState, playerId, onStartGame, onKickPlayer }: {
             <p className="text-white text-base font-bold opacity-70 animate-pulse">En attente...</p>
           ) : playerList.map(p => (
             <motion.div key={p.id} initial={{scale:0}} animate={{scale:1}}
-              className="flex items-center gap-1.5 bg-white px-3 py-2 rounded-full text-sm font-bold shadow-md border-3 border-white/80 hover:scale-105 transition-transform group">
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-bold shadow-md border-3 transition-all ${p.isReady ? 'bg-green-50 border-green-400' : 'bg-white border-white/80'} group`}>
               <span className="text-base">{AVATAR_EMOJIS[p.avatarIndex]||'🎮'}</span>
               <span className="truncate max-w-[100px]" style={{color:p.color}}>{p.name}</span>
+              {p.isReady ? (
+                <CheckCircle2 size={16} className="text-[#00E676] shrink-0" />
+              ) : (
+                <div className="w-4 h-4 rounded-full border-2 border-gray-200 shrink-0" />
+              )}
               {p.id !== playerId && (
-                <button onClick={()=>onKickPlayer(p.id)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 p-0.5"><X size={12}/></button>
+                <button onClick={()=>onKickPlayer(p.id)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 p-0.5 ml-1"><X size={12}/></button>
               )}
             </motion.div>
           ))}
@@ -335,11 +351,18 @@ function HostLobby({ gameState, playerId, onStartGame, onKickPlayer }: {
 
       {/* Start */}
       <AnimatePresence>
-        {playerList.length >= 2 && (
-          <motion.button initial={{scale:0}} animate={{scale:1}} exit={{scale:0}} whileHover={{scale:1.05}} whileTap={{scale:0.95}}
-            onClick={onStartGame}
-            className="bg-[#00E676] text-white text-xl sm:text-2xl font-bold px-10 sm:px-14 py-5 sm:py-6 rounded-[2rem] border-[6px] border-white btn-3d-heavy flex items-center gap-3 animate-pulse-glow shadow-2xl">
-            <Play size={28} /> JOUER !
+        {(playerList.length >= 2 || gameState.settings.testMode) && (
+          <motion.button initial={{scale:0}} animate={{scale:1}} exit={{scale:0}}
+            whileHover={allReady ? {scale:1.05} : {}} whileTap={allReady ? {scale:0.95} : {}}
+            onClick={() => allReady && onStartGame()}
+            disabled={!allReady}
+            className={`text-white text-xl sm:text-2xl font-bold px-10 sm:px-14 py-5 sm:py-6 rounded-[2rem] border-[6px] border-white flex items-center gap-3 shadow-2xl transition-all ${
+              allReady 
+                ? 'bg-[#00E676] btn-3d-heavy animate-pulse-glow opacity-100 cursor-pointer' 
+                : 'bg-gray-400 opacity-50 cursor-not-allowed grayscale'
+            }`}>
+            {allReady ? <Play size={28} /> : <XCircle size={28} />}
+            {allReady ? 'JOUER !' : 'EN ATTENTE...'}
           </motion.button>
         )}
       </AnimatePresence>
@@ -348,7 +371,9 @@ function HostLobby({ gameState, playerId, onStartGame, onKickPlayer }: {
 }
 
 // ==================== PLAYER LOBBY ====================
-function PlayerLobby({ gameState, playerId, onSetSound }: { gameState: GameState; playerId: string; onSetSound: (soundId: string) => void }) {
+function PlayerLobby({ gameState, playerId, onSetSound, onToggleReady }: {
+  gameState: GameState; playerId: string; onSetSound: (soundId: string) => void; onToggleReady: () => void;
+}) {
   const me = gameState.players[playerId];
   const [selectedSound, setSelectedSound] = useState(me?.buzzerSoundId || 'buzzer-classique');
   const sound = useSound();
@@ -380,26 +405,47 @@ function PlayerLobby({ gameState, playerId, onSetSound }: { gameState: GameState
       <p className="text-sm font-bold text-white bg-black/20 px-3 py-1 rounded-full inline-block mb-5">✓ Connecté !</p>
 
       {/* Sound Picker */}
-      <div className="bg-white rounded-2xl border-4 border-[#FF66CC] shadow-lg p-4 w-full max-w-sm mb-5">
-        <div className="flex items-center justify-center gap-1.5 mb-3">
-          <span className="text-lg">🔊</span>
-          <h3 className="text-base font-bold text-[#FF66CC] uppercase tracking-wider">Choisis ton buzzer</h3>
+      <div className="bg-white rounded-2xl border-4 border-[#FF66CC] shadow-lg p-5 w-full max-w-sm mb-5">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <Volume2 size={20} className="text-[#FF66CC]" />
+          <h3 className="text-base font-black text-[#FF66CC] uppercase tracking-widest">Ton cri de guerre</h3>
         </div>
-        <div className="grid grid-cols-3 gap-2 max-h-56 overflow-y-auto scrollbar-hide">
-          {BUZZER_SOUNDS.map(s => {
-            const isSelected = selectedSound === s.id;
-            return (
-              <motion.button key={s.id} whileTap={{scale:0.9}} onClick={() => handleSelect(s.id)}
-                className={`flex flex-col items-center gap-0.5 p-2 rounded-xl border-3 transition-all text-center ${
-                  isSelected ? 'bg-[#FF66CC] text-white border-[#FF66CC] shadow-md scale-105' : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-[#FF66CC]'
-                }`}>
-                <span className="text-xl">{s.emoji}</span>
-                <span className="text-xs font-bold leading-tight">{s.name}</span>
-              </motion.button>
-            );
-          })}
-        </div>
+        
+        <Select value={selectedSound} onValueChange={handleSelect}>
+          <SelectTrigger className="w-full h-14 bg-gray-50 border-3 border-gray-200 rounded-xl text-lg font-bold text-gray-800 focus:ring-[#FF66CC] focus:border-[#FF66CC] transition-all">
+            <SelectValue placeholder="Choisis un son..." />
+          </SelectTrigger>
+          <SelectContent className="bg-white border-3 border-[#FF66CC] rounded-xl shadow-2xl max-h-80">
+            {BUZZER_SOUNDS.map(s => (
+              <SelectItem key={s.id} value={s.id} className="focus:bg-[#FF66CC]/10 py-3 cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{s.emoji}</span>
+                  <span className="font-bold text-gray-700">{s.name}</span>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <p className="text-[10px] text-gray-400 font-bold mt-3 uppercase tracking-tighter">Le son sera joué quand tu buzzeras !</p>
       </div>
+
+      {/* Ready Button */}
+      <motion.button
+        whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+        onClick={onToggleReady}
+        className={`w-full max-w-sm h-16 rounded-2xl border-4 text-xl font-black uppercase tracking-widest shadow-lg flex items-center justify-center gap-2 mb-6 transition-all ${
+          me.isReady 
+            ? 'bg-[#00C9FF] text-white border-white animate-pulse' 
+            : 'bg-white text-gray-400 border-gray-100 hover:border-[#00C9FF]/50 hover:text-[#00C9FF]'
+        }`}
+      >
+        {me.isReady ? (
+          <><CheckCircle2 size={24} /> PRÊT !</>
+        ) : (
+          <>PRÊT ?</>
+        )}
+      </motion.button>
 
       <motion.div animate={{y:[0,-8,0]}} transition={{duration:2,repeat:Infinity}} className="mb-4">
         <div className="w-14 h-14 bg-[#FFD700] rounded-2xl border-4 border-white shadow-lg flex items-center justify-center"><Crown size={24} className="text-white"/></div>
@@ -415,8 +461,9 @@ function PlayerLobby({ gameState, playerId, onSetSound }: { gameState: GameState
 function RoundTransition({ gameState, playerId, onNextRound }: {
   gameState: GameState; playerId: string; onNextRound: () => void;
 }) {
-  const roundIdx = gameState.currentRound + 1; // Next round
-  const nextRound = gameState.settings.rounds[roundIdx];
+  const nextRoundIdx = gameState.currentRound + 1; // Index of next round
+  const nextRoundNum = nextRoundIdx + 1;
+  const nextRound = gameState.settings.rounds[nextRoundIdx];
   const isHost = playerId === gameState.hostId;
   const sorted = Object.values(gameState.players).filter(p => p.id !== gameState.hostId).sort((a,b)=>b.score-a.score);
   const sound = useSound();
@@ -461,7 +508,7 @@ function RoundTransition({ gameState, playerId, onNextRound }: {
         <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.6}}>
           <p className="text-base text-gray-500 mb-2">Manche suivante</p>
           <h2 className="text-3xl sm:text-4xl font-[family-name:var(--font-titan)] text-[#FF66CC] game-text-outline-dark mb-1">
-            Manche {roundIdx}
+            Manche {nextRoundNum}
           </h2>
           <p className="text-lg font-bold text-gray-600">{nextRound?.category}</p>
           <p className="text-sm text-gray-500 mt-1">{nextRound?.questionCount} questions</p>
@@ -471,8 +518,8 @@ function RoundTransition({ gameState, playerId, onNextRound }: {
           <motion.button initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:1}}
             whileHover={{scale:1.05}} whileTap={{scale:0.95}}
             onClick={onNextRound}
-            className="mt-6 bg-[#00C9FF] text-white text-xl font-bold px-10 py-4 rounded-full border-4 border-white btn-3d-heavy flex items-center gap-2 shadow-lg">
-            <Play size={20} /> Manche {roundIdx} !
+            className="mt-6 bg-[#00C9FF] text-white text-xl font-bold px-10 py-4 rounded-full border-4 border-white btn-3d-heavy flex items-center gap-2 shadow-lg w-full justify-center">
+            <Play size={20} /> Manche {nextRoundNum} !
           </motion.button>
         )}
         {!isHost && (
@@ -566,8 +613,8 @@ function HostGameScreen({ gameState, playerId, onNextState, onNextRound, onResta
       </AnimatePresence>
 
       {/* Header */}
-      <div className="h-16 sm:h-20 bg-white/95 border-b-[5px] border-white flex items-center justify-between px-3 sm:px-6 shadow-lg relative z-20 shrink-0">
-        <div className="absolute inset-0 opacity-5" style={{backgroundImage:'repeating-linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000),repeating-linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000)',backgroundPosition:'0 0,12px 12px',backgroundSize:'24px 24px'}} />
+      <div className="h-16 sm:h-20 bg-white border-b-[5px] border-white/50 flex items-center justify-between px-3 sm:px-6 shadow-lg relative z-20 shrink-0">
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
         <div className="flex items-center gap-2 relative z-10">
           <button onClick={() => setShowExitConfirm(true)} className="hover:scale-105 transition-transform origin-left text-left focus:outline-none group">
             <h1 className="text-2xl sm:text-4xl font-[family-name:var(--font-titan)] text-[#B8860B] transform -rotate-1 group-hover:text-[#FFD700] transition-colors">BUZZ!</h1>
@@ -884,6 +931,7 @@ function useVictoryMusic(shouldPlay: boolean) {
     if (!shouldPlay) return;
     const audio = new Audio('/audio/victory.mp3');
     audio.volume = 0.6;
+    audio.loop = false;
     audio.play().catch(() => {});
     return () => { audio.pause(); audio.currentTime = 0; };
   }, [shouldPlay]);
@@ -896,6 +944,7 @@ function useCreditsMusic(shouldPlay: boolean) {
     const audio = new Audio('/audio/credits.mp3');
     audio.volume = 0.5;
     audio.loop = false;
+    audio.preload = 'auto';
     audio.play().catch(() => {});
     return () => { audio.pause(); audio.currentTime = 0; };
   }, [shouldPlay]);
@@ -953,7 +1002,7 @@ function VictoryScreen({ gameState, onRestart, onDestroyRoom, isHost }: {
   // Sequence: Podium -> Leaderboard (2.8s) -> Wait (15s total) -> Credits
   useEffect(() => {
     const tScores = setTimeout(() => setShowScores(true), 2800);
-    const tCredits = setTimeout(() => setStartCredits(true), 15000);
+    const tCredits = setTimeout(() => setStartCredits(true), 60000);
     return () => { clearTimeout(tScores); clearTimeout(tCredits); };
   }, []);
 
@@ -1077,7 +1126,8 @@ function VictoryScreen({ gameState, onRestart, onDestroyRoom, isHost }: {
         <div className="h-full min-h-[150vh] w-full bg-black flex flex-col items-center pt-20 shrink-0 relative overflow-hidden">
           {/* Scrolling Credits Text */}
           <motion.div
-            animate={startCredits ? { y: "-100%" } : { y: "100%" }}
+            initial={{ y: "100vh" }}
+            animate={startCredits ? { y: "-100%" } : { y: "100vh" }}
             transition={{ duration: 180, ease: "linear" }}
             className="w-full max-w-3xl px-8 flex flex-col items-center text-center gap-16 pb-32"
           >
@@ -1201,6 +1251,7 @@ export default function BuzzQuizPage() {
         { category: 'Musique', questionCount: 2 },
       ],
       specialMode: false,
+      testMode: true,
     };
     game.createRoom(settings, 'Hôte-Test');
   }, [game]);
@@ -1222,7 +1273,7 @@ export default function BuzzQuizPage() {
         )}
 
         {view === 'player-lobby' && game.gameState && (
-          <PlayerLobby gameState={game.gameState} playerId={game.playerId!} onSetSound={game.setBuzzerSound} />
+          <PlayerLobby gameState={game.gameState} playerId={game.playerId!} onSetSound={game.setBuzzerSound} onToggleReady={game.toggleReady} />
         )}
 
         {view === 'host-game' && game.gameState && (

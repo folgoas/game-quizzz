@@ -22,6 +22,7 @@ export interface UseGameSocketReturn {
   nextRound: () => void;
   restartGame: () => void;
   destroyRoom: () => void;
+  toggleReady: () => void;
 }
 
 function getSessionId(): string {
@@ -175,6 +176,10 @@ export function useGameSocket(): UseGameSocketReturn {
     socketRef.current?.emit('destroy-room');
   }, []);
 
+  const toggleReady = useCallback(() => {
+    socketRef.current?.emit('toggle-ready');
+  }, []);
+
   return {
     isConnected,
     gameState,
@@ -193,5 +198,6 @@ export function useGameSocket(): UseGameSocketReturn {
     nextRound,
     restartGame,
     destroyRoom,
+    toggleReady,
   };
 }

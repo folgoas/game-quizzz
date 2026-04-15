@@ -33,6 +33,7 @@ export interface Player {
   color: string;
   avatarIndex: number;
   buzzerSoundId?: string;
+  isReady?: boolean;
 }
 
 export interface RoundConfig {
@@ -45,6 +46,7 @@ export interface GameSettings {
   timerDuration: number; // always 25
   rounds: RoundConfig[];
   specialMode?: boolean; // true when "Mode Alice" is unlocked via code
+  testMode?: boolean; // true for rapid end-to-end testing
 }
 
 export const ALICE_CATEGORIES = [

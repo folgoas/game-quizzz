@@ -13,7 +13,7 @@ const hpSpeed: MCQQuestion[] = [
   { id: 'hp_s10', text: "Combien y a-t-il de balles au Quidditch ?", answers: ["2", "3", "4", "5"], correct: 2, category: 'Harry Potter', type: 'speed-choice' },
   { id: 'hp_s11', text: "Qui tue Nagini le serpent ?", answers: ["Harry", "Ron", "Neville", "Hermione"], correct: 2, category: 'Harry Potter', type: 'speed-choice' },
   { id: 'hp_s12', text: "Où habite l'oncle de Harry au début de la saga ?", answers: ["Godric's Hollow", "Privet Drive", "Chemin de Traverse", "Pré-au-Lard"], correct: 1, category: 'Harry Potter', type: 'speed-choice' },
-  { id: 'hp_s13', text: "Quel est le cœur de la baguette de Harry ?", answers: ["Crin de licorne", "Plume de phénix", "Plume de Sombral", "Plume de phénix de Fumseck"], correct: 3, category: 'Harry Potter', type: 'speed-choice' },
+  { id: 'hp_s13', text: "Quel est le cœur de la baguette de Harry ?", answers: ["Crin de licorne", "Ventricule de dragon", "Plume de Sombral", "Plume de phénix"], correct: 3, category: 'Harry Potter', type: 'speed-choice' },
   { id: 'hp_s14', text: "Quel est le poste de Harry au Quidditch ?", answers: ["Poursuiveur", "Batteur", "Attrapeur", "Gardien"], correct: 2, category: 'Harry Potter', type: 'speed-choice' },
   { id: 'hp_s15', text: "Comment s'appelle le chat d'Hermione ?", answers: ["Croûtard", "Pattenrond", "Miss Teigne", "Coquecigrue"], correct: 1, category: 'Harry Potter', type: 'speed-choice' }
 ];
@@ -86,13 +86,13 @@ const dpMcq: MCQQuestion[] = [
 ];
 
 const dpCash: CashAnswerQuestion[] = [
-  { id: 'dp_c1', text: "Quel est le nom complet de l'ami de Shrek, l'âne ?", acceptedAnswers: ["L'Âne", "Ane"], category: 'Disney & Pixar', type: 'cash-answer' }, // (Even if Dreamworks, often confused, but ok let's include an actual Disney one)
+  { id: 'dp_c1', text: "Quel est le nom du célèbre pantin de bois dont le nez s'allonge ?", acceptedAnswers: ["Pinocchio"], category: 'Disney & Pixar', type: 'cash-answer' },
   { id: 'dp_c2', text: "Nom du tigre de compagnie de la Princesse Jasmine ?", acceptedAnswers: ["Rajah"], category: 'Disney & Pixar', type: 'cash-answer' },
   { id: 'dp_c3', text: "Quel mot magique chante Mary Poppins ?", acceptedAnswers: ["Supercalifragilisticexpialidocious", "Supercalifragilistic"], category: 'Disney & Pixar', type: 'cash-answer' },
   { id: 'dp_c4', text: "Dans quel objet est enfermé le Génie d'Aladdin ?", acceptedAnswers: ["Une lampe magique", "Une lampe", "Lampe"], category: 'Disney & Pixar', type: 'cash-answer' },
   { id: 'dp_c5', text: "Quel est le nom du bonhomme de neige de La Reine des Neiges ?", acceptedAnswers: ["Olaf"], category: 'Disney & Pixar', type: 'cash-answer' },
   { id: 'dp_c6', text: "Le nom du superhéros violet et vert (Les Indestructibles) qui s'étire à l'infini ?", acceptedAnswers: ["Elastigirl", "Helen Parr", "Helen"], category: 'Disney & Pixar', type: 'cash-answer' },
-  { id: 'dp_c7', text: "Quel est le seul Schtroumpf de sexe féminin (à l'origine) ?", acceptedAnswers: ["La Schtroumpfette", "Schtroumpfette"], category: 'Disney & Pixar', type: 'cash-answer' }, // Wait, not disney, shifting to Peter Pan
+  { id: 'dp_c7', text: "Comment s'appelle la fée maléfique qui maudit la Belle au Bois Dormant ?", acceptedAnswers: ["Maléfique"], category: 'Disney & Pixar', type: 'cash-answer' },
   { id: 'dp_c8', text: "Comment s'appelle l'ennemi au crochet dans Peter Pan ?", acceptedAnswers: ["Capitaine Crochet", "Crochet"], category: 'Disney & Pixar', type: 'cash-answer' },
   { id: 'dp_c9', text: "Ville futuriste des voitures dans Cars ?", acceptedAnswers: ["Radiator Springs", "Radiator"], category: 'Disney & Pixar', type: 'cash-answer' },
   { id: 'dp_c10', text: "Comment s'appelle la petite fille rousse de Monstres et Cie ?", acceptedAnswers: ["Bouh"], category: 'Disney & Pixar', type: 'cash-answer' }
@@ -105,7 +105,7 @@ const swSpeed: MCQQuestion[] = [
   { id: 'sw_s4', text: "Dans quel matériau Han Solo est-il congelé ?", answers: ["Kryptonite", "Carbonite", "Adamantium", "Vibranium"], correct: 1, category: 'Star Wars', type: 'speed-choice' },
   { id: 'sw_s5', text: "Comment s'appelle l'espèce de Chewbacca ?", answers: ["Gungan", "Ewok", "Jawa", "Hutt"], correct: 1, category: 'Star Wars', type: 'speed-choice' },
   { id: 'sw_s6', text: "Qui pilote le Faucon Millenium ?", answers: ["Luke Skywalker", "Han Solo", "Dark Vador", "Kylo Ren"], correct: 1, category: 'Star Wars', type: 'speed-choice' },
-  { id: 'sw_s7', text: "Quel Sith a un sabre laser à double lame ?", answers: ["Dark Vador", "Comte Dooku", "Dark Maul", "Dark Maul (Darth Maul)"], correct: 3, category: 'Star Wars', type: 'speed-choice' },
+  { id: 'sw_s7', text: "Quel Sith possède un sabre laser à double lame rouge ?", answers: ["Dark Vador", "Comte Dooku", "L'Empereur", "Dark Maul"], correct: 3, category: 'Star Wars', type: 'speed-choice' },
   { id: 'sw_s8', text: "Qui dit 'C'est un piège' (It's a trap !) ?", answers: ["Lando", "Han Solo", "Amiral Ackbar", "Leia"], correct: 2, category: 'Star Wars', type: 'speed-choice' },
   { id: 'sw_s9', text: "Où grandit Luke Skywalker ?", answers: ["Naboo", "Coruscant", "Tatooine", "Endor"], correct: 2, category: 'Star Wars', type: 'speed-choice' },
   { id: 'sw_s10', text: "Quel type de soldat sert l'Empire Galactique (blanche armure) ?", answers: ["Clone Troopers", "Stormtroopers", "Jedi", "Sith"], correct: 1, category: 'Star Wars', type: 'speed-choice' },
